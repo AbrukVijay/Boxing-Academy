@@ -256,22 +256,23 @@ namespace dotnetapp.Controllers
         public async Task<IActionResult> DeleteCourse(int courseId)
         {
             var course = await dc.CourseModels.FindAsync(courseId);
-            // try
-            // {
-            //     var course = await dc.CourseModels.FindAsync(courseId);
-            //     if (course == null)
-            //     {
-            //         return BadRequest("Course Not Found");
-            //     }
+            try
+            {
+                //var course = await dc.CourseModels.FindAsync(courseId);
+                if (course == null)
+                {
+                    return BadRequest("Course Not Found");
+                }
             dc.CourseModels.Remove(course);
             await dc.SaveChangesAsync();
             return Ok("Course Deleted");
 
         }
-        // catch 
-        // {
-        //     return StatusCode(500, "An error accoured while deleting the course.");
-        // }
+        catch 
+        {
+            return StatusCode(500, "An error accoured while deleting the course.");
+        }
+        }
 
 
 
@@ -466,7 +467,7 @@ namespace dotnetapp.Controllers
         //////////////////////////////////////////////////////////////////////////////
         //Get courses offered by institute
 
-        [HttpGet("viewcoursebyId")]
+        [HttpGet("viewcoursebyId/{InstId}")]
         public IActionResult viewcoursebyId(int InstId)
         {
             // var instCourse= await dc.Course.FindAsync(InstituteId);
@@ -483,12 +484,12 @@ namespace dotnetapp.Controllers
                               where Inst.InstituteId == Cour.InstituteId && Cour.InstituteId == InstId
                               select new
                               {
-                                  cn = Cour.CourseName,
-                                  cd = Cour.CourseDescription,
-                                  cdd = Cour.CourseDuration,
-                                  ct = Cour.CourseTiming,
+                                  CourseName = Cour.CourseName,
+                                  CourseDescription = Cour.CourseDescription,
+                                  CourseDuration = Cour.CourseDuration,
+                                  CourseTiming = Cour.CourseTiming,
                                   //ns = Cour.NumberofStudents,
-                                  iid = Cour.InstituteId
+                                  InstituteId = Cour.InstituteId
 
 
                               }).ToList();
@@ -505,33 +506,33 @@ namespace dotnetapp.Controllers
             return Ok(student);
         }
 
-        [HttpPut("EditStudentbycourse/{id}/{courseId}")]
-        public async Task<IActionResult> EditStudentbycourse(int id, StudentModel student, int courseId)
-        {
-            var std = await dc.StudentModels.FindAsync(id);
-            if (std != null)
-            {
-                std.FirstName = student.FirstName;
-                std.LastName = student.LastName;
-                std.Nationality = student.Nationality;
-                std.FatherName = student.FatherName;
-                std.MotherName = student.MotherName;
-                std.Gender = student.Gender;
-                std.Age = student.Age;
-                std.Mobile = student.Mobile;
-                std.AlternateMobile = student.AlternateMobile;
-                std.Email = student.Email;
-                std.CourseId = student.CourseId;
-                std.HouseNo = student.HouseNo;
-                std.StreetName = student.StreetName;
-                std.Pincode = student.Pincode;
-                std.AreaName = student.AreaName;
-                std.State = student.State;
-            }
-            dc.StudentModels.Update(std);
-            await dc.SaveChangesAsync();
-            return Ok(std);
-        }
+        // [HttpPut("EditStudentbycourse/{id}/{courseId}")]
+        // public async Task<IActionResult> EditStudentbycourse(int id, StudentModel student, int courseId)
+        // {
+        //     var std = await dc.StudentModels.FindAsync(id);
+        //     if (std != null)
+        //     {
+        //         std.FirstName = student.FirstName;
+        //         std.LastName = student.LastName;
+        //         std.Nationality = student.Nationality;
+        //         std.FatherName = student.FatherName;
+        //         std.MotherName = student.MotherName;
+        //         std.Gender = student.Gender;
+        //         std.Age = student.Age;
+        //         std.Mobile = student.Mobile;
+        //         std.AlternateMobile = student.AlternateMobile;
+        //         std.Email = student.Email;
+        //         std.CourseId = student.CourseId;
+        //         std.HouseNo = student.HouseNo;
+        //         std.StreetName = student.StreetName;
+        //         std.Pincode = student.Pincode;
+        //         std.AreaName = student.AreaName;
+        //         std.State = student.State;
+        //     }
+        //     dc.StudentModels.Update(std);
+        //     await dc.SaveChangesAsync();
+        //     return Ok(std);
+        // }
 
         [HttpDelete("DeleteInstitutes")]
         public async Task<IActionResult> DeleteInstitutes([FromBody] List<int> instituteIds)
@@ -560,41 +561,52 @@ namespace dotnetapp.Controllers
         //get only institute Id & name
 
         //institute and rating
-        // [HttpGet("institute with rating")]
-        // public async Task<IActionResult> instituterating()
-        // {
-        //     // var inst = await dc.InstituteModels.ToListAsync();
-        //     // var rat = await dc.RatingsModel.ToListAsync();
+        [HttpGet("institute with rating")]
+        public async Task<IActionResult> instituterating()
+        {
+            // var inst = await dc.InstituteModels.ToListAsync();
+            // var rat = await dc.RatingsModel.ToListAsync();
 
-        //     var instrat = (from i in dc.InstituteModels
-        //                 join r in dc.Ratings on i.InstituteId equals r.InstituteId
-        //                 group r by new { i.InstituteName, i.InstituteAddress } into g
-        //                 select new
-        //                 {
-        //                     InstituteName = g.Key.InstituteName,
-        //                     InstituteAddress = g.Key.InstituteAddress,
-        //                     AverageRating = g.Average(r => r.Rating)
-        //                 }).ToList();
-        //     return OK(instrat);
+            var instrat = await Task.Run(() =>
+            {
+                
+              return  (from i in dc.InstituteModels
+                        join r in dc.RatingModels on i.InstituteId equals r.InstituteId
+                        group r by new { i.InstituteName, i.InstituteAddress ,i.ImageUrl,i.InstituteId} into g
+                        select new
+                        {
+                            InstituteId = g.Key.InstituteId,
+                            InstituteName = g.Key.InstituteName,
+                            InstituteAddress = g.Key.InstituteAddress,
+                            AverageRating = g.Average(r => r.Rating),
+                            ImageUrl = g.Key.ImageUrl
+                        }).ToList();
+            });
+            return Ok(instrat);
 
-        // }
+        }
 
         [HttpGet("viewStudentsA")]
 
         public async Task<IActionResult> viewStudentsA()
         {
-            var students = (from st in dc.StudentModels
-                            from cs in dc.CourseModels
-                            where st.CourseId == cs.CourseId
-                            select new
-                            {
-                                SId = st.StudentId,
-                                SFN = st.FirstName,
-                                SLN = st.LastName,
-                                CN = cs.CourseName,
-                                M = st.Mobile
+            var students = await Task.Run(() =>
+            {
+             return (from st in dc.StudentModels
+            from cs in dc.CourseModels
+            where st.CourseId == cs.CourseId
+            select new
+            {
+                StudentId = st.StudentId,
+                FirstName = st.FirstName,
+                LastName = st.LastName,
+                CourseName = cs.CourseName,
+                Mobile = st.Mobile
 
-                            }).ToList();
+            }).ToList();
+
+            });
+             
 
             return Ok(students);
 
@@ -628,9 +640,9 @@ namespace dotnetapp.Controllers
                         where c.InstituteId == i.InstituteId
                         select new
                         {
-                            IN = i.InstituteName,
-                            CN = c.CourseName,
-                            CID = c.CourseId
+                            InstituteName = i.InstituteName,
+                            CourseName = c.CourseName,
+                            CourseId = c.CourseId
                         }).ToList();
             });
 
@@ -667,20 +679,112 @@ namespace dotnetapp.Controllers
         //     return Ok(age);
 
         // }
-        [HttpGet("GetAge")]
-        public async Task<IActionResult> GetAge()
+        // [HttpGet("GetAge")]
+        // public async Task<IActionResult> GetAge()
+        // {
+        //     var age = await Task.Run(() =>
+        //     {
+        //         var averageAge = (from s in dc.StudentModels
+        //                           join c in dc.CourseModels on s.CourseId equals c.CourseId
+        //                           select s.Age)
+        //                           .Average();
+
+        //         return new { Age = averageAge };
+        //     });
+
+        //     return Ok(age);
+        // }
+
+        [HttpGet("Getinstrat")]
+        public async Task<IActionResult> Getinstrat()
         {
-            var age = await Task.Run(() =>
+
+            var instcou = await Task.Run(() =>
+{
+    var result = from i in dc.InstituteModels
+                 join r in dc.RatingModels on i.InstituteId equals r.InstituteId into ratingGroup
+                 from rg in ratingGroup.DefaultIfEmpty()
+                 group rg by new { i.InstituteId, i.InstituteName, i.ImageUrl } into g
+                 select new
+                 {
+                     g.Key.InstituteId,
+                     g.Key.InstituteName,
+                     g.Key.ImageUrl,
+                     AverageRating = g.Average(r => r != null ? r.Rating : 0)
+                 };
+
+    return result.ToList();
+});
+
+            return Ok(instcou);
+
+        }
+
+        [HttpGet("GetRatingsForInstitute/{instituteId}")]
+        public IActionResult GetRatingsForInstitute(int instituteId)
+        {
+            var ratings = (from r in dc.RatingModels
+                           join u in dc.UserModels on r.UserId equals u.UserId
+                           where r.InstituteId == instituteId
+                           select new
+                           {
+                               UserId = u.UserId,
+                               Username = u.Username,
+                               Rating = r.Rating,
+                               Comment = r.Comments
+                           }).ToList();
+
+            return Ok(ratings);
+        }
+
+        [HttpPost("AddProgressDetails")]
+        public async Task<IActionResult> AddProgressDetails([FromBody] ProgressModel p)
+        {
+            
+            var progress = new ProgressModel
             {
-                var averageAge = (from s in dc.StudentModels
-                                  join c in dc.CourseModels on s.CourseId equals c.CourseId
-                                  select s.Age)
-                                  .Average();
+                Progresspercentage = p.Progresspercentage,
+                
+                Timetamp = p.Timetamp,
+                CourseId = p.CourseId,
+                UserId = p.UserId,
+                Status = p.Status
+            };
 
-                return new { Age = averageAge };
-            });
+            
+            dc.ProgressModels.Add(progress);
 
-            return Ok(age);
+            await dc.SaveChangesAsync();
+            
+
+            // Return a success response
+            return Ok(progress);
+        }
+
+        [HttpGet("GetRecentProgress")]
+        public IActionResult GetRecentProgress(int userId, int courseId)
+        {
+            var recentProgress = dc.ProgressModels
+                .Where(p => p.UserId == userId && p.CourseId == courseId)
+                .OrderByDescending(p => p.Timetamp)
+                .FirstOrDefault();
+
+            if (recentProgress == null)
+            {
+                return NotFound(); // Return a 404 Not Found response if no recent progress is found
+            }
+
+            var progressDetails = new
+            {
+                ProgressId = recentProgress.ProgressId,
+                ProgressPercentage = recentProgress.Progresspercentage,
+                Timestamp = recentProgress.Timetamp,
+                UserId = recentProgress.UserId,
+                CourseId = recentProgress.CourseId,
+                Status = recentProgress.Status
+            };
+
+            return Ok(progressDetails);
         }
 
 
@@ -694,5 +798,17 @@ namespace dotnetapp.Controllers
 
 
 
+
+
+
+
+
+
+
+
+
     }
+    
+
+    
 }
