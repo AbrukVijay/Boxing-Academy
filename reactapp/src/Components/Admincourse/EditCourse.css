@@ -1,0 +1,127 @@
+  
+ 
+  .updateform-container {
+    margin-left: 580px;
+    width: 350px;
+    
+  }
+  
+  .Acdemo1 {
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
+    
+    
+    
+  }
+  
+ 
+
+  .Acdemo1 input[type="text"],
+  .Acdemo1 input[type="number"]
+  {
+    height : 40px; 
+    width: 350px;
+    text-align: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 10px;
+
+  }
+
+  .Acdemo1 input[type="text"] {
+    margin-right: 200px;
+    border: 2px solid white;
+    
+    
+   
+  }
+  .Acdemo1 input[type="number"] {
+    margin-right: 200px;
+    margin-left: 0px;
+    border: 2px solid white;
+    
+  }
+  
+  .name-input1::placeholder {
+    color: black;
+  
+  }
+  
+  .duration-input1::placeholder {
+    color: black;
+  }
+
+  .timing-input1::placeholder {
+    color: black;
+  }
+
+  .enrolled-input1::placeholder {
+    color: black;
+  }
+
+  .description-input1::placeholder {
+    color: black;
+    
+  }
+
+
+  
+  
+  #editCourseDescription {
+    
+    height: 100px; 
+    width: 350px;
+    text-align: center;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+   margin-right: 200px;
+  }
+  
+  .updatereg1{
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-image: linear-gradient(to bottom,#137c8c,#5d7568);
+    color: white;
+    margin: 1px;
+    font-size: 15px;
+    padding: 5px;
+   
+  }
+  
+  .updatereg2{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+  }
+   
+
+    /*update academy button*/
+    .Acupdatebtn1{
+      border-radius: 10px;
+      color: white;
+      /* margin-left: 950px; */
+      padding: 6px;
+      background-color: blue;
+      border: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 9%;
+    }
+   
+    .Acupdatebtn1:hover{
+      color:white;
+      font-weight: bold;
+  } 
+    
+    .error {
+      font-size: medium;
+      color: red;
+     
+    }

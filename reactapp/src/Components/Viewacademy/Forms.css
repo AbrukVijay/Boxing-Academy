@@ -1,0 +1,121 @@
+* {
+  box-sizing: content-box;
+}
+
+.myForm {
+  
+  box-sizing: border-box;
+  background-color:rgba(0, 0, 0, 0.8);
+  padding: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+
+.myForm__firstname {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.myForm__lastname {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.myForm__gender {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.myForm__fathername {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.myForm__phn {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.myForm__altphn {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.myForm__mothername {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.myForm__Email {
+  grid-column: 1;
+  grid-row: 4;
+}
+
+.myForm__age {
+  grid-column: 1;
+  grid-row: 5;
+}
+
+.myForm__address {
+  color: white;
+  background-color:rgba(0, 0, 0, 0.8);
+  height: 500px;
+  grid-column: 2 / span 2;
+  grid-row: 3 / span 4;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  padding: 15px;
+  align-items: center;
+  text-decoration-color: white;
+}
+
+
+.myForm__address h2 {
+  height: 0pt;
+  text-align: center;
+}
+
+.myForm__address .address-fields {
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+}
+
+.myForm__hno {
+  width: 50%
+}
+
+.myForm__streetname {
+  width: 50%;
+}
+
+.myForm__areaname {
+  width: 50%;
+}
+
+.myForm__state {
+  width: 50%;
+}
+
+.myForm__pincode {
+  width: 50%;
+}
+
+.myForm__nationality {
+  width: 50%;
+}
+
+.myForm__submit {
+  position: absolute;
+  background-color: rgba(48, 48, 48, 0.8);
+  
+  border-radius: 6px;
+  bottom: 40px;
+  right: 20px;
+}
+span.error{
+  color: white;
+}

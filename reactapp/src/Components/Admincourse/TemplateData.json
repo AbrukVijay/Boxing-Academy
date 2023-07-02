@@ -1,0 +1,36 @@
+[
+    {
+      "id": 1,
+      "name": "Course name : Strength training",
+      "duration": "Course Duration : 3months",
+      "timing": "Course Available Timings  : 6am to 6pm",
+      "enrolled": "Number of Students  : 222",
+      "description": "Course Description : yyyyy "
+    },
+    {
+        "id": 2,
+        "name": "Course name : Boxing drills",
+        "duration": "Course Duration : 5months",
+        "timing": "Course Available Timings  : 6am to 6pm",
+        "enrolled": "Number of Students  : 137",
+        "description": "Course Description : yyyyy "
+    },
+    {
+        "id": 3,
+        "name": "Course name : Cardio Boxing",
+        "duration": "Course Duration : 3months",
+        "timing": "Course Available Timings  : 6am to 6pm",
+        "enrolled": "Number of Students  : 244",
+        "description": "Course Description : yyyyy "
+    },
+    {
+        "id": 4,
+        "name": "Course name : Amateur Boxing",
+        "duration": "Course Duration : 3months",
+        "timing": "Course Available Timings  : 6am to 6pm",
+        "enrolled": "Number of Students  : 115",
+        "description": "Course Description : yyyyy "
+    }
+    
+   
+  ]

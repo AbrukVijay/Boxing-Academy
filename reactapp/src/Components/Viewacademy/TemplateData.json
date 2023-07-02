@@ -1,0 +1,45 @@
+[
+    {
+      "id": 1,
+      "image": "https://media.istockphoto.com/id/618981846/photo/boxing-her-way-to-a-ripper-body.jpg?s=612x612&w=0&k=20&c=2SnDLdpS0VUHaNWmlrFlzHZReyHtezVEZhDLxWPatQs=",
+      "title": "RK Boxing Centre",
+      "place": "Place: Chennai",
+      "rating": 4.5
+    },
+    {
+      "id": 2,
+      "image": "https://ultimateboxing.co.uk/wp-content/uploads/2022/03/Ultimate-Boxing-Academy-1.jpg",
+      "title": "SK Boxing Academy",
+      "place": "Place: Bangalore",
+      "rating": 3.25
+    },
+    {
+      "id": 3,
+      "image": "https://thewayofboxing.com/wp-content/uploads/2021/03/CoachingHeader.jpg",
+      "title": "MK Boxing Academy",
+      "place": "Place: Bangalore",
+      "rating": 2.75
+    },
+    {
+      "id": 4,
+      "image": "https://npr.brightspotcdn.com/a8/55/2922a6e84687b6bd61086e76c754/espinosa-garland-boxing-gym-03242022-kc-1.jpg",
+      "title": "VK Boxing Academy",
+      "place": "Place: Bangalore",
+      "rating": 1.5
+    },
+    {
+      "id": 5,
+      "image": "https://149774356.v2.pressablecdn.com/wp-content/uploads/2022/08/Gopa-Boxing-Club-5.jpeg",
+      "title": "AK Boxing Academy",
+      "place": "Place: Coimbatore",
+      "rating": 3.75
+    },
+    {
+      "id": 6,
+      "image": "https://cdn.wallpapersafari.com/38/24/f547hM.jpg",
+      "title": "XYZ Boxing Academy",
+      "place": "Place: New Delhi",
+      "rating": 4.0
+    }
+  ]
+  

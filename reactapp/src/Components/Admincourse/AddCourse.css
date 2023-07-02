@@ -1,0 +1,124 @@
+
+  .addform-container {
+    margin-left: 680px;
+    width: 350px;
+  }
+  #instituteSelect{
+    margin: 0%;
+  }
+  
+  .Acdemo {
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .Acdemo input[type="text"],
+  .Acdemo input[type="number"]
+  {
+    height : 40px; 
+    width: 350px;
+    text-align: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 10px;
+    
+  }
+  .Acdemo input[type="text"]
+  {
+    margin-right: 200px;
+    border: 2px solid white;
+    
+  }
+  .Acdemo input[type="number"] {
+    margin-right: 200px;
+    margin-left: 0px;
+    border: 2px solid white;
+    
+  }
+  
+ 
+  
+ 
+  .name-input::placeholder {
+    color: black;
+  
+  }
+  
+  .duration-input::placeholder {
+    color: black;
+  }
+
+  .timing-input::placeholder {
+    color: black;
+  }
+
+  .enrolled-input::placeholder {
+    color: black;
+  }
+
+  .description-input::placeholder {
+    color: black;
+    
+  }
+
+  
+  
+  #courseDescription {
+    
+    margin-right: 190px;
+    height: 100px; 
+    width: 350px;
+    text-align: center;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    
+  }
+  
+  .addreg1{
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+   /* background-color: #F8F8F8; 
+    background-image: linear-gradient(to bottom,#beeed4,#81e5af);  */
+    background-image: linear-gradient(to bottom,#137c8c,#5d7568);
+    color: white;
+    margin: 1px;
+    font-size: 15px;
+    padding: 5px;
+  }
+  
+  .addreg2{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+  }
+    
+   
+
+    /*add academy button*/
+    .Acaddbtn1 {
+      border-radius: 10px;
+      color: white;
+      background-color: blue;
+      padding: 6px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      border: none;
+      width: 9%;
+    }
+    .Acaddbtn1:hover{
+      color: white;
+      font-weight: bold;
+    }
+    
+    .error {
+      font-size: medium;
+      color: red;
+      
+    }

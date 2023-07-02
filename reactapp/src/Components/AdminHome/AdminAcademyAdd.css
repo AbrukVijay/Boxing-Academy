@@ -1,0 +1,67 @@
+
+
+.AdminAcdemo input [type= "text"] {
+  height: 40px;
+  border-radius: 40px;
+}
+.AdminAcdemo{
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: center;
+}
+textarea{
+  height: 60px;
+  width:20%;
+  border-radius: 10px;
+}
+button{
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  
+}
+.AdminAcreg1{
+  background-image:linear-gradient(to bottom, #137c8c, #5d7568);
+  height: 100vh;
+}
+.error{
+  color: red;
+  font-size: large;
+  margin-right: auto;
+}
+h1{
+  color:black
+}
+#AddAcademyDescription{
+  margin-right: 20px;
+  height: 100px; 
+  width: 340px;
+  text-align: center;
+  background-color: white;
+  border: 2px solid white;
+  border-radius: 20px;
+}
+.form-container {
+  margin-left: 90px;
+  width: 350px;
+  border-radius: 80px;
+  
+}
+
+::placeholder {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  /* color: white; */
+  color: black;
+
+}
+#addAcademy{
+  border-radius: 10px;
+  margin-right: 8px;
+  position: fixed;
+
+}
+#editAcademyName,#editImageUrl,#editAcademyLocation,#editContactNumber,#editEmailId{
+  height: 35px;
+  border-radius: 25px;
+}

@@ -1,0 +1,54 @@
+input{
+  height: 30px;
+  border-radius: 5px;
+}
+.AdminEditdemo{
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: center;
+}
+textarea{
+  height: 60px;
+  width:20%;
+  border-radius: 5px;
+}
+/* button{
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  margin-right: 25px;
+} */
+.reg1{
+  background-image:linear-gradient(to bottom, #137c8c, #5d7568);
+  height: 100vh;
+}
+.error{
+  color: red;
+  font-size: large;
+}
+h1{
+  color:rgba(19, 19, 19, 0.822)
+}
+.editdescription{
+  margin-right: 20px;
+  height: 100px; 
+  width: 340px;
+  text-align: center;
+  background-color: white;
+  border: 2px solid white;
+  border-radius: 20px;
+}
+#updateAcademy{
+  border-radius: 10px;
+      color: white;   
+      padding: 6px; 
+      border: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 9%;
+}
+.btn btn-primary button:hover{
+  color: white;
+  font-weight: bold;
+}

@@ -1,0 +1,85 @@
+.st_content{
+  height: 600px;
+  background-image: linear-gradient(to bottom, #137c8c, #5d7568);
+}
+.stu-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.stu-input[type="text"]{
+  padding: 0.7rem;
+  border-radius: 0.25rem;
+  background-color: #e2d2d2;
+  text-emphasis-color: rgb(0,0,0,0.8);
+  border: none;
+  box-shadow: 0 1px 3px rgba(99, 96, 96, 0.288);
+  border: 1px solid rgba(71, 69, 69, 0.2);
+  width: 100%;
+  max-width: 250px;
+  margin-right: 0.5rem;
+}
+.stu-button[type="submit"] {
+  padding: 0.7rem;
+  /*background-color: rgba(0, 0, 0, 0.8);
+  background-image: linear-gradient(to bottom,rgba(0,0,0,0.7),rgba(255,0,0,0.4));*/
+  background-Color: rgb(0, 0, 0, 0.8);
+  background-Image: 'linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(255, 0, 0, 0.1))';
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+} 
+.search-input input[type="text"] {
+  width: 250px;
+  height: 40px;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  align-items: center;
+  text-align: center;
+  margin-left: 150px;
+  margin-right: 5px;
+}
+.st-table{
+  border-collapse: separate;
+  border-spacing: 0 15px;
+  border-radius: 10px;
+  width: 90%;
+  margin-left: 5%;
+  
+}
+.st-table th{
+  padding: 10px;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.8);
+   background-image: 'linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(255, 0, 0, 0.1))';
+  color: white;
+  font-weight: bold;
+}
+.st-table td{
+  padding: 10px;
+  text-align: left;
+  background-color:rgba(0, 0, 0, 0.8);
+  background-image: 'linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(255, 0, 0, 0.1))';
+  color: white;
+  font-weight: bold;
+}
+th,
+td{
+  text-align: left;
+  padding: 7px;
+  font-size: 15px;
+  border: none;
+  
+}
+
+.add-student-button{
+    background-color: rgb(62, 12, 141);
+    color: white;
+    position: absolute;
+    right:10px;
+}

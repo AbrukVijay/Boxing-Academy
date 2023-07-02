@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "course": "Course name : Strength training",
+      "joined": "Joined Date : 01/01/2023",
+      "end": "End Date  : 01/04/2023"
+    },
+    {
+      "id": 2,
+      "course": "Course name : Cardio Boxing",
+      "joined": "Joined Date : 01/01/2023",
+      "end": "End Date : 01/04/2023"
+    },
+    {
+      "id": 3,
+      "course": "Course name : Amateur Boxing",
+      "joined": "Joined Date : 01/01/2023",
+      "end": "End Date : 01/04/2023"
+    },
+    {
+      "id": 4,
+      "course": "Course name : Professional Boxing",
+      "joined": "Joined Date : 01/01/2023",
+      "end": "End Date : 01/04/2023"
+    }
+  ]
+  

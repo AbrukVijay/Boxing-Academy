@@ -1,0 +1,43 @@
+.home5-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 800px;
+}
+
+.home5-container {
+  background-color: lightgray;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1250px;
+  height: 700px;
+  margin: 100px 152px;
+}
+
+.home5-container .image {
+  width: 500px;
+  height: auto;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+.home5-container .content {
+  flex-grow: 1;
+}
+
+.home5-container h1 {
+  font-size: 36px;
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
+  color: #333;
+  padding: 3px;
+}
+
+.home5-container p {
+  font-size: 18px;
+  font-family: "Arial", sans-serif;
+  color: #666;
+}

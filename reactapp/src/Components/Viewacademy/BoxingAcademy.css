@@ -1,0 +1,36 @@
+.carousel-container {
+    position: relative;
+    z-index: 2a;
+  }
+  
+  .user-details {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    color: white;
+    text-align: center;
+  }
+  
+  .user-details h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .user-details p {
+    font-size: 16px;
+  }
+  
+  .carousel-container img {
+    width: 100%;
+    height: auto;
+  }
+  
+
+
+.nav-link {
+  padding-right: 91px;
+  padding-left: 71px;
+}
