@@ -649,51 +649,7 @@ namespace dotnetapp.Controllers
             return Ok(instcou);
         }
 
-        // [HttpGet("GetAge")]
-
-        // public async Task<IActionResult> GetAge()
-        // {
-        //     var age = await Task.Run(() =>{
-
-
-
-
-        //         return ( from s in dc.StudentModels
-        //                   from c in dc.CourseModels
-        //                   where s.CourseId == c.CourseId
-        //                   select new
-        //                   {
-        //                         Age = Average( s => s.Age)
-
-        //                   }
-
-
-
-
-
-
-        //                     ).ToList();
-        //     }
-        //     );
-
-        //     return Ok(age);
-
-        // }
-        // [HttpGet("GetAge")]
-        // public async Task<IActionResult> GetAge()
-        // {
-        //     var age = await Task.Run(() =>
-        //     {
-        //         var averageAge = (from s in dc.StudentModels
-        //                           join c in dc.CourseModels on s.CourseId equals c.CourseId
-        //                           select s.Age)
-        //                           .Average();
-
-        //         return new { Age = averageAge };
-        //     });
-
-        //     return Ok(age);
-        // }
+        
 
         [HttpGet("Getinstrat")]
         public async Task<IActionResult> Getinstrat()
@@ -787,6 +743,25 @@ namespace dotnetapp.Controllers
             return Ok(progressDetails);
         }
 
+        [HttpPost("RateInstitute")]
+
+        public async Task<IActionResult> RateInstitute( RatingModel R)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                await dc.RatingModels.AddAsync(R);
+                await dc.SaveChangesAsync();
+                return Ok("Rating added");
+            }
+            catch
+            {
+                return StatusCode(500, "An error accoured while adding the institute.");
+            }
+        }
 
 
 
