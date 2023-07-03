@@ -151,7 +151,7 @@ public IActionResult ViewAdmission(int userId)
             await bc.SaveChangesAsync();
             return Ok(student);
         }
-        [HttpGet("user/viewstatus")]
+[HttpGet("user/viewstatus")]
          public async Task<IActionResult>  ViewStatus(Decimal progresspercentage,int userid,int courseid)
         {
                var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
@@ -176,21 +176,78 @@ public IActionResult ViewAdmission(int userId)
                var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
             
               
- var progress=new ProgressModel{
+               var progress=new ProgressModel{
     
-    UserId=userid,
-    CourseId=admission.CourseId,
-    Progresspercentage=progresspercentage, 
-    Status=bc.CalculateStatus(progresspercentage,admission.EndDate),
-    Timetamp=DateTime.Now
- };
- bc.ProgressModels.Add(progress);
- bc.SaveChanges();
- return Ok(progress);
+            UserId=userid,
+            CourseId=admission.CourseId,
+            Progresspercentage=progresspercentage, 
+            Status=bc.CalculateStatus(progresspercentage,admission.EndDate),
+            Timetamp=DateTime.Now
+        };
+        bc.ProgressModels.Add(progress);
+        bc.SaveChanges();
+        return Ok(progress);
  
         }
-       
+                [HttpGet("institute with rating")]
+        public async Task<IActionResult> instituterating()
+        {
+            // var inst = await dc.InstituteModels.ToListAsync();
+            // var rat = await dc.RatingsModel.ToListAsync();
 
-        
+            var instrat = await Task.Run(() =>
+            {
+                
+              return  (from i in bc.InstituteModels
+                        join r in bc.RatingModels on i.InstituteId equals r.InstituteId
+                        group r by new { i.InstituteName, i.InstituteAddress ,i.ImageUrl,i.InstituteId} into g
+                        select new
+                        {
+                            InstituteId = g.Key.InstituteId,
+                            InstituteName = g.Key.InstituteName,
+                            InstituteAddress = g.Key.InstituteAddress,
+                            AverageRating = g.Average(r => r.Rating),
+                            ImageUrl = g.Key.ImageUrl
+                        }).ToList();
+            });
+            return Ok(instrat);
+
+        }
+                [HttpPost("RateInstitute")]
+
+        public async Task<IActionResult> RateInstitute( RatingModel R)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                await bc.RatingModels.AddAsync(R);
+                await bc.SaveChangesAsync();
+                return Ok("Rating added");
+            }
+            catch
+            {
+                return StatusCode(500, "An error accoured while adding the institute.");
+            }
+        }
+        [HttpGet("GetRatingsForInstitute/{instituteId}")]
+        public IActionResult GetRatingsForInstitute(int instituteId)
+        {
+            var ratings = (from r in bc.RatingModels
+                           join u in bc.UserModels on r.UserId equals u.UserId
+                           where r.InstituteId == instituteId
+                           select new
+                           {
+                               UserId = u.UserId,
+                               Username = u.Username,
+                               Rating = r.Rating,
+                               Comment = r.Comments
+                           }).ToList();
+
+            return Ok(ratings);
+        }
+
     }
 }
