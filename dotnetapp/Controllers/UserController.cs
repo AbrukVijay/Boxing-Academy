@@ -152,9 +152,9 @@ public IActionResult ViewAdmission(int userId)
             return Ok(student);
         }
         [HttpGet("user/viewstatus")]
-         public async Task<IActionResult>  ViewStatus(Decimal progresspercentage,int userid)
+         public async Task<IActionResult>  ViewStatus(Decimal progresspercentage,int userid,int courseid)
         {
-               var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid); 
+               var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
             
               
  var progress=new ProgressModel{
@@ -171,9 +171,9 @@ public IActionResult ViewAdmission(int userId)
  
         }
          [HttpPost("user/viewstatus")]
-         public async Task<IActionResult> ViewSatus(Decimal progresspercentage,int userid)
+         public async Task<IActionResult> ViewSatus(Decimal progresspercentage,int userid,int courseid)
         {
-               var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid); 
+               var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
             
               
  var progress=new ProgressModel{
