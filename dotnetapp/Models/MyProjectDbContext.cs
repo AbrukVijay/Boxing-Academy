@@ -39,7 +39,24 @@ public partial class MyProjectDbContext : DbContext
     }
 // #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
 //         => optionsBuilder.UseSqlServer("Server=DESKTOP-9537ONK\\SQLEXPRESS;database=MyProjectDB;Trusted_Connection=True;TrustServerCertificate=True");
+public string CalculateStatus(decimal Progresspercentage,DateTime enddate) {
+        var d=DateTime.Today;
+        if(Progresspercentage<100 && d<enddate) {
+        return "Course Inprogress";
+        }
+        else if(Progresspercentage<=100&&d>enddate) {
+        return "Course Expired"; 
+        }
+        else{
+            return "Course Completed";
+        }
+    }
 
+public DateTime CalculateEndDate(int CourseDuration, DateTime joiningDate)
+    {
+        var endDate = joiningDate.AddMonths(CourseDuration);
+        return endDate;
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AdminModel>(entity =>

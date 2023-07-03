@@ -11,7 +11,7 @@ public partial class CourseModel
 
     public string? CourseDescription { get; set; }
 
-    public int? CourseDuration { get; set; }
+    public int CourseDuration { get; set; }
 
     public string? CourseTiming { get; set; }
 

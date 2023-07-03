@@ -15,9 +15,9 @@ public partial class AdmissionModel
 
     public int? UserId { get; set; }
 
-    public DateTime? DateOfJoining { get; set; }
+    public DateTime DateOfJoining { get; set; }
 
-    public DateTime? EndDate { get; set; }
+    public DateTime EndDate { get; set; }
 
     public virtual CourseModel? Course { get; set; }
 
