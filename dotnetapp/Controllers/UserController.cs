@@ -137,7 +137,6 @@ public IActionResult ViewAdmission(int userId)
         [HttpDelete("user/deleteAdmission/{admissionId}")] 
         public async Task<IActionResult> deleteAdmission(int admissionId)
         {
-            
             var admission = bc.AdmissionModels.FirstOrDefault(a => a.AdmissionId == admissionId);
 
             bc.AdmissionModels.Remove(admission);
@@ -151,32 +150,39 @@ public IActionResult ViewAdmission(int userId)
             await bc.SaveChangesAsync();
             return Ok(student);
         }
-[HttpGet("user/viewstatus")]
+         [HttpGet("user/viewstatus")]
          public async Task<IActionResult>  ViewStatus(Decimal progresspercentage,int userid,int courseid)
         {
                var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
-            
+            if(admission!=null)
+            {
               
- var progress=new ProgressModel{
+                var progress=new ProgressModel{
     
-    UserId=userid,
-    CourseId=admission.CourseId,
-    Progresspercentage=progresspercentage, 
-    Status=bc.CalculateStatus(progresspercentage,admission.EndDate),
-    Timetamp=DateTime.Now
- };
- bc.ProgressModels.Add(progress);
- bc.SaveChanges();
- return Ok(progress);
- 
+                UserId=userid,
+                CourseId=admission.CourseId,
+                Progresspercentage=progresspercentage, 
+                Status=bc.CalculateStatus(progresspercentage,admission.EndDate),
+                Timetamp=DateTime.Now
+            };
+            await bc.ProgressModels.AddAsync(progress);
+            await Task.Run(() => bc.SaveChanges()); 
+            return Ok(progress);
+         }
+         return NotFound();
         }
+
+
+
          [HttpPost("user/viewstatus")]
-         public async Task<IActionResult> ViewSatus(Decimal progresspercentage,int userid,int courseid)
-        {
-               var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
+         public  async Task<IActionResult> ViewSatus(Decimal progresspercentage,int userid,int courseid)
+    {
+
+         var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
             
-              
-               var progress=new ProgressModel{
+           if(admission!=null)
+           {   
+            var progress=new ProgressModel{
     
             UserId=userid,
             CourseId=admission.CourseId,
@@ -184,17 +190,36 @@ public IActionResult ViewAdmission(int userId)
             Status=bc.CalculateStatus(progresspercentage,admission.EndDate),
             Timetamp=DateTime.Now
         };
-        bc.ProgressModels.Add(progress);
-        bc.SaveChanges();
+        await bc.ProgressModels.AddAsync(progress);
+        await Task.Run(() => bc.SaveChanges()); 
         return Ok(progress);
- 
         }
-                [HttpGet("institute with rating")]
+        return NotFound();
+    }
+
+        [HttpPut("user/updatestatus/{progressId}")]
+public async Task<IActionResult> UpdateStatus(decimal progressPercentage, int progressId)
+{
+    
+    var progress = bc.ProgressModels.FirstOrDefault(p => p.ProgressId == progressId);
+
+    
+
+    var admission = bc.AdmissionModels.FirstOrDefault(a => a.UserId == progress.UserId && a.CourseId == progress.CourseId);
+
+    progress.Progresspercentage = progressPercentage;
+    progress.Status = bc.CalculateStatus(progressPercentage, admission.EndDate);
+    progress.Timetamp = DateTime.Now;
+
+    await bc.SaveChangesAsync();
+
+    return Ok(progress);
+}
+
+
+        [HttpGet("institute with rating")]
         public async Task<IActionResult> instituterating()
         {
-            // var inst = await dc.InstituteModels.ToListAsync();
-            // var rat = await dc.RatingsModel.ToListAsync();
-
             var instrat = await Task.Run(() =>
             {
                 
@@ -247,6 +272,31 @@ public IActionResult ViewAdmission(int userId)
                            }).ToList();
 
             return Ok(ratings);
+        }
+
+        [HttpGet("Getinstrat")]
+        public async Task<IActionResult> Getinstrat()
+        {
+
+            var instcou = await Task.Run(() =>
+{
+    var result = from i in bc.InstituteModels
+                 join r in bc.RatingModels on i.InstituteId equals r.InstituteId into ratingGroup
+                 from rg in ratingGroup.DefaultIfEmpty()
+                 group rg by new { i.InstituteId, i.InstituteName, i.ImageUrl } into g
+                 select new
+                 {
+                     g.Key.InstituteId,
+                     g.Key.InstituteName,
+                     g.Key.ImageUrl,
+                     AverageRating = g.Average(r => r != null ? r.Rating : 0)
+                 };
+
+                return result.ToList();
+            });
+
+            return Ok(instcou);
+
         }
 
     }
