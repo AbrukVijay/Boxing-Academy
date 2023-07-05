@@ -22,7 +22,7 @@ function UserHome() {
     const email = localStorage.getItem("email");
     setEmail(email);
 
-    axios.get(`http://localhost:5071/api/${encodeURIComponent(email)}/username`)
+    axios.get(`http://localhost:5232/api/${encodeURIComponent(email)}/username`)
       .then((response) => {
         const usernameValue = response.data;
         setUserName(usernameValue);

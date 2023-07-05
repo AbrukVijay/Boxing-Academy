@@ -484,6 +484,7 @@ namespace dotnetapp.Controllers
                               where Inst.InstituteId == Cour.InstituteId && Cour.InstituteId == InstId
                               select new
                               {
+                                CourseId=Cour.CourseId,
                                   CourseName = Cour.CourseName,
                                   CourseDescription = Cour.CourseDescription,
                                   CourseDuration = Cour.CourseDuration,
@@ -660,12 +661,13 @@ namespace dotnetapp.Controllers
     var result = from i in dc.InstituteModels
                  join r in dc.RatingModels on i.InstituteId equals r.InstituteId into ratingGroup
                  from rg in ratingGroup.DefaultIfEmpty()
-                 group rg by new { i.InstituteId, i.InstituteName, i.ImageUrl } into g
+                 group rg by new { i.InstituteId, i.InstituteName,i.InstituteAddress, i.ImageUrl } into g
                  select new
                  {
                      g.Key.InstituteId,
                      g.Key.InstituteName,
                      g.Key.ImageUrl,
+                     g.Key.InstituteAddress,
                      AverageRating = g.Average(r => r != null ? r.Rating : 0)
                  };
 

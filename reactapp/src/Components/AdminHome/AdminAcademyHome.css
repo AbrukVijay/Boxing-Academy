@@ -1,127 +1,95 @@
-/* Adminacademyhome.css */
-
 .admin-page {
-    background-color: #28d15d;
-    background-image: linear-gradient(to bottom, #137c8c, #5d7568);
-  }
-  
-   
-  .card {
-    background-color: rgba(0, 0, 0, 0.8);
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(255, 0, 0, 0.4));  
-    }
-  
-  
-  .card .card-img-top {
-    height: 200px;
-    /* Adjust the height as needed */
-    object-fit: cover;
-    /* Ensure the image fills the container */
-  }
-  
-  .card-body {
-    color: #ffffff;
-  }
-  
-  .card-title {
-    text-align: center;
-
-  }
-  
-  .card-text strong {
-    font-weight: bold;
-  }
-  
-  .card-text em {
-    font-style: italic;
-  }
-  
-  .card-body .text-start {
-    text-align: start;
-  }
-  
-  .btn {
-    margin-top: 10px;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  
-  .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-  }
-  
-  .mb-4 {
-    width: 18rem;
-position: relative;
-border: 1px solid black;
-border-radius: 10px;
-padding: 10px;
-height: 400px;
+  background-color: #28d15d;
+  background-image: linear-gradient(to bottom, #137c8c, #5d7568);
 }
+
+
+.card .card-img-top {
+  height: 200px;
+
+  object-fit: cover;
+
+}
+.card-body{
+  padding:inherit;
+}
+ div.d-flex.justify-content-between.mb-3{
+  height: 10px;
+}
+ div:nth-child(3) > div{
+padding-top: 30px;
+}
+.card-title {
+  text-align: center;
+
+}
+
+.card-text strong {
+  font-weight: bold;
+}
+
+
+
+.card-body .text-start {
+  text-align: center;
+}
+/* 
+
+
+
+
+ #root > div.admin-page > div.row.row-cols-xl-3.row-cols-lg-3.row-cols-md-3.row-cols-sm-1.row-cols-1{
+  padding:220px;
+  padding-top: 20px;
+  margin-right: 0px;
+  margin-left: 70px; 
+
+} */
+#AddAcademy {
+  position: fixed;
+  bottom: 10px;
+  right: 20px;    
+}
+
+#deleteAcademy{
+  padding: 2px;
   
-  #root > div.admin-page > div.row.row-cols-xl-3.row-cols-lg-3.row-cols-md-3.row-cols-sm-1.row-cols-1{
-    padding:220px;
-    padding-top: 20px;
-    margin-right: 0px;
-    margin-left: 70px;
-  
-  }
-  #AddAcademy {
-    position: fixed;
-    bottom: 10px;
-    right: 20px;
-    color: white;
-  }
-  
+}
+.adminsearch{
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 30px;
+  height: 28px;
+  width: 100px;
+  text-align: center;
+  margin-top: 0px; 
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
  
-  .delete-animation-enter {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  
-  .delete-animation-enter-active {
-    opacity: 1;
-    transform: translateX(0);
-    transition: opacity 300ms, transform 300ms;
-  }
-  
-  .delete-animation-exit {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  
-  .delete-animation-exit-active {
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity 300ms, transform 300ms;
-  }
- 
-  #deleteAcademy{
-    padding: 2px;
-  }
-  .adminsearch{
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-left: 30px;
-    height: 28px;
-    width: 100px;
-    text-align: center;
-    margin-top: 0px; 
-    justify-content: center;
-    align-items: center;
-    margin-right: 10px;
-   
-  }
-  .no-underline {
-    text-decoration: none;
-  }
- 
-  
-  
-  
+}
+.no-underline {
+  text-decoration: none;
+}
+.button-select{
+display: flex;
+justify-content: flex-end;
+margin-right: 10px;
+position: absolute;
+top: 80px;
+right: 10px;
+}
+
+.Academycheckmark-icon{
+color: black;
+font-size: 20px;
+margin-left: 2px;
+}
+
+.cardcontainer{
+margin-bottom: 60px;
+margin-left: 60px;
+
+}

@@ -4,18 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import './Enrolledcourse.css';
 import './Edit.css';
-import { Card, Form,Col } from 'react-bootstrap';
+import { Card, Form, Col } from 'react-bootstrap';
 import UserHome from "../../Navbars/UserNav";
 
 function EnrolledCourse() {
   const navigate = useNavigate();
   const [admission, setAdmission] = useState([]);
-
-
-
 
   const handleSearch = async () => {
     try {
@@ -32,20 +29,18 @@ function EnrolledCourse() {
   };
 
   useEffect(() => {
-    // Call the functions to fetch user ID and admission data
     getUserIdAndFetchAdmission();
   }, []);
 
   const getUserIdAndFetchAdmission = () => {
-    const email = localStorage.getItem('email'); // Retrieve the email from local storage
-
+    const email = localStorage.getItem('email');
     if (!email) {
-      return; // Return early if the email is not available in local storage
+      return;
     }
 
-    axios.get(`http://localhost:5071/api/user/${encodeURIComponent(email)}`)
+    axios.get(`http://localhost:5232/api/user/${encodeURIComponent(email)}`)
       .then((response) => {
-        const userId = response.data.userId; // Extract the user ID from the response
+        const userId = response.data.userId;
         if (userId) {
           getAdmissionData(userId); // Fetch admission data using the user ID
         }
@@ -56,45 +51,46 @@ function EnrolledCourse() {
   };
 
   const getAdmissionData = (userId) => {
-    axios.get(`http://localhost:5071/api/User/user/viewAdmission/${encodeURIComponent(userId)}`)
+    axios.get(`http://localhost:5232/api/User/user/viewAdmission/${encodeURIComponent(userId)}`)
       .then((result) => { 
         // Log the data received from the API
         setAdmission(result.data);
+        console.log(result.data)
         console.log('data fetch successful')
-        const AdmissionId = result.data.admissionId;
-        console.log(AdmissionId)
       })
       .catch((error) => {
         console.log(error);
       });
-  };
+  }
 
-  const handleEditCourse = (course) => {
-    navigate(`/edit/${course.admissionId}`);
+  const handleEditCourse = (admissionId) => {
+    navigate(`/user/enrolledcourseedit/${admissionId}`);
   };
+  // const handlelearn = () => {
+  //   navigate(`/user/learn/${admission.courseName}/${admission.userId}/${admission.courseId}`);
+  // };
 
   const handleDeleteCourse = (admissionId) => {
-    axios.delete(`http://localhost:5071/api/User/user/deleteAdmission/${encodeURIComponent(admissionId)}`)
+    axios.delete(`http://localhost:5232/api/User/user/deleteAdmission/${encodeURIComponent(admissionId)}`)
       .then((result) => {
-        // Refresh the data after successful deletion
         getUserIdAndFetchAdmission();
         Swal.fire(
           'Deleted!',
           'Your course has been deleted.',
           'success'
-        )
+        );
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         Swal.fire(
           'Error!',
           'An error occurred while deleting the course.',
           'error'
-        )
-      })
+        );
+      });
   }
 
-  const Alert = (admissionId) => {
+  const confirmDelete = (admissionId) => {
     Swal.fire({
       title: 'Are you sure you want to delete?',
       showCancelButton: true,
@@ -105,14 +101,14 @@ function EnrolledCourse() {
       if (result.isConfirmed) {
         handleDeleteCourse(admissionId);
       }
-    })
+    });
   }
 
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <>
-    <UserHome/>
+      <UserHome/>
       <div className="templateContainerec">
         <div className="searchInput_Containerec">
           <br />
@@ -132,16 +128,15 @@ function EnrolledCourse() {
               </Button>
             </Form>
           </Col>
-
           <br />
         </div>
         <div className="template_Containerec">
           {admission.map((val) => {
             return (
-              <div className="eccontainer">
+              <div className="eccontainer" key={val.admissionId}>
                 <Card className="cardec">
                   <Card.Body>
-                    <div className="course-details" key={val.AdmissionId}>
+                    <div className="course-details">
                       <div className="hhh">
                         <Card.Text>
                           <strong>Course Name:</strong> {val.courseName}
@@ -151,19 +146,21 @@ function EnrolledCourse() {
                           <strong>End Date:</strong> {val.endDate}
                           <br />
                           <br></br>
-                          <Button variant="primary" className="button-spacing">My learning</Button>
-                          <EditOutlinedIcon className="edit-icon icon-spacing" onClick={() => handleEditCourse(val)} />
-                          <DeleteIcon className="delete-icon icon-spacing" onClick={() => Alert(val.AdmissionId)} />
+                          <a href={`/user/learn/${val.courseName}/${val.courseId}`}><Button variant="primary" className="button-spacing" >My learning</Button></a>
+                          <EditOutlinedIcon
+                            className="edit-icon icon-spacing"
+                            onClick={() => handleEditCourse(val.admissionId)}
+                          />
+                          <DeleteIcon
+                            className="delete-icon icon-spacing"
+                            onClick={() => confirmDelete(val.admissionId)}
+                          />
                         </Card.Text>
-
-
                       </div>
-
                     </div>
                   </Card.Body>
                 </Card>
               </div>
-
             );
           })}
         </div>

@@ -1,7 +1,8 @@
-//adminacademyedit.jsx
 import React, {useState } from 'react';
 import './AdminAcademyAdd.css';
 import axios from 'axios';
+import Swal  from 'sweetalert2';
+import AdminHome from '../../Navbars/AdminNav';
 
 const AdminAcademyAdd = () => {
   const [academyName, setAcademyName] = useState('');
@@ -74,11 +75,10 @@ const AdminAcademyAdd = () => {
     console.log(AcademyData);
 
     if(AcademyData.academyName!=="" && AcademyData.contactNumber!=="" && AcademyData.imageURL!=="" && AcademyData.email!=="" && AcademyData.academyLocation!=="" && AcademyData.academyDescription!==""){
-      const url = "http://localhost:5071/api/Admin/AddInstitute";
+      const url = "http://localhost:5232/api/Admin/addInstitute";
       axios.post(url,AcademyData).then((result)=>{
         if(result.data==="Academy Added")
         window.location.reload();
-        alert(result.data);
       }).catch((error)=>{
         alert(error);
 
@@ -108,6 +108,13 @@ const AdminAcademyAdd = () => {
       // Perform your submission logic here
       // e.g., send the data to an API or perform further processing
       console.log('Form submitted successfully!');
+      Swal.fire({
+        icon: 'success',
+        title: 'Academy Added',
+        text: 'The Academy has been added successfully.',
+      });
+
+
     } else {
       console.log('Form contains errors. Please fix them.');
     }
@@ -115,67 +122,69 @@ const AdminAcademyAdd = () => {
  
 
   return (
-    <div>
-     
-     <center>
-       <form className='AdminAcreg1' onSubmit={handleSubmit}>
-       <h1 style={{fontFamily:'-moz-initial',padding:'15px'}} >Add Academy</h1>
-     
-      <div className='form-container'> 
-    
-       <div className="AdminAcdemo" >
-       <strong><label for="AcademyName" style={{marginRight:"190px",color:"black",fontFamily:'-moz-initial',fontSize:'20px'}}>Academy Name : </label></strong>
-       <input type="text" id="editAcademyName" placeholder="Enter Academy Name" size="40" 
-       onChange={(e) => setAcademyName(e.target.value)}/>
-       </div>
-       <div className='error'>{errors.academyName && <span>{errors.academyName}</span>}</div>
-      <br></br>
-       <div className='AdminAcdemo'>
-       <strong><label for="ImageUrl" style={{marginRight:"160px",color:"black",fontFamily:'-moz-initial',fontSize:'20px'}}>Academy ImageUrl :</label></strong>
-       <input type='url' id="editImageUrl" placeholder="Enter the academy Image url" size="40"
-       onChange={(e) => setImageURL(e.target.value)}/>
-       </div>
-       <div className='error'>{errors.imageURL && <span>{errors.imageURL}</span>}</div>
-    
-       <br></br>
-       
-       <div className='AdminAcdemo'>
-       <strong><label for="AcademyLocation" style={{marginRight:"160px",color:"black",fontFamily:'-moz-initial',fontSize:'20px'}}>Academy Location :</label></strong>
-       <input type='loc' id="editAcademyLocation" placeholder="Enter Academy Location" size="40" 
-       onChange={(e) => setAcademyLocation(e.target.value)}/>
-       </div>
-       <div className='error'>{errors.academyLocation && <span>{errors.academyLocation}</span>}</div>
+    <><AdminHome /><div>
 
-     
-       <br></br>
-       <div className='AdminAcdemo'>
-       <strong><label for="ContactNumber" style={{marginRight:"190px",color:"black",fontFamily:'-moz-initial',fontSize:'20px'}}>Contact Number : </label></strong>
-       <input type='tel' id="editContactNumber" placeholder="Enter the contact number" size="40" 
-       onChange={(e) => setContactNumber(e.target.value)}/>
-       </div>
-       <div className='error'>{errors.contactNumber && <span>{errors.contactNumber}</span>}</div>
-       <br></br>
-       <div className='AdminAcdemo' >
-       <strong><label for="AcademyEmail" style={{marginRight:"190px",color:"black",fontFamily:'-moz-initial',fontSize:'20px'}}>Academy Email : </label></strong>
-       <input type='text1' id="editEmailId" placeholder="Enter the academy email" size="40" 
-       onChange={(e) => setEmail(e.target.value)}/>
-       </div>
-       <div className='error'>{errors.email && <span>{errors.email}</span>}</div>
-      
-       <br></br>
-       
-       <div className='AdminAcdemo'>   <strong><label for="AcademyDescription" style={{marginRight:"180px",paddingRight:'35px',color:"black",fontFamily:'-moz-initial',fontSize:'20px'}}>Description :</label></strong>
-       <textarea type='text2' id="AddAcademyDescription" placeholder="Enter academy description" size="40" 
-       onChange={(e) => setAcademyDescription(e.target.value)}/>
-       </div>
-       <div className='error'>{errors.academyDescription && <span>{errors.academyDescription}</span>}</div>
-      </div>
- 
-       <button className='btn btn-primary' id="addAcademy" onClick={handleAddAcademy}>Add Academy</button>
-       </form></center>
-    </div> 
+      <center>
+        <form className='AdminAcreg1' onSubmit={handleSubmit}>
+          <h4 style={{ fontFamily: '-moz-initial', padding: '15px' }}>Add Academy</h4>
+
+          <div className='add-admin-form-container'>
+
+            <div className="AdminAcdemo">
+              <strong><label for="AcademyName" style={{ marginTop:'20px',marginRight: "190px", color: "black", fontFamily: '-moz-initial', fontSize: '20px' }}>Academy Name : </label></strong>
+              <input type="text" id="academyName" placeholder="Enter Academy Name" size="40"
+                onChange={(e) => setAcademyName(e.target.value)} />
+            </div>
+            <div className='error'>{errors.academyName && <span>{errors.academyName}</span>}</div>
+
+
+
+            <div className='AdminAcdemo'>
+              <strong><label for="ImageUrl" style={{ marginRight: "160px", color: "black", fontFamily: '-moz-initial', fontSize: '20px' }}>Academy ImageUrl :</label></strong>
+              <input type='url' id="imageUrl" placeholder="Enter the academy Image url" size="40"
+                onChange={(e) => setImageURL(e.target.value)} />
+            </div>
+            <div className='error'>{errors.imageURL && <span>{errors.imageURL}</span>}</div>
+
+
+
+            <div className='AdminAcdemo'>
+              <strong><label for="academyLocation" style={{ marginRight: "160px", color: "black", fontFamily: '-moz-initial', fontSize: '20px' }}>Academy Location :</label></strong>
+              <input type='loc' id="AcademyLocation" placeholder="Enter Academy Location" size="40"
+                onChange={(e) => setAcademyLocation(e.target.value)} />
+            </div>
+            <div className='error'>{errors.academyLocation && <span>{errors.academyLocation}</span>}</div>
+
+
+
+            <div className='AdminAcdemo'>
+              <strong><label for="contactNumber" style={{ marginRight: "180px", color: "black", fontFamily: '-moz-initial', fontSize: '20px' }}>Contact Number : </label></strong>
+              <input type='tel' id="ContactNumber" placeholder="Enter the contact number" size="40"
+                onChange={(e) => setContactNumber(e.target.value)} />
+            </div>
+            <div className='error'>{errors.contactNumber && <span>{errors.contactNumber}</span>}</div>
+
+
+            <div className='AdminAcdemo'>
+              <strong><label for="AcademyEmail" style={{ marginRight: "190px", color: "black", fontFamily: '-moz-initial', fontSize: '20px' }}>Academy Email : </label></strong>
+              <input type='text1' id="emailId" placeholder="Enter the academy email" size="40"
+                onChange={(e) => setEmail(e.target.value)} />
+            </div>
+            <div className='error'>{errors.email && <span>{errors.email}</span>}</div>
+
+
+
+            <div className='AdminAcdemo'>   <strong><label for="AcademyDescription" style={{ marginRight: "180px", paddingRight: '35px', color: "black", fontFamily: '-moz-initial', fontSize: '20px' }}>Description :</label></strong>
+              <textarea type='text2' id="academyDescription" placeholder="Enter academy description" size="40"
+                onChange={(e) => setAcademyDescription(e.target.value)} />
+            </div>
+            <div className='error'>{errors.academyDescription && <span>{errors.academyDescription}</span>}</div>
+          </div>
+
+          <button className='btn btn-primary' id="addAcademy" onClick={handleAddAcademy}>Add Academy</button>
+        </form></center>
+    </div></> 
   );
 };
 
 export default AdminAcademyAdd;
-

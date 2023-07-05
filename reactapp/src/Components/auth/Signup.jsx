@@ -35,9 +35,10 @@ const Signup = ({ handleSignup }) => {
       password,
       username,
       mobileNumber,
+      userRole
     };
 
-    const endpoint = 'http://localhost:5071/api/user/signup';
+    const endpoint = 'http://localhost:5232/api/user/signup';
 
     try {
       setIsLoading(true);
@@ -121,6 +122,10 @@ const Signup = ({ handleSignup }) => {
     }
   };
 
+  const handleRoleChange = (event) => {
+    setUserRole(event.target.value);
+  };
+
   return (
     <div className="signup-page">
       <div className="signup-container">
@@ -140,6 +145,10 @@ const Signup = ({ handleSignup }) => {
             )}
             <div id="bgclr">
               <div className="form">
+              <select id="userRole" value={userRole} onChange={handleRoleChange}>
+                    <option value="user">User</option>
+                  </select>
+
                 <input type="text" id="email" value={email} onChange={handleEmailChange} placeholder="Enter email" />
                 <div className="error">{emailError}</div>
 

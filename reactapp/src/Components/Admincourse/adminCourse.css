@@ -1,145 +1,148 @@
-  *{
-    box-sizing: border-box;
-    
-  }
-  body {
-    margin: 0;
-    /* background-image: linear-gradient(to bottom,#137c8c,#5d7568); */
-    background-color: white;
-  }
+*{
+  box-sizing: border-box;
   
+}
+body {
+  margin: 0;
+  background-image: linear-gradient(to bottom,#137c8c,#5d7568);
+  /* background-color: white; */
+}
+
 
 .Accourse-info div {
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-  margin: 10px;
+display: flex;
+align-items: center;
+margin-left: 10px;
+margin: 10px;
 }
 .Acinfo{
-  display: flex;
-  column-gap: 30px;
+display: flex;
+column-gap: 30px;
 }
 
 
 
 
-  .AcsearchInput_Container {
-     color: white; 
-     /* background-color: #F8F8F8;
-    background-image: linear-gradient(to bottom,#beeed4,#81e5af); */
-    margin-top: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    
-  }
+.AcsearchInput_Container {
+   color: white; 
+  margin-top: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
   
-  #AcsearchInput {
-    color: black;
-    background-color: white;
-    border: 2px solid white;
-    height: 35px;
-    margin: 8px;
-    padding: 10px 30px;
-    width: 350px;
-    
-  }
-  
-  .ActemplateContainer > .AcsearchInput_Container input {
-    color: white;
-    width: 70%;
-    padding: 20px;
-    margin: 6% 0;
-    outline: none;
-    border-radius: 5px;
-    
-  }
-  
-  .ActemplateContainer > .AcsearchInput_Container button {
-    color: white;
-    width: 7%;
-    height: 35px;
-    margin: 8px;
-    border: none;
-    background-color: blue ; 
-    border-radius: 5px;
-    padding: 10px 20px;
-    outline: none; 
-    text-align: center;
-   
-     }   
+}
 
-  .AcsearchInput_Container button:hover{
-      color: white;
-      font-weight: bold;
-    }   
-    
+#AcsearchInput {
+  color: black;
+  background-color: white;
+  border: 2px solid white;
+  height: 35px;
+  margin: 8px;
+  padding: 10px 30px;
+  width: 350px;
   
-  .ActemplateContainer .Actemplate_Container{
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    grid-template-columns: repeat(1, minmax(0, 1fr));  
-    grid-gap: 1%;
-    /* grid-gap: 5%; */
-    /* width: 45%; */
-    width: 60%;
-   
-   
-  }
-  
-  .ActemplateContainer .Actemplate_Container .Actemplate{
-   
-    background-Color: rgba(0, 0, 0, 0.8);
-    background-Image: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(255, 0, 0, 0.1));
-    
-    color : white;
-    margin: 10px;
-    padding: 0px 20px;  
-      border: 1%;
-      border-radius: 0px;
-      padding: 2%;
-      margin-left: 5%;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      
-  }
+}
 
+.ActemplateContainer > .AcsearchInput_Container input {
+  color: white;
+  width: 70%;
+  padding: 20px;
+  margin: 6% 0;
+  outline: none;
+  border-radius: 5px;
+  
+}
+
+.ActemplateContainer > .AcsearchInput_Container button {
+  color: white;
+  width: 7%;
+  height: 35px;
+  margin: 8px;
+  border: none;
+  background-color: blue ; 
+  border-radius: 5px;
+  padding: 10px 20px;
+  outline: none; 
+  text-align: center;
  
-   .adminCourse-input::placeholder {
-      /* color: black; */
-      color: grey;
-  }
+   }   
 
-  .Acedit-icon {
-      margin-right: 15px; 
-      font-size: 20px; 
-      /* margin-left: 640px;  */
-      /* margin-left: 400px; */
-      margin-left: 20px;
-      margin-top: 10px;
-  }
-
-  .Acdelete-icon {
-    margin-left: 10px; 
-    right: 2px;
-    font-size: 20px; 
-    margin-top: 10px;
-  } 
-
-
-  .Acapp-container {
-    background-image: linear-gradient(to bottom,#137c8c,#5d7568);
-    height: 1000px;
-  } 
- 
-  .Add-course button:hover{
+.AcsearchInput_Container button:hover{
     color: white;
     font-weight: bold;
-  }
-
-
+  }   
   
+
+.ActemplateContainer .Actemplate_Container{
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  grid-template-columns: repeat(1, minmax(0, 1fr));  
+  grid-gap: 1%;
+  width: 65%;
+ 
+ 
+}
+
+.ActemplateContainer .Actemplate_Container .Actemplate{
+ 
+  background-Color: rgba(0, 0, 0, 0.8);
+  background-Image: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(255, 0, 0, 0.1));
+  
+  color : white;
+  margin: 10px;
+  padding: 0px 20px;  
+    border: 1%;
+    border-radius: 0px;
+    padding: 2%;
+    margin-left: 5%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    
+}
+
+
+ .adminCourse-input::placeholder {
+    color: grey;
+}
+
+.Acedit-icon {
+    margin-right: 15px; 
+    font-size: 20px; 
+    margin-left: 20px; 
+    margin-top: 10px;
+    
+}
+
+.Acdelete-icon {
+  margin-left: 10px; 
+  right: 2px;
+  font-size: 20px; 
+  margin-top: 10px;
+} 
+
+
+.Add-course button:hover{
+  color: white;
+  font-weight: bold;
+}
+
+
+
+.Accheckmark-icon {
+  color: black;
+  font-size: 20px;
+ 
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 10px;
+  position: absolute;
+  top: 80px;
+  right: 10px;
+}

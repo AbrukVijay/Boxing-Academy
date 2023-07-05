@@ -3,12 +3,13 @@ body {
 }
 
 .template_Containerec {
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   text-align: center;
+  height: 878px;
 }
 
 .eccontainer {

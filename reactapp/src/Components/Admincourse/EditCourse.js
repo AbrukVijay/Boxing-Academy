@@ -1,78 +1,45 @@
-import React, {useState , useEffect} from 'react';
-import './EditCourse.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-//import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import './EditCourse.css';
+import Swal from 'sweetalert2';
+import AdminHome from '../../Navbars/AdminNav';
 
 const EditCourse = () => {
-  const [courseName, setCourseName] = useState('');
-  const [courseEnrolled, setCourseEnrolled] = useState('');
-  const [courseDuration, setCourseDuration] = useState('');
-  const [courseTiming, setCourseTiming] = useState('');
-  const [courseDescription, setCourseDescription] = useState('');
+  const { id } = useParams();
+  const [course, setCourse] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  // const [courseEnrolled, setCourseEnrolled] = useState('');
   const [errors, setErrors] = useState({});
   const [institutes, setInstitutes] = useState([]);
   const [selectedInstituteId, setSelectedInstituteId] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const handleShow = () => setShow(true);
-  const [show, setShow] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updateError, setUpdateError] = useState(null);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
-  
-  const { id1 } = useParams();
-  const handleUpdate=()=>{
-    const courseData={
-      // courseId: 34,
-      courseName: courseName,
-      courseDescription: courseDescription,
-      courseDuration: courseDuration,
-      courseTiming: courseTiming,
-      numberofStudents: courseEnrolled,
-      instituteId: selectedInstituteId,
-    }
-    const id = id1;
-  axios.put('http://localhost:5071/api/Admin/EditCourse/'+id,courseData)
-  .then(response => {
-    if(response.data==="course Edited")
-    alert('course edited');
-    window.location.reload();
-  })
-  .catch(error =>  alert(error));
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5232/api/Admin/ViewCourse/${id}`);
+        setCourse(response.data);
+        console.log(response.data);
+        setSelectedInstituteId(response.data.instituteId);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching course:', error);
+        setIsLoading(false);
+      }
+    };
 
-  }
+    fetchCourse();
+  }, [id]);
 
-
-
-
-//   useEffect(() => {
-//     // Fetch the course data from the API using Axios
-//     axios.get(`http://localhost:5071/api/Admin/ViewcoursebyId?InstId=8`)
-//     .then(response => {
-//         const courseData = response.data; // Assuming the API response contains the course data
-
-//         // Set the retrieved data in the state variables
-//         setCourseName(courseData.courseName);
-//         setCourseEnrolled(courseData.courseEnrolled);
-//         setCourseDuration(courseData.courseDuration);
-//         setCourseTiming(courseData.courseTiming);
-//         setCourseDescription(courseData.courseDescription);
-//         setSelectedInstituteId(courseData.selectedInstituteId);
-//       })
-//        .catch (error => {
-//         console.log('Error fetching course data:', error);
-//       });
-//   // }, [id1]);
-// }, [courseId]);
-
-
-
-  //
   useEffect(() => {
     const fetchInstitutes = async () => {
       try {
-        const response = await axios.get("http://localhost:5071/api/Admin/GetAllInstitutes");
+        const response = await axios.get("http://localhost:5232/api/Admin/viewInstitutes");
         setInstitutes(response.data);
+        
       } catch (error) {
         console.error("Error fetching institutes:", error);
       }
@@ -81,231 +48,201 @@ const EditCourse = () => {
     fetchInstitutes();
   }, []);
 
+  const handleUpdate = async () => {
+    setIsUpdating(true);
+    setUpdateError(null);
+    setUpdateSuccess(false);
 
+    const updatedCourse = {
+      courseId: course.courseId,
+      courseName: course.courseName,
+      courseDuration: course.courseDuration,
+      // numberofStudents: course.numberofStudents, // Updated field name
+      courseTiming: course.courseTiming,
+      courseDescription: course.courseDescription,
+      instituteId: selectedInstituteId,
+      // Include any other fields that need to be updated
+    };
 
-  useEffect (() => {
-    handleEdit(id1) ;
-  }, []
-  );
+    try {
+      const response = await axios.put(`http://localhost:5232/api/Admin/EditCourse/${id}`, updatedCourse);
+      console.log('Course updated:', response.data);
+      setUpdateSuccess(true);
+      Swal.fire({
+        icon: 'success',
+        title: 'Course Updated',
+        text: 'The course has been updated successfully.',
+      });
+    } catch (error) {
+      console.error('Error updating course:', error);
+      setUpdateError('Failed to update the course.');
 
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to update the course.',
+      });
+    }
+
+    setIsUpdating(false);
+  };
 
   const validateForm = () => {
-    const newErrors = {};
+    const errors = {};
 
-
-    const courseNameRegex = /^[a-zA-Z ]+$/;
-    if (!courseName.trim()) {
-      newErrors.courseName = 'Course Name is required';
-    }else if (!courseNameRegex.test(courseName)) {
-      newErrors.courseName = 'Please Enter Valid Course Name';
+    if (!course.courseName.trim()) {
+      errors.courseName = 'Course Name is required';
     }
-
-    const enrolledStudentRegex = /^[0-9]+$/;
-    if (!courseEnrolled.trim()) {
-      newErrors.courseEnrolled = 'This field is required';
-    }else if (!enrolledStudentRegex.test(courseEnrolled)) {
-      newErrors.courseEnrolled = 'Please Enter Correct no.of Students Enrolled in a Course';
-    }
-  
-    const durationRegex = /^[0-9a-zA-Z ]+$/;
-    if (!courseDuration.trim()) {
-      newErrors.courseDuration = 'Course Duration is required';
-    }else if (!durationRegex.test(courseDuration)) {
-      newErrors.courseDuration = 'Please Enter Valid Course Duration';
+    else if(!/^[a-zA-Z\s]+$/.test(course.courseName)){
+      errors.courseName = 'Please enter Valid Course Name ';
     }
 
-    // const courseTimingRegex = /^(0?[1-9]|1[0-2]):([0-5][0-9]) (AM|PM) to (0?[1-9]|1[0-2]):([0-5][0-9]) (AM|PM)$/i;
-    const courseTimingRegex = /^(0?[1-9]|1[0-2])(AM|PM) to (0?[1-9]|1[0-2])(AM|PM)$/i;
-    if (!courseTiming.trim()) {
-      newErrors.courseTiming = 'Course Timing is required';
-    }else if (!courseTimingRegex.test(courseTiming)) {
-      newErrors.courseTiming = 'Please Enter Valid Course Timing';
+    if (!course.courseDuration) {
+      errors.courseDuration = 'Course Duration is required';
+    } 
+    else if(!/^[0-9\s]+$/.test(course.courseDuration)){
+      errors.courseDuration = 'Please enter Valid Course Duartion ';
     }
-    
-    const trimmedDescription=courseDescription.trim();
-    if (trimmedDescription.length===0) {
-      newErrors.courseDescription = 'Description is required';
-    } else if (trimmedDescription.length < 20) {
-      newErrors.courseDescription = 'Description can be atleast 20 characters';
-    } else if (trimmedDescription.length > 150) {
-      newErrors.courseDescription= 'Description cannot exceed 150 characters';
+    // else if (isNaN(course.courseDuration)) { // Check if it's a valid number
+    //   errors.courseDuration = 'Enter valid course Duration';
+    // }
+
+
+    if (!course.courseTiming.trim()) {
+      errors.courseTiming = 'Course Timing is required';
     }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    else if(!/^[a-zA-Z0-9\s]+$/.test(course.courseTiming)){
+      errors.courseTiming = 'Please enter Valid Course Timing ';
+    }
+
+    if (!course.courseDescription.trim()) {
+      errors.courseDescription = 'Course Description is required';
+    }
+   
+
+    // if (!course.numberofStudents) { // Updated field name
+    //   errors.courseEnrolled = 'No of students required';
+    // }
+    //  else if(!/^[0-9\s]+$/.test(course.numberofStudents)){
+    //   errors.courseEnrolled = 'Please enter correct number of students enrolled for the course ';
+    // }
+    //  else if (isNaN(course.numberofStudents)) { // Check if it's a valid number
+    //   errors.courseEnrolled = 'No of students must be a valid number';
+    // }
+
+    if (!selectedInstituteId) {
+      errors.instituteSelect = 'Please select an institute';
+    }
+
+    setErrors(errors);
+
+    // Return true if there are no errors
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      // handleUpdate();
-      // Perform your submission logic here
-      // e.g., send the data to an API or perform further processing
-      console.log('Form submitted successfully!');
+      handleUpdate();
     } else {
       console.log('Form contains errors. Please fix them.');
     }
   };
 
-
-  const handleEdit = (id1) => {
-    setIsLoading(true);
-    axios.get('http://localhost:5071/api/Admin/viewcoursebyId?InstId/'+id1)
-      .then((result) => {
-        setIsLoading(false);
-        handleShow();
-        setCourseName(result.courseData.courseName);
-        setCourseEnrolled(result.courseData.courseEnrolled);
-        setCourseDuration(result.courseData.courseDuration);
-        setCourseTiming(result.courseData.courseTiming);
-        setCourseDescription(result.courseData.courseDescription);
-        setSelectedInstituteId(result.courseData.selectedInstituteId);
-      })
-      .catch((error) => {
-        // alert(error);
-      });
-    }
-
-
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  
-  //   if (validateForm()) {
-  //     // Create the updated course object
-  //     const updatedCourse = {
-  //       courseId: 34, // Replace with the actual course ID
-  //       courseName: courseName,
-  //       courseEnrolled: courseEnrolled,
-  //       courseDuration: courseDuration,
-  //       courseTiming: courseTiming,
-  //       courseDescription: courseDescription,
-  //       instituteId: selectedInstituteId,
-  //     };
-  
-  //     // Perform an API call to update the course
-  //     axios.put(`http://localhost:5071/api/Admin/EditCourse/${id1}`, updatedCourse)
-  //       .then(response => {
-  //         if (response.data === "course Edited") {
-  //           alert('Course edited');
-  //           // Perform any necessary actions after successful update, such as updating the respective card with the new values
-  //         }
-  //       })
-  //       .catch(error => {
-  //         alert(error);
-  //       });
-  //   } else {
-  //     console.log('Form contains errors. Please fix them.');
-  //   }
-  // };
-  
-
-
-
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  
-  //   if (validateForm()) {
-  //     try {
-  //       const response = await axios.put('http://localhost:5071/api/Admin/EditCourse/{id}', {
-  //         courseId: 0,
-  //         courseName: courseName,
-  //         numberofStudents: courseEnrolled,
-  //         courseDuration: courseDuration,
-  //         courseTiming: courseTiming,
-  //         courseDescription: courseDescription,
-  //         instituteId: selectedInstituteId,
-  //       });
-  //       // Handle the successful update (e.g., show a success message)
-  //       console.log('Course updated successfully!', response.data);
-  //     } catch (error) {
-  //       // Handle the error (e.g., show an error message)
-  //       console.log('Error updating course:', error);
-  //     }
-  //   } else {
-  //     console.log('Form contains errors. Please fix them.');
-  //   }
-  // };
-  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div>
-     
-       
-       <form className='updatereg1' onSubmit={handleSubmit} noValidate>
-       <h6 className='updatereg2' >Edit Course</h6>
-      <div className='updateform-container'> 
-      
-      {/* <div className='updateform-column'> */}
-       <div className="Acdemo1" >
-       <strong> <label  style={{marginRight:"240px",color:"black"}}>Course Name : </label></strong>
-       <input type="text" id="editCourseName"  class="name-input1"   placeholder="Enter the course Name" size="40" 
-       onChange={(e) => setCourseName(e.target.value)}/>
-       <div className='error'>{errors.courseName && <span>{errors.courseName}</span>}</div>
-       </div>
+    <><AdminHome /><div>
+      <center>
+        <form className='updatereg1' onSubmit={handleSubmit}>
+          <h1 className='updatereg2'>Edit Course</h1>
+          {updateError && <div>{updateError}</div>}
+          {updateSuccess && <div>Course updated successfully.</div>}
+          <div className='updateform-container'>
 
-       <div className='Acdemo1'>
-       <strong><label htmlFor="courseDuration" style={{marginRight:"220px",color:"black"}}>Course Duration : </label></strong>
-       <input type='text' id="editCourseDuration"  class="duration-input1"   placeholder="Enter the course duration" size="40" 
-       onChange={(e) => setCourseDuration(e.target.value)}/>
-       <div className='error'>{errors.courseDuration && <span>{errors.courseDuration}</span>}</div>
-       </div>
+            <div className='Acdemo1'>
+              <label style={{ marginTop: "30px", marginRight: "220px", color: "black" }}><strong>Course Name:</strong></label>
+              <input
+                type="text"
+                id="editCourseName"
+                value={course.courseName}
+                onChange={(e) => setCourse({ ...course, courseName: e.target.value })} />
+              {errors.courseName && <div className='error'>{errors.courseName}</div>}
+            </div>
 
-       <div className='Acdemo1'>
-       <strong> <label  style={{marginRight:"230px",color:"black"}}>Course Timing : </label> </strong>
-       <input type='text' id="editCourseTiming"  class="timing-input1"    placeholder="Enter the course Timing" size="40" 
-       onChange={(e) => setCourseTiming(e.target.value)}/>
-       
-       <div className='error'>{errors.courseTiming && <span>{errors.courseTiming}</span>}</div>
-       </div>
-    {/* </div> */}
-       {/* <div className='form-column'> */}
-       <div className='Acdemo1'>
-       <strong><label htmlFor="courseEnrolled" style={{marginRight:"230px",color:"black"}}>Course Enrolled : </label></strong>
-       <input type='number' id="editCourseEnrolled"  class="enrolled-input1"  placeholder="Enter no.of students enrolled for the course" size="40" 
-       onChange={(e) => setCourseEnrolled(e.target.value)}/>
-       
-       <div className='error'>{errors.courseEnrolled && <span>{errors.courseEnrolled}</span>}</div>
-       </div>
-      
-       <div className='Acdemo1'>
-       <strong><label htmlFor="courseDescription" style={{marginRight:"200px",color:"black"}}>Course Description : </label></strong>
-        <textarea className='textarea'
-        id="editCourseDescription"
-        class="description-input1"
-         placeholder="Enter the course Description"
-          onChange={(e) => setCourseDescription(e.target.value)}/>
-  
-           <div className='error'>{errors.courseDescription && <span>{errors.courseDescription}</span>}</div>
-           </div>
-       {/* </div> */}
+            <div className='Acdemo1'>
+              <label style={{ marginRight: "140px", color: "black" }}><strong>Course Duration in months:</strong></label>
+              <input
+                type="number"
+                id="editCourseDuration"
+                value={course.courseDuration}
+                onChange={(e) => setCourse({ ...course, courseDuration: e.target.value })} />
+              {errors.courseDuration && <div className='error'>{errors.courseDuration}</div>}
+            </div>
 
-       <div className="Acdemo1">
-           <strong> <label htmlFor="instituteSelect" style={{marginRight:"210px",color:"black"}}>Select Institute :</label></strong>
-            <select
-              id="instituteSelect"
-              value={selectedInstituteId}
-              onChange={(e) => setSelectedInstituteId(e.target.value)} style={{ width: '350px',height: '30px', borderRadius: '8px' ,marginLeft:'0px',marginRight: '100px',textAlignLast: 'center'}}
-            >
-               <option value="" disabled selected>
-                Select one institute
-               </option>
-              {institutes.map((institute) => (
-                <option key={institute.instituteId} value={institute.instituteId}>
-                  {institute.instituteName}
+            <div className='Acdemo1'>
+              <label style={{ marginRight: "210px", color: "black" }}><strong>Course Timing:</strong></label>
+              <input
+                type="text"
+                id="editCourseTiming"
+                value={course.courseTiming}
+                onChange={(e) => setCourse({ ...course, courseTiming: e.target.value })} />
+              {errors.courseTiming && <div className='error'>{errors.courseTiming}</div>}
+            </div>
+
+
+            {/* <div className='Acdemo1'>
+      <strong><label htmlFor="courseEnrolled" style={{ marginRight: "200px", color: "black" }}>Course Enrolled : </label></strong>
+      <input
+        type="number"
+        id="editCourseEnrolled"
+        className="enrolled-input1"
+        value={course.numberofStudents} // Updated field name
+        onChange={(e) => setCourse({ ...course, numberofStudents: e.target.value })} // Updated field name
+      />
+       {errors.courseEnrolled && <div className="error">{errors.courseEnrolled}</div>} */}
+            {/* <div className='error'>{errors.courseEnrolled && <span>{errors.courseEnrolled}</span>}</div> */}
+            {/* </div> */}
+
+
+            <div className='Acdemo1'>
+              <label style={{ marginRight: "180px", color: "black" }}><strong>Course Description:</strong></label>
+              <textarea
+                id="editCourseDescription"
+                value={course.courseDescription}
+                onChange={(e) => setCourse({ ...course, courseDescription: e.target.value })} />
+              {errors.courseDescription && <div className="error">{errors.courseDescription}</div>}
+              {/* {errors.courseDescription && <div>{errors.courseDescription}</div>} */}
+            </div>
+
+            <div className="Acdemo1">
+              <strong> <label htmlFor="instituteSelect" style={{ marginRight: "210px", color: "black" }}>Select Institute :</label></strong>
+              <select
+                id="instituteSelect"
+                value={selectedInstituteId}
+                onChange={(e) => setSelectedInstituteId(e.target.value)} style={{ width: '350px', height: '35px', borderRadius: '8px', marginLeft: '80px', marginRight: '80px', textAlignLast: 'center' }}
+              >
+                <option value="" disabled selected>
+                  Select one institute
                 </option>
-              ))}
-            </select>
+                {institutes.map((institute) => (
+                  <option key={institute.instituteId} value={institute.instituteId}>
+                    {institute.instituteName}
+                  </option>
+                ))}
+              </select>
+              {errors.instituteSelect && <div className='error'>{errors.instituteSelect}</div>}
+            </div>
           </div>
-
-      </div>
-  
-       <button className="Acupdatebtn1" id="updateCourse" onClick={handleUpdate}>Update Course</button>
-       </form>
-    </div>
+          <button className="Acupdatebtn1" id="updateCourse" disabled={isUpdating}>
+            {isUpdating ? 'Updating...' : 'Update Course'}
+          </button>
+        </form>
+      </center>
+    </div></>
   );
 };
 

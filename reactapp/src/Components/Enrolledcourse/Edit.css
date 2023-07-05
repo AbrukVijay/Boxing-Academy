@@ -1,3 +1,168 @@
-.custom-image {
-    height: 1000px; /* Specify the desired height here */
-  }
+.studenteditec-container {
+  
+  margin-top: 20px;
+     margin-left: 300px;
+    width: 950px;
+    border-radius:10px; 
+   
+   /* border-right-width: 100px;
+   border-left-width: 100px; */
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     grid-gap: 0px;
+     background-color: rgb(133, 161, 165);
+
+ } 
+  .left-column {
+     grid-column: 1 / 2;
+ }
+ 
+ .right-column {
+     grid-column: 2 / 3; 
+ } 
+ .studenteditec-container label {
+   display: block;
+   font-weight: bold;
+   margin-bottom: 0px;
+}
+
+ .enrollededit {
+   margin-bottom: 15px;
+   display: grid;
+    align-items: center;
+   justify-content: center; 
+ }
+ .enrollededit input[type="text"],
+ .enrollededit input[type="number"] {
+   height: 40px;
+   width: 350px;
+   text-align: center;
+   justify-content: center;
+   background-color: white;
+   border-radius: 10px;
+
+}
+
+
+
+ 
+ /* .studentaddform-container input[type="text"],
+ .studentaddform-container input[type="number"],
+ .studentaddform-container input[type="email"],
+ .studentaddform-container select {
+   height: 40px;
+   width: 100%;
+   text-align: center;
+   background-color: white;
+   border-radius: 10px;
+   border: 2px solid white;
+   margin-bottom: 15px;
+} */
+
+ .enrollededit input[type="text"]
+ {
+  
+   border: 2px solid white;
+   
+ }
+ .enrollededit input[type="number"] {
+  
+   margin-left: 0px;
+   border: 2px solid white;
+   
+ }
+ 
+ .nameec-input::placeholder {
+   color: black;
+   grid-column: 1/2;
+ 
+ }
+ 
+ .ageec-input::placeholder {
+   color: black;
+   grid-column: 1/2;
+ }
+
+ .genderec-input::placeholder {
+   color: black;
+ }
+
+ .phonenumberec-input::placeholder {
+   color: black; 
+ }
+
+ .altphnumberec-input::placeholder {
+   
+   color: black;
+   
+ }
+ .emailec-input::placeholder {
+   color: black;
+ }
+ 
+ .houseNoec-input::placeholder {
+   color: black;
+ }
+
+ .streetNameec-input::placeholder {
+   color: black;
+ }
+
+ .area-inputec::placeholder {
+   color: black;
+ }
+
+ .pincodeec-input::placeholder {
+   color: black; 
+ }
+ .stateec-input::placeholder {
+   color: black;
+ }
+
+ .nationalityec-input::placeholder {
+   color: black;
+   
+ }
+
+ .editec{
+   min-height: 100vh;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+  /* background-color: #F8F8F8; 
+   background-image: linear-gradient(to bottom,#beeed4,#81e5af);  */
+   background-image: linear-gradient(to bottom,#137c8c,#5d7568);
+   color: white;
+   margin: 1px;
+   font-size: 15px;
+   padding: 5px;
+ }
+ 
+ .editform{
+   margin-top: 10px;
+   margin-bottom: 20px;
+   color: black;
+   font-size: 20px;
+ }
+   
+  .enrollecbutton {
+     border-radius: 10px;
+     color: white;
+     background-color: blue;
+     padding: 6px;
+     position: fixed;
+     bottom: 20px;
+     right: 20px;
+     border: none;
+     width: 9%;
+   }
+   .enrollecbutton:hover{
+     color: white;
+     font-weight: bold;
+   }
+   
+   .error {
+     font-size: medium;
+     color: red;
+     
+   }

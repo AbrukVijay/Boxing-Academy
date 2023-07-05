@@ -1,39 +1,82 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import { useParams } from 'react-router-dom';
+import '@fortawesome/fontawesome-free/css/all.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as solidStar, faStarHalfAlt as halfStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularEmptyStar } from '@fortawesome/free-regular-svg-icons';
+import UserHome from '../../Navbars/UserNav';
 
-// import './Rating.css';
 
-const Rating = ({ instituteId }) => {
+import './Rating.css';
+function Rate({ averageRating }) {
+  const fullStars = Math.floor(averageRating);
+  const decimalPart = averageRating - fullStars;
+  const emptyStars = 5 - Math.ceil(averageRating);
+
+  const stars = [];
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={solidStar} className="star filled" />);
+  }
+
+  if (decimalPart >= 0.75) {
+    stars.push(<FontAwesomeIcon key={fullStars} icon={solidStar} className="star filled" />);
+  } else if (decimalPart >= 0.25 && decimalPart < 0.75) {
+    stars.push(<FontAwesomeIcon key={fullStars} icon={halfStar} className="star half-filled" />);
+  }
+
+  for (let i = 0; i < emptyStars; i++) {
+    stars.push(<FontAwesomeIcon key={fullStars + 1 + i} icon={regularEmptyStar} className="star empty" />);
+  }
+
+  return <div className="star-rating">{stars}</div>;
+}
+
+const Rating = () => {
+  const { instituteId } = useParams();
+
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [hoverRating, setHoverRating] = useState(0);
   const [submittedReview, setSubmittedReview] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [userId, setUserId] = useState(null); 
 
   useEffect(() => {
-    getUserId();
+    getuserId();
   }, []);
-  
-  const getUserId = () => {
+
+  const getuserId = () => {
     const email = localStorage.getItem('email');
   
     if (!email) {
-      return; 
+      return;
     }
   
-    axios.get(`http://localhost:5071/api/user/${encodeURIComponent(email)}`)
+    axios
+      .get(`http://localhost:5232/api/user/${encodeURIComponent(email)}`)
       .then((response) => {
-        const userId = response.data.userId; 
+        setUserId(response.data.userId);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  useEffect(() => {
+  
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5232/api/Admin/GetRatingsForInstitute/${instituteId}`);
+  
+        setReviews(response.data);
+      }
+      catch(error){
+        console.error('Error getting revies',error);
+      }
+    };
     fetchReviews();
-  }, []);
+  
 
   const handleMouseLeave = () => {
     setHoverRating(0);
@@ -42,89 +85,74 @@ const Rating = ({ instituteId }) => {
   const handleMouseEnter = (hoveredRating) => {
     setHoverRating(hoveredRating);
   };
-
-  const fetchReviews = async () => {
-    try {
-      const response = await axios.get(`/api/reviews/${instituteId}`); // Replace with the actual endpoint to fetch reviews by card ID
-      setReviews(response.data.reviews);
-    } catch (error) {
-      console.log('Error fetching reviews:', error);
-    }
-  };
-
   const handleSubmit = async () => {
     const review = {
+      userId: userId,
       rating: rating,
-      comment: comment,
+      comments: comment,
+      instituteId:instituteId
     };
-
+  
     try {
-      await axios.post('/api/reviews', review); // Replace with the actual endpoint to post the review
+      await axios.post('http://localhost:5232/api/User/RateInstitute', review); // Replace with the actual endpoint to post the review
       setSubmittedReview(review);
       setRating(0);
       setComment('');
-      fetchReviews(); // Refresh the reviews after submitting a new review
+      // fetchReviews(); // Refresh the reviews after submitting a new review
     } catch (error) {
       console.log('Error submitting review:', error);
     }
   };
+  
 
   return (
-    <div>
-      {/* Star rating */}
+  
+    <>
+    <UserHome/><div className="rating-page-container">
       <div className="rating-container">
         {[...Array(5)].map((_, index) => {
           const starNumber = index + 1;
           return (
             <span
               key={starNumber}
-              className={`star ${starNumber <= (hoverRating || rating) ? 'filled' : ''} ${
-                starNumber <= rating ? 'gold' : ''
-              }`}
+              className={`star ${starNumber <= (hoverRating || rating) ? 'filled' : ''} ${starNumber <= rating ? 'gold' : ''}`}
               onClick={() => setRating(starNumber)}
               onMouseEnter={() => handleMouseEnter(starNumber)}
               onMouseLeave={handleMouseLeave}
             >
-              {starNumber <= rating ? '★' : '☆'}
+              <i className="fas fa-star"></i>
+
             </span>
           );
         })}
       </div>
 
-      {/* Comment box */}
-      <div className="comment-container">
+      <div className="review-container">
         <textarea
           className="comment-box"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Enter your review..."
+          placeholder="Enter your review...."
         ></textarea>
         <Button className="submit-button" onClick={handleSubmit}>
           Submit
         </Button>
       </div>
-
-      {/* Display submitted review */}
-      {submittedReview && (
-        <div className="submitted-review">
-          <h3>Your review:</h3>
-          <p>Rating: {submittedReview.rating}</p>
-          <p>Comment: {submittedReview.comment}</p>
-        </div>
-      )}
-
-      {/* Display fetched reviews */}
+    </div>
+    <div className='naviii'>
       <div className="reviews-container">
-        <h3>All Reviews:</h3>
+        <h3><center>All Reviews</center></h3>
         {reviews.map((review, index) => (
-          <div key={index}>
-            <p>username: {review.UserId}</p>
-            <p>Rating: {review.rating}</p>
-            <p>Comment: {review.comment}</p>
+          <div key={index} className="review">
+            <div className='reviewusername'>{review.username}</div>
+            <Rate averageRating={parseFloat(review.rating)} />
+            <div className='reviewcomment'><p> {review.comment}</p></div>
+            <br/>
           </div>
         ))}
-      </div>
-    </div>
+      </div> </div></>
+   
+    
   );
 };
 

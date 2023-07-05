@@ -7,11 +7,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../User/ViewAcademy1.css';
 import UserHome from '../../Navbars/UserNav';
+import './Card.css'
 
-function Rate({ rating }) {
-  const fullStars = Math.floor(rating);
-  const decimalPart = rating - fullStars;
-  const emptyStars = 5 - Math.ceil(rating);
+function Rate({ averageRating }) {
+  const fullStars = Math.floor(averageRating);
+  const decimalPart = averageRating - fullStars;
+  const emptyStars = 5 - Math.ceil(averageRating);
 
   const stars = [];
 
@@ -37,7 +38,7 @@ const Viewacademy1 = () => {
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    axios.get('http://localhost:5071/api/Admin/GetAllInstitutes')
+    axios.get('http://localhost:5232/api/User/Getinstrat')
       .then(response => {
         setData(response.data);
       })
@@ -46,13 +47,13 @@ const Viewacademy1 = () => {
       });
   }, []);
 
-  const handleCardClick = (InstituteId) => {
-    navigate(`/user/courses/${InstituteId}`);
+  const handleCardClick = (instituteId) => {
+    navigate(`/user/courses/${instituteId}`);
   };
 
   const handleRateClick = (event, instituteId) => {
     event.stopPropagation();
-    navigate(`/rating/${instituteId}`);
+    navigate(`/user/rating/${instituteId}`);
   };
 
   return (
@@ -63,11 +64,11 @@ const Viewacademy1 = () => {
         <Row xs={1} sm={1} md={3} lg={3} xl={3}>
           {data.map(item => (
             <Col xs={12} sm={6} md={4} key={item.id}>
-              <Card id={`userAcademyGrid${item.id}`} className="mb-4" onClick={() => handleCardClick(item.id)}>
+              <Card id={`userAcademyGrid${item.id}`} className="mb-4" onClick={() => handleCardClick(item.instituteId)}>
                 <div className="card-content">
                   <Card.Img
                     variant="top"
-                    src={item.ImageUrl}
+                    src={item.imageUrl}
                     onError={e => {
                       e.target.src = 'https://via.placeholder.com/300x200?text=Image+not+found';
                     }}
@@ -77,12 +78,12 @@ const Viewacademy1 = () => {
                     <div className="text-start">
                       <Card.Text>
                         <strong>
-                          <em>{item.instituteAddress}</em>
+                          <em>Place: {item.instituteAddress}</em>
                         </strong>
                       </Card.Text>
                     </div>
-                    <Rate rating={parseFloat(item.rating)} />
-                    <Button className="rate-button" onClick={(event) => handleRateClick(event, item.id)}>Rate</Button>
+                    <Rate averageRating={parseFloat(item.averageRating)} />
+                    <label className="rate-button" onClick={(event) => handleRateClick(event, item.instituteId)}>Reviews</label>
                   </Card.Body>
                 </div>
               </Card>

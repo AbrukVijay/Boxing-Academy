@@ -1,5 +1,5 @@
 .st_content{
-  height: 600px;
+  height: 878px;
   background-image: linear-gradient(to bottom, #137c8c, #5d7568);
 }
 .stu-form {
@@ -80,6 +80,8 @@ td{
 .add-student-button{
     background-color: rgb(62, 12, 141);
     color: white;
-    position: absolute;
-    right:10px;
+    position: fixed;
+    border-radius: 5px;
+  bottom: 20px;
+  right: 20px; 
 }

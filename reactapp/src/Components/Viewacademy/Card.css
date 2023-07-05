@@ -25,7 +25,18 @@ body{
   display: flex;
   gap: 10rem;
 }
-
+.rate-button.btn.btn-primary{
+  width: 80px;
+}
+#userAcademyGridundefined > div > div > div.text-start{
+  height: 35px;
+}
+#userAcademyGridundefined > div > div > div.text-start > p{
+  font-size: 17px;
+}
+#userAcademyGridundefined > div > div > div.star-rating{
+  padding: 10px;
+}
 .nav a {
   color: inherit;
   text-decoration: none;
@@ -34,8 +45,10 @@ body{
   
  text-decoration: none;
  -webkit-text-fill-color: rgb(255, 255, 255);
+ height: 60px;
  
 }
+
 .hb{
   display: flex;
   flex-direction: column;
@@ -51,4 +64,5 @@ body{
 .user-page {
   background-color: #F8F8F8;
   background-image: linear-gradient(to bottom, #137c8c, #5d7568);
+  height: 878px;
 }

@@ -7,9 +7,10 @@ import Swal from 'sweetalert2';
 import { GrAddCircle } from 'react-icons/gr';
 import './adminCourse.css';
 import axios from "axios";
-import {toast} from 'react-toastify';
+// import {toast} from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AdminHome from "../../Navbars/AdminNav";
 
 function AdminCourse() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function AdminCourse() {
   }, []);
 
   const fetchCourses = () => {
-    axios.get('http://localhost:5071/api/Admin/GetAllCourses')
+    axios.get('http://localhost:5232/api/Admin/viewCourse')
       .then(response => {
         setCourses(response.data);
         // setSelectedCourses(new Array(response.data.length).fill(false)); // Initialize selection state for each card
@@ -46,7 +47,7 @@ function AdminCourse() {
   }).then((result) => {
     if (result.isConfirmed) {
       axios
-        .delete(`http://localhost:5071/api/Admin/DeleteCourse/${id}`)
+        .delete(`http://localhost:5232/api/Admin/DeleteCourse/${id}`)
         .then((response) => {
           Swal.fire('Deleted!', 'Course has been deleted.', 'success');
           fetchCourses();
@@ -66,6 +67,8 @@ function AdminCourse() {
 
   const [selectedCards,setSelectedCards] = useState([]);
 const [selectAll,setSelectAll] = useState([]);
+
+
 const handleCardSelect = (courseId) => {
   if(selectedCards.includes(courseId)) {
     setSelectedCards(selectedCards.filter((id) => id !== courseId));
@@ -85,20 +88,17 @@ const handleSelectAll = () => {
   }
 };
 
-const hiddenCheckboxStyle = {
-  position: 'absolute',
-  top: '-9999px',
-  left: '-9999px',
-};
+
 const cardStyle = {
   width: '50rem',
   position: 'static',
   border: '1px solid black',
   borderRadius: '10px',
   padding: '10px',
-  height: '120px',
+  height: '150px',
   cursor: 'pointer',
   display: 'flex',
+  
 };
 const selectedCardStyle = {
   ...cardStyle,
@@ -126,7 +126,7 @@ const handleDeleteSelected = async () => {
     setIsLoading(true);
   try {
     const deleteRequests = selectedCards.map(id=> {
-      return axios.delete('http://localhost:5071/api/Admin/DeleteCourse/'+id);
+      return axios.delete('http://localhost:5232/api/Admin/DeleteCourse/'+id);
       
     });
 
@@ -134,58 +134,24 @@ const handleDeleteSelected = async () => {
     //  await Promise.all(deleteRequests);
     setSelectedCards([]);
     setIsLoading(false);
-    toast.warning("Selected Courses are deleted");
+    // toast.warning("Selected Courses are deleted");
+    Swal.fire('Deleted!', 'Selected courses have been deleted.', 'success');
   } catch (error) {
     setIsLoading(false);
-    toast.error("Failed to delete selected courses");
+    // toast.error("Failed to delete selected courses");
+    Swal.fire('Error', 'Failed to delete the selected courses.', 'error');
 }
 fetchCourses();
 }
 };
 
 
-// const handleDeleteSelected = async () => {
-//   const result = await Swal.fire({
-//     title: 'Confirm Deletion',
-//     text: 'Are you sure you want to delete the selected Courses?',
-//     icon: 'warning',
-//     showCancelButton: true,
-//     confirmButtonText: 'Delete',
-//     cancelButtonText: 'Cancel',
-//     reverseButtons: true,
-//   });
-
-//   if (result.isConfirmed) {
-//     setIsLoading(true);
-//     try {
-//       await Promise.all(
-//         selectedCards.map((id) =>
-//           axios.delete(`http://localhost:5071/api/Admin/DeleteCourse/${id}`)
-//         )
-//       );
-//       setSelectedCards([]);
-//       setIsLoading(false);
-//       toast.warning('Selected Courses are deleted');
-//     } catch (error) {
-//       setIsLoading(false);
-//       toast.error('Failed to delete selected courses');
-//     }
-//     finally {
-//       setIsLoading(false);
-//       fetchCourses();
-//     }
-//   }
-// };
-
-
-
-
   return (
     <>
+    <AdminHome/>
      <ToastContainer />
       <div className="Acapp-container">
         <div className="ActemplateContainer">
-          {/* ... */}
           <div className="AcsearchInput_Container">
           <input
             id="AcsearchInput"
@@ -200,20 +166,22 @@ fetchCourses();
             Search
           </button>
         </div>
-          <div className="Actemplate_Container">
+          <div className="Actemplate_Container" >
+          <div className="button-container">
           {selectedCards.length >0 && (
-          <div className='mb-3 d-flex justify-content-start align-items-center' >
+          <div className='mb-3 d-flex justify-content-end align-items-center' >
             <Button variant='primary' className='ms-3' onClick={handleSelectAll}>{selectAll ? 'Deselect All' : 'Select All'}</Button>
             <Button variant='danger' className='ms-3' onClick={handleDeleteSelected} style={{marginLeft: '10px'}}>Delete</Button>
           </div>
         )}
+        </div>
             {courses
               .filter((courseGrid) => {
                 if (searchTerm === "") {
                   return courseGrid;
                 } else if (
-                  courseGrid.name &&
-                  courseGrid.name.toLowerCase().includes(searchTerm.toLowerCase())
+                  courseGrid.courseName &&
+                  courseGrid.courseName.toLowerCase().includes(searchTerm.toLowerCase())
                 ) {
                   return courseGrid;
                 } else {
@@ -225,47 +193,42 @@ fetchCourses();
 
                 return (
                   <div className="Actemplate" id={`courseGrid${courseGrid.courseId}`}  style={selectedCards.includes(courseGrid.courseId) ? selectedCardStyle : cardStyle}  onClick={() => handleCardSelect(courseGrid.courseId)}>
-                     <label>
-                    <input
-                     type='checkbox'
-                     checked={selectedCards.includes(courseGrid.courseId)}
-                     onChange={() => handleCardSelect(courseGrid.courseId)}
-                     style={hiddenCheckboxStyle}
-                     /></label>
-                    {/* ... */}
                     <div className="Acinfo" >
                     <div className="Accourse-info">
                       <h6 className="name">Course Name: {courseGrid.courseName}</h6>
-                      <h6 className="duration">Course Duration: {courseGrid.courseDuration}</h6>
+                      <h6 className="duration">Course Duration: {courseGrid.courseDuration} months</h6>
                       <h6 className="timing">Course Available Timings: {courseGrid.courseTiming}</h6>
                     </div>
                     <div className="Accourse-info">
-                      <h6 className="enrolled">Number of Students: {courseGrid.numberofStudents}</h6>
+                      {/* <h6 className="enrolled">Number of Students: {courseGrid.numberofStudents}</h6> */}
                       <h6 className="description">Course Description: {courseGrid.courseDescription}</h6>
                     </div>
                    {/* </div>  */}
+                  
                     <EditOutlinedIcon
                       className="Acedit-icon"
                       onClick={(event) => {
                         event.stopPropagation();
                         // navigate("/edit", { state: courseGrid.id });
-                        navigate(`/admin/editacademy/${courseGrid.courseId}`);
+                        navigate(`/admin/editcourse/${courseGrid.courseId}`);
                       }}
                     />
                     <DeleteIcon
                       className="Acdelete-icon"
                       onClick={(event) => handleDeleteIconClick(event, courseGrid.courseId)}
                     />
-                   
-                    {/* ... */}
-                   
+                    {selectedCards.includes(courseGrid.courseId) && (
+                        // <CheckIcon className="Accheckmark-icon" />
+                       <strong> <span className="Accheckmark-icon">✓</span></strong>
+
+                      )}
+                   {/* </div> */}
                   </div>
                   </div> 
                 );
               })}
           </div>
           <div className="Add-course">
-            {/* ... */}
             <Button
             id="addCourse"
             class="add-course-button"
@@ -276,19 +239,10 @@ fetchCourses();
             <GrAddCircle />
             Add Course
           </Button>
-            {/* {selectedCourses.some((isSelected) => isSelected) && (
-              <Button
-                id="deleteSelected"
-                class="delete-selected-button"
-                type="submit"
-                style={{ backgroundColor: 'red', position: 'fixed', bottom: '80px', right: '20px' }}
-                onClick={handleMultiDelete}
-              >
-                Delete Selected
-              </Button>
-            )} */}
+           
           </div>
         </div>
+        
       </div>
     </>
   );

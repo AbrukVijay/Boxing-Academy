@@ -1,6 +1,7 @@
 #confirmPassword,
 #mobileNumber,
-#username{
+#username,
+#userRole{
   border: 2px solid black;
   height: 45px; 
   margin: 8px;

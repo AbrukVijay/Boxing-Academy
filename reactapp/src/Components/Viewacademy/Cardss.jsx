@@ -5,11 +5,13 @@ import './cardss.css';
 // import '../Viewacademy/SearchBar.css';
 import UserHome from "../../Navbars/UserNav";
 import { Card, Form, Row, Col } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 function Cardss() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchedCard, setSearchedCard] = useState(null);
   const [courseData, setCourseData] = useState([]);
+  const { instituteId } = useParams();
 
   useEffect(() => {
     fetchData();
@@ -17,18 +19,21 @@ function Cardss() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:5071/api/Admin/GetAllCourses'); // Replace with your API endpoint URL
+      const response = await axios.get(`http://localhost:5232/api/Admin/viewcoursebyId/${instituteId}`); // Replace with your API endpoint URL
       setCourseData(response.data);
+      console.log(response.data)
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleCardClick = (card) => {
-    // Handle card click logic, such as redirecting to the enrollment form
-    window.location.href = "/enroll-form";
+  const handleCardClick = (courseId) => {
+    console.log('instituteId:', instituteId);
+    console.log('courseId:', courseId);
+    window.location.href = `/user/enrollform/${instituteId}/${courseId}`;
   };
-
+  
+  
   const handleSearch = async () => {
     try {
       const response = await axios.get(`https://api.example.com/courses?searchTerm=${searchTerm}`); // Replace with your API endpoint URL
@@ -98,7 +103,7 @@ function Cardss() {
           </div>
         </div>
         {searchedCard && (
-          <div className="container">
+          <div className="cardss-container">
             <Card className="card1">
               <Card.Body>
                 <div className="Container">
@@ -119,9 +124,7 @@ function Cardss() {
                     </Card.Text>
                   </div>
                 </div>
-                <a href="/enrollform" onClick={handleCardClick}>
-                  <Button variant="primary">Enroll Course</Button>
-                </a>
+                  <Button variant="primary" onClick={() => handleCardClick(searchedCard.courseId)}>Enroll Course</Button>
               </Card.Body>
             </Card>
           </div>
@@ -149,9 +152,7 @@ function Cardss() {
                       </Card.Text>
                     </div>
                   </div>
-                  <a href="/enrollform" onClick={handleCardClick}>
-                    <Button variant="primary">Enroll Course</Button>
-                  </a>
+                    <Button variant="primary" onClick={() => handleCardClick(card.courseId)}>Enroll Course</Button>
                 </Card.Body>
               </Card>
             ))}

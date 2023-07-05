@@ -1,169 +1,169 @@
 .studentaddform-container {
-    margin-left: 200px;
-    margin-right: 250px;
-     width: 950px;
-     border-radius:10px; 
-    
-    /* border-right-width: 100px;
-    border-left-width: 100px; */
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 0px;
-      background-color: rgb(133, 161, 165);
-  } 
-   .left-column {
-      grid-column: 1 / 2;
-  }
+  margin-left: 270px;
+  margin-right: 250px;
+   width: 950px;
+   border-radius:10px; 
   
-  .right-column {
-      grid-column: 2 / 3; 
-  } 
-  .studentaddform-container label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0px;
-}
-
-  .Studdemo {
-    margin-bottom: 15px;
+  /* border-right-width: 100px;
+  border-left-width: 100px; */
     display: grid;
-     align-items: center;
-    justify-content: center; 
-  }
-  .Studdemo input[type="text"],
-  .Studdemo input[type="number"] {
-    height: 40px;
-    width: 350px;
-    text-align: center;
-    justify-content: center;
-    background-color: white;
-    border-radius: 10px;
-
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0px;
+    background-color: rgb(133, 161, 165);
+} 
+ .left-column {
+    grid-column: 1 / 2;
 }
-.studentaddform-container select{
+
+.right-column {
+    grid-column: 2 / 3; 
+} 
+.studentaddform-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.Studdemo {
+  margin-bottom: 15px;
+  display: grid;
+   align-items: center;
+  justify-content: center; 
+}
+.Studdemo input[type="text"],
+.Studdemo input[type="number"] {
   height: 40px;
   width: 350px;
   text-align: center;
   justify-content: center;
   background-color: white;
   border-radius: 10px;
-  border: 2px solid white;
-    margin-bottom: 15px;
+
 }
-  
-  /* .studentaddform-container input[type="text"],
-  .studentaddform-container input[type="number"],
-  .studentaddform-container input[type="email"],
-  .studentaddform-container select {
-    height: 40px;
-    width: 100%;
-    text-align: center;
-    background-color: white;
-    border-radius: 10px;
-    border: 2px solid white;
-    margin-bottom: 15px;
+.studentaddform-container select{
+height: 40px;
+width: 350px;
+text-align: center;
+justify-content: center;
+background-color: white;
+border-radius: 10px;
+border: 2px solid white;
+  margin-bottom: 15px;
+}
+
+/* .studentaddform-container input[type="text"],
+.studentaddform-container input[type="number"],
+.studentaddform-container input[type="email"],
+.studentaddform-container select {
+  height: 40px;
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
+  border: 2px solid white;
+  margin-bottom: 15px;
 } */
 
-  .Studdemo input[type="text"]
-  {
-    /* margin-right: 100px; */
-    border: 2px solid white;
-    
-  }
-  .Studdemo input[type="number"] {
-    margin-right: 3px;
-    /* margin-left: 0px; */
-    border: 2px solid white;
-    
-  }
-  .name-input::placeholder {
-    color: black;
+.Studdemo input[type="text"]
+{
+  /* margin-right: 100px; */
+  border: 2px solid white;
   
-  }
+}
+.Studdemo input[type="number"] {
+  margin-right: 3px;
+  /* margin-left: 0px; */
+  border: 2px solid white;
   
-  .age-input::placeholder {
-    color: black;
-  }
+}
+.name-input::placeholder {
+  color: black;
 
-  .gender-input::placeholder {
-    color: black;
-  }
+}
 
-  .mobilenumber-input::placeholder {
-    color: black; 
-  }
+.age-input::placeholder {
+  color: black;
+}
 
-  .phnumber-input::placeholder {
-    color: black;
-    
-  }
-  .email-input::placeholder {
-    color: black;
-  }
+.gender-input::placeholder {
+  color: black;
+}
+
+.mobilenumber-input::placeholder {
+  color: black; 
+}
+
+.phnumber-input::placeholder {
+  color: black;
   
-  .houseNo-input::placeholder {
-    color: black;
-  }
+}
+.email-input::placeholder {
+  color: black;
+}
 
-  .streetName-input::placeholder {
-    color: black;
-  }
+.houseNo-input::placeholder {
+  color: black;
+}
 
-  .area-input::placeholder {
-    color: black;
-  }
+.streetName-input::placeholder {
+  color: black;
+}
 
-  .pincode-input::placeholder {
-    color: black; 
-  }
-  .state-input::placeholder {
-    color: black;
-  }
+.area-input::placeholder {
+  color: black;
+}
 
-  .nationality-input::placeholder {
-    color: black;
-    
-  }
+.pincode-input::placeholder {
+  color: black; 
+}
+.state-input::placeholder {
+  color: black;
+}
 
-  .addstu1{
-    min-height: 100vh;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-   /* background-color: #F8F8F8; 
-    background-image: linear-gradient(to bottom,#beeed4,#81e5af);  */
-    background-image: linear-gradient(to bottom,#137c8c,#5d7568);
+.nationality-input::placeholder {
+  color: black;
+  
+}
+
+.addstu1{
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+ /* background-color: #F8F8F8; 
+  background-image: linear-gradient(to bottom,#beeed4,#81e5af);  */
+  background-image: linear-gradient(to bottom,#137c8c,#5d7568);
+  color: white;
+  margin: 1px;
+  font-size: 15px;
+  padding: 5px;
+}
+
+.addstu2{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: black;
+  font-size: 20px;
+}
+  
+ .Add-student-button {
+    border-radius: 10px;
     color: white;
-    margin: 1px;
-    font-size: 15px;
-    padding: 5px;
+    background-color: blue;
+    padding: 6px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border: none;
+    width: 9%;
+  }
+  .Add-student-button:hover{
+    color: white;
+    font-weight: bold;
   }
   
-  .addstu2{
-    margin-top: 10px;
-    margin-bottom: 20px;
-    color: black;
-    font-size: 20px;
+  .error {
+    font-size: medium;
+    color: red;
+    
   }
-    
-   .Add-student-button {
-      border-radius: 10px;
-      color: white;
-      background-color: blue;
-      padding: 6px;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      border: none;
-      width: 9%;
-    }
-    .Add-student-button:hover{
-      color: white;
-      font-weight: bold;
-    }
-    
-    .error {
-      font-size: medium;
-      color: red;
-      
-    }

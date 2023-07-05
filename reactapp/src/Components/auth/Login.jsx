@@ -55,7 +55,7 @@ const Login = () => {
   
       try {
         const userLoginResponse = await axios.post(
-          'http://localhost:5071/api/user/login',
+          'http://localhost:5232/api/user/login',
           data
         );
   
@@ -80,7 +80,7 @@ const Login = () => {
   
       try {
         const adminLoginResponse = await axios.post(
-          'http://localhost:5071/api/admin/login',
+          'http://localhost:5232/api/admin/login',
           data
         );
   

@@ -1,455 +1,324 @@
-import React, { useState } from 'react';
-//import React, { useState, useEffect } from 'react';
-import { MDBBtn, MDBContainer, MDBCard,MDBCardBody,MDBCardImage,MDBRow,MDBCol,MDBInput,MDBRadio }from 'mdb-react-ui-kit';
-import {  isEmpty } from 'validator';
+import React, {useState, useEffect} from 'react';
+import './edit.css';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import AdminHome from '../../Navbars/AdminNav';
 
 
-function StudentEdit() {
- 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    fathersName: '',
-    mothersName: '',
-    gender: '',
-    age: '',
-    phoneNumber: '',
-    alternatePhoneNumber: '',
-    email: '',
-    houseNo: '',
-    streetName: '',
-    areaName: '',
-    state: '',
-    pincode: '',
-    nationality: '',
-  });
+const EditStudent1 = () => {
+  const {id} = useParams();
+  const [student, setStudent] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [errors, setErrors] = useState({});
+    
+    const [instcou, setInstcou] = useState([]);
+  const [selectedInstcou, setSelectedInstcou] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updateError, setUpdateError]= useState(null);
+  const [updateSuccess, setUpdateSuccess] = useState(false); 
+  //const navigate = useNavigate()
+    useEffect(() => {
+    // Fetch student data from API and populate the form
+    const fetchStudent = async () => {
+      try {
+        const response = await axios.get('http://localhost:5232/api/Admin/ViewStudent/'+id);
+       setStudent(response.data);
+       setIsLoading(false);
+      } catch (error){
+        console.error('Error fetching course:', error);
+        setIsLoading(false);
+      }
+    };
+       
+    fetchStudent();
+  }, [id]);
+  useEffect(() => {
+    const fetchInstitutes = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5232/api/Admin/Getinstitutescourses"
+        );
+        setInstcou(response.data);
+      } catch (error) {
+        console.error("Error fetching institutes:", error);
+      }
+    };
+  
+    fetchInstitutes();
+  }, []);
+  const handleUpdate = async () => {
+    setIsUpdating(true);
+    setUpdateError(null);
+    setUpdateSuccess(false);
+    const updatedStudent = {
+      studentId:id,
+       firstName:student.firstName,
+       lastName:student.lastName,
+       gender:student.gender,
+       motherName:student.motherName,
+       fatherName:student.fatherName,
+       mobile:student.mobile,
+       alternateMobile:student.alternateMobile,
+       email:student.email,
+       age:student.age,
+       houseNo:student.houseNo,
+       streetName:student.streetName,
+       areaName:student.areaName,
+       pincode:student.pincode,
+       state:student.state,
+       nationality:student.nationality,
+       courseId:student.selectedInstcou
 
-  const [errors, setErrors] = useState({
-    firstName: '',
-    lastName: '',
-    fathersName: '',
-    mothersName: '',
-    gender: '',
-    age: '',
-    phoneNumber: '',
-    alternatePhoneNumber: '',
-    email: '',
-    houseNo: '',
-    streetName: '',
-    areaName: '',
-    state: '',
-    pincode: '',
-    nationality: '',
-  });
+    };
+    try{
+      const response = await axios.put(`http://localhost:5232/api/Admin/EditStudent/${id}`,updatedStudent);
+      console.log('Student updated:',response.data);
+      setUpdateSuccess(true);
+      Swal.fire({
+        icon:'success',
+        title:'Student details Updated',
+        text:'The student has been updated successfully.',
+      });
+    }catch (error) {
+      console.error('Error updating the student details:', error);
+      setUpdateError('Failed to update the student.');
+      
+      Swal.fire({
+        icon:'error',
+        title:'Error',
+        text:'Failed to update the student.',
+      });
+    }
+setIsUpdating(false);
+  };
 
+  const validateForm = () => {
+    const errors = {}; 
 
-/*
-  const [apiData, setApiData] = useState(null);
-const [isLoading, setIsLoading] = useState(true);
-useEffect(() => {
-  fetch('YOUR_API_ENDPOINT')
-    .then(response => response.json())
-    .then(data => {
-      setApiData(data);
-      setIsLoading(false);
-    })
-    .catch(error => {
-      console.error('Error fetching API data:', error);
-      setIsLoading(false);
-    });
-}, []);
-*/
-
-
-function handleSubmit(event) {
-  event.preventDefault();
-
-  // Perform validations
-  const validationErrors = {};
-
-  if (!formData.firstName || isEmpty(formData.firstName.trim())) {
-    validationErrors.firstName = 'This field is required';
-  }
-
-  if (!formData.lastName || isEmpty(formData.lastName.trim())) {
-    validationErrors.lastName = 'This field is required';
-  }
-
-  if (!formData.fathersNmae || isEmpty(formData.fathersName.trim())) {
-    validationErrors.fathersName = "This field is required";
-  }
-if (!formData.mothersName || isEmpty(formData.mothersName())) {
-    validationErrors.mothersName = "This field is required";
-  }
-if (!formData.gender || isEmpty(formData.gender())) {
-    validationErrors.gender = 'This field is required';
-  }
-if (!formData.age || isEmpty(formData.age())) {
-    validationErrors.age = 'This field is required';
-  }
-if (!formData.phoneNumber || isEmpty(formData.phoneNumber())) {
-    validationErrors.phoneNumber = 'This field is required';
-  }
-if (!formData.alternatePhoneNumber || isEmpty(formData.alternatePhoneNumber())) {
-    validationErrors.alternatePhoneNumber = 'This field is required';
-  }
-if (!formData.email || isEmpty(formData.email())) {
-    validationErrors.email = 'This field is required';
-  }
-if (!formData.houseNo || isEmpty(formData.houseNo())) {
-    validationErrors.houseNo = 'This field is required';
-  }
-if (!formData.streetName || isEmpty(formData.streetName())) {
-    validationErrors.streetName = 'This field is required';
-  }
-if (!formData.areaName || isEmpty(formData.areaName())) {
-    validationErrors.areaName = 'This field is required';
-  }
-if (!formData.state || isEmpty(formData.state())) {
-    validationErrors.state = 'This field is required';
-  }
-if (!formData.pincode || isEmpty(formData.pincode())) {
-    validationErrors.pincode = 'This field is required';
-  }
-  if (!formData.nationality || isEmpty(formData.nationality())) {
-    validationErrors.nationality = 'This field is required';
-  }
-
-
-  // Set the validation errors in the state
-  setErrors(validationErrors);
-
-  // If there are no validation errors, you can proceed with form submission
-  if (Object.keys(validationErrors).length === 0) {
-    // Submit the form or perform further actions
-  }
-}
-/*
-return (
-  <div>
-    {isLoading ? (
-      <p>Loading...</p>
-    ) : (
-      <div>
-        {apiData ? (
-          <p>{apiData.message}</p> // Replace `message` with the actual key in your API response
-        ) : (
-          <p>No data available</p>
-        )}
-      </div>
-    )}
-  </div>
-);
-        */
-
+    if (!student.firstName.trim()) {
+      errors.firstName = 'First Name is required';
+    }
+    
+    if (!student.lastName.trim()) {
+      errors.lastName = 'Last Name is required';
+    }
+    
+    if (!student.gender.trim()) {
+      errors.gender = 'gender is required';
+    }
+    
+    if (!student.fatherName.trim()) {
+      errors.fatherName = 'fatherName is required';
+    }
+    if (!student.motherName.trim()) {
+      errors.motherName = 'motherName is required';
+    }
+    if (!student.mobile.trim()) {
+      errors.mobile = 'mobile number is required';
+    }
+    if (!student.alternateMobile.trim()) {
+      errors.alternateMobile = 'alternate number is required';
+    }
+    if (!student.email.trim()) {
+      errors.email = 'email is required';
+    }
+    if (!student.age.trim()) {
+      errors.age = 'age is required';
+    }
+    if (!student.houseNo.trim()) {
+      errors.houseNo = 'houseNo is required';
+    }
+    if (!student.streetName.trim()) {
+      errors.streetName = 'streetName is required';
+    }
+    if (!student.areaName.trim()) {
+      errors.areaName = 'areaName is required';
+    }
+    if (!student.pincode.trim()) {
+      errors.pincode = 'pincode is required';
+    }
+    if (!student.state.trim()) {
+      errors.state = 'state is required';
+    }
+    
+    if (!student.nationality.trim()) {
+      errors.nationality = 'nationality is required';
+    }
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+  const handleSubmit =  (e) => {
+    e.preventDefault();
+    // if (validateForm()) {
+      handleUpdate();
+    // }else{
+    //   console.log('Form contains errors, Please fix them,');
+    // }
+};
+     if(isLoading){
+      return <div>Loading...</div>
+     }
   return (
-    <><AdminHome /><form onSubmit={handleSubmit}>
-      <MDBContainer fluid className='bg-dark' style={{ width: '1200px' }}>
+    <><AdminHome /><div>
+      <form className='editstu1' onSubmit={handleSubmit}>
+        <h2 className='editstu2'>Edit Form</h2>
+        {updateError && <div>{updateError}</div>}
+        {updateSuccess && <div>Student updated successfully.</div>}
+        <div className='studenteditform-container'>
 
-        <MDBRow className='d-flex justify-content-center align-items-center h-100'>
-          <MDBCol>
+          <div className="Stueditdemo">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>First Name : </strong></label>
+            <input type="text" id="firstName" className='name-input' size="40"
+              value={student.firstName}
+              onChange={(e) => setStudent({ ...student, firstName: e.target.value })} />
 
-            <MDBCard className='my-4'>
+            {errors.firstName && <div>{errors.firstName}</div>}
+          </div>
+          <div className="Stueditdemo">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>HouseNo : </strong></label>
+            <input type="text" id="houseno" className='houseno' size="40"
+              value={student.houseNo}
+              onChange={(e) => setStudent({ ...student, houseNo: e.target.value })} />
 
-              <MDBRow className='g-0'>
+            {errors.houseNo && <div>{errors.houseNo}</div>}
+          </div>
+          <div className="Stueditdemo">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>last Name : </strong></label>
+            <input type="text" id="lastName" className='name-input' size="40"
+              value={student.lastName}
+              onChange={(e) => setStudent({ ...student, lastName: e.target.value })} />
 
-                <MDBCol md='6' className="d-none d-md-block">
-                  <MDBCardImage src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp' alt="Sample photo" className="rounded-start custom-image" fluid />
-                </MDBCol>
+            {errors.lastName && <div>{errors.lastName}</div>}
+          </div>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>StreetName :</strong> </label>
+            <input type="text" id="streetName" className='streetName-input' size="40"
+              value={student.streetName}
+              onChange={(e) => setStudent({ ...student, streetName: e.target.value })} />
 
-                <MDBCol md='6'>
+            {errors.streetName && <div>{errors.streetName}</div>}
+          </div>
 
-                  <MDBCardBody className='text-black d-flex flex-column justify-content-center'>
-                    <h3 className="mb-5 text-uppercase fw-bold">Edit Form</h3>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>Gender :</strong> </label>
+            <input type="text" id="gender" className='gender-input' size="40"
+              value={student.gender}
+              onChange={(e) => setStudent({ ...student, gender: e.target.value })} />
 
-                    <MDBRow>
+            {errors.gender && <div>{errors.gender}</div>}
+          </div>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>AreaName :</strong> </label>
+            <input type="text" id="areaName" className='area' size="40"
+              value={student.areaName}
+              onChange={(e) => setStudent({ ...student, areaName: e.target.value })} />
 
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='firstName'
-                          type='text'
-                          placeholder='First Name'
-                          pattern='[a-zA-Z]*'
-                          //title='please enter your first name'
-                          value={formData.firstName}
-                          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                          error={errors.firstName} />
-                        {errors.firstName && (
-                          <div className='text-danger'>{errors.firstName}</div>
-                        )}
+            {errors.areaName && <div>{errors.areaName}</div>}
+          </div>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>FatherName :</strong> </label>
+            <input type="text" id="fatherName" className='fatherName' size="40"
+              value={student.fatherName}
+              onChange={(e) => setStudent({ ...student, fatherName: e.target.value })} />
 
-                      </MDBCol>
+            {errors.fatherName && <div>{errors.fatherName}</div>}
+          </div>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>pincode :</strong> </label>
+            <input type="text" id="pincode" className='pincode' size="40"
+              value={student.pincode}
+              onChange={(e) => setStudent({ ...student, pincode: e.target.value })} />
 
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='lastName'
-                          type='text'
-                          placeholder='Last Name'
-                          pattern='[a-zA-Z]*'
-                          value={formData.lastName}
-                          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                          error={errors.lastName} />
-                        {errors.lastName && (
-                          <div className='text-danger'>{errors.lastName}</div>
-                        )}
-                      </MDBCol>
-                    </MDBRow>
-                    <br />
-                    <MDBRow>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='fatherName'
-                          type='text'
-                          placeholder="Father's Name"
-                          pattern='[a-zA-Z]*'
-                          value={formData.fathersName}
-                          onChange={(e) => setFormData({ ...formData, fathersName: e.target.value })}
-                          error={errors.fathersName} />
-                        {errors.fathersName && (
-                          <div className='text-danger'>{errors.fathersName}</div>
-                        )}
+            {errors.pincode && <div>{errors.pincode}</div>}
+          </div>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>motherName :</strong> </label>
+            <input type="text" id="motherName" className='motherName' size="40"
+              value={student.motherName}
+              onChange={(e) => setStudent({ ...student, motherName: e.target.value })} />
 
-                      </MDBCol>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='motherName'
-                          type='text'
-                          placeholder="Mother's Name"
-                          pattern='[a-zA-Z]*'
-                          value={formData.mothersName}
-                          onChange={(e) => setFormData({ ...formData, mothersName: e.target.value })}
-                          error={errors.mothersName} />
-                        {errors.mothersName && (
-                          <div className='text-danger'>{errors.mothersName}</div>
-                        )}
+            {errors.motherName && <div>{errors.motherName}</div>}
+          </div>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>State :</strong> </label>
+            <input type="text" id="state" className='state' size="40"
+              value={student.state}
+              onChange={(e) => setStudent({ ...student, state: e.target.value })} />
 
-                      </MDBCol>
-                    </MDBRow>
+            {errors.state && <div>{errors.state}</div>}
+          </div>
 
-                    <br />
-                    <MDBRow>
-                      <MDBCol md='6'>
-                        <div className='d-md-flex ustify-content-start align-items-center mb-4'>
-                          <h6 class="fw-bold mb-0 me-4">Gender: </h6>
-                          <MDBRadio
-                            name='inlineRadio'
-                            id='inlineRadio1'
-                            value='female'
-                            label='Female'
-                            inline
-                            checked={formData.gender === 'Female'}
-                            onChange={(e) => setFormData({ ...formData, gender: e.target.value })} />
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "270px", color: "black" }}><strong>Age :</strong> </label>
+            <input type="text" id="age" className='age' size="40"
+              value={student.age}
+              onChange={(e) => setStudent({ ...student, age: e.target.value })} />
 
-                          <MDBRadio
-                            name='inlineRadio'
-                            id='inlineRadio2'
-                            value='male'
-                            label='Male'
-                            inline
-                            checked={formData.gender === 'male'}
-                            onChange={(e) => setFormData({ ...formData, gender: e.target.value })} />
-                        </div>
-                        {errors.gender && <div className="text-danger">{errors.gender}</div>}
+            {errors.age && <div>{errors.age}</div>}
+          </div>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>Nationality :</strong> </label>
+            <input type="text" id="nationality" className='nationality' size="40"
+              value={student.nationality}
+              onChange={(e) => setStudent({ ...student, nationality: e.target.value })} />
 
+            {errors.nationality && <div>{errors.nationality}</div>}
+          </div>
 
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "230px", color: "black" }}><strong>Mobilenumber :</strong> </label>
+            <input type="text" id="mobile" className='mobile' size="40"
+              value={student.mobile}
+              onChange={(e) => setStudent({ ...student, mobile: e.target.value })} />
 
-                      </MDBCol>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='age'
-                          type='text'
-                          placeholder="Age"
-                          pattern="[1-9][0-9]{1}"
-                          value={formData.age}
-                          onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                          error={errors.age} />
-                        {errors.age && (
-                          <div className='text-danger'>{errors.age}</div>
-                        )}
+            {errors.mobile && <div>{errors.mobile}</div>}
+          </div>
 
-                      </MDBCol>
-                    </MDBRow>
-                    <br />
-                    <MDBRow>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='phoneNumber1'
-                          type='text'
-                          placeholder="Phone Number"
-                          pattern="[6-9][0-9]{9}"
-                          value={formData.phoneNumber}
-                          onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                          error={errors.phoneNumber} />
-                        {errors.phoneNumber && (
-                          <div className='text-danger'>{errors.phoneNumber}</div>
-                        )}
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "220px", color: "black" }}><strong>AlternateMobile :</strong> </label>
+            <input type="text" id="alternatemobile" className='alternatemoobile' size="40"
+              value={student.alternateMobile}
+              onChange={(e) => setStudent({ ...student, alternateMobile: e.target.value })} />
 
-                      </MDBCol>
-                      <MDBCol md='6'>
-                        <MDBInput wrapperClass='mb-4'
-                          size='lg'
-                          id='phoneNumber2'
-                          type='text'
-                          placeholder=" Alternate Phone Number"
-                          pattern="[6-9][0-9]{9}"
-                          value={formData.alternatePhoneNumber}
-                          onChange={(e) => setFormData({ ...formData, alternatePhoneNumber: e.target.value })}
-                          error={errors.alternatePhoneNumber} />
-                        {errors.alternatePhoneNumber && (
-                          <div className='text-danger'>{errors.alternatePhoneNumber}</div>
-                        )}
-                      </MDBCol>
-                    </MDBRow>
-                    <br />
-                    <MDBInput
-                      wrapperClass='mb-4'
-                      size='lg'
-                      id='emailId'
-                      type='text'
-                      placeholder="Email Id"
-                      pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      error={errors.email} />
-                    {errors.email && (
-                      <div className='text-danger'>{errors.email}</div>
-                    )}
+            {errors.alternateMobile && <div>{errors.alternateMobile}</div>}
+          </div>
 
-                    <br />
-                    <h3 className="mb-5 text-uppercase fw-bold">Address Information </h3>
+          <div className="Stueditdemo ">
+            <label style={{ marginRight: "240px", color: "black" }}><strong>Email :</strong> </label>
+            <input type="text" id="email" className='email' size="40"
+              value={student.email}
+              onChange={(e) => setStudent({ ...student, email: e.target.value })} />
+
+            {errors.email && <div>{errors.email}</div>}
+          </div>
 
 
-                    <MDBRow>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='houseNo'
-                          type='text'
-                          placeholder='House No'
-                          pattern="^[0-9][0-9\s-]*$"
-                          value={formData.houseNo}
-                          onChange={(e) => setFormData({ ...formData, houseNo: e.target.value })}
-                          error={errors.houseNo} />
-                        {errors.houseNo && (
-                          <div className='text-danger'>{errors.houseNo}</div>
-                        )}
-                      </MDBCol>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='streetName'
-                          type='text'
-                          placeholder='Street Name'
-                          pattern="[A-za-z]*"
-                          value={formData.streetName}
-                          onChange={(e) => setFormData({ ...formData, streetName: e.target.value })}
-                          error={errors.streetName} />
-                        {errors.streetName && (
-                          <div className='text-danger'>{errors.streetName}</div>
-                        )}
-                      </MDBCol>
-                    </MDBRow>
-                    <br />
-                    <MDBRow>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='areaName'
-                          type='text'
-                          placeholder='Area Name'
-                          pattern="[A-za-z]*"
-                          value={formData.areaName}
-                          onChange={(e) => setFormData({ ...formData, areaName: e.target.value })}
-                          error={errors.areaName} />
-                        {errors.areaName && (
-                          <div className='text-danger'>{errors.areaName}</div>
-                        )}
-                      </MDBCol>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='state'
-                          type='text'
-                          placeholder='State'
-                          pattern="[A-za-z]*"
-                          value={formData.state}
-                          onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                          error={errors.state} />
-                        {errors.state && (
-                          <div className='text-danger'>{errors.state}</div>
-                        )}
-                      </MDBCol>
-                    </MDBRow>
-                    <br />
 
-                    <MDBRow>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='pincode'
-                          type='text'
-                          placeholder='Pincode'
-                          pattern="[5][0-9]{5}"
-                          value={formData.pincode}
-                          onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
-                          error={errors.pincode} />
-                        {errors.pincode && (
-                          <div className='text-danger'>{errors.pincode}</div>
-                        )}
-                      </MDBCol>
-                      <MDBCol md='6'>
-                        <MDBInput
-                          wrapperClass='mb-4'
-                          size='lg'
-                          id='nationality'
-                          type='text'
-                          placeholder='Nationality'
-                          pattern="[A-za-z]*"
-                          value={formData.nationality}
-                          onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
-                          error={errors.nationality} />
-                        {errors.nationality && (
-                          <div className='text-danger'>{errors.nationality}</div>
-                        )}
-                      </MDBCol>
-                    </MDBRow>
+          <div>
+            <label htmlFor="instituteSelect" style={{ marginRight: "220px", color: "black" }}><strong>Select Institute</strong></label>
+            <select
+              className='instituteselect-student'
+              id="institutecouSelect"
+              value={selectedInstcou}
+              onChange={(e) => setSelectedInstcou(e.target.value)}
+            >
+              <option value="" disabled selected>
+                Select one institute
+              </option>
+              {instcou.map((institute) => (
+                <option key={institute.courseId} value={institute.courseId}>
+                  {institute.instituteName}-{institute.courseName}
+                </option>
+              ))}
+            </select>
+            {/* {errors.instituteSelect && <div>{errors.instituteSelect}</div>} */}
+          </div>
+        </div>
+        <button className="Edit-student-button" id="editStudent" disabled={isUpdating}>{isUpdating ? 'Updating...' : 'Update Student'}</button>
+      </form>
 
-                    <div className="d-flex justify-content-end pt-3">
-
-                      <MDBBtn className='ms-2' type='submit' style={{ backgroundColor: 'blue' }} size='lg'>Update Student</MDBBtn>
-                    </div>
-
-                  </MDBCardBody>
-
-                </MDBCol>
-              </MDBRow>
-
-            </MDBCard>
-
-          </MDBCol>
-        </MDBRow>
-
-      </MDBContainer>
-    </form></>
+    </div></>
   );
-}
-
-export default StudentEdit;
+  };
+export default EditStudent1;

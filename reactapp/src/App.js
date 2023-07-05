@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route,useParams } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Login from './Components/auth/Login';
 import Signup from './Components/auth/Signup';
@@ -11,17 +11,20 @@ import AddCourse from './Components/Admincourse/AddCourse';
 import EditCourse from './Components/Admincourse/EditCourse';
 import Adminstudent from './Components/AdminStudent/Adminstudent';
 import AddStudent from './Components/AdminStudent/AdminstudentAdd';
-import StudentEdit from './Components/AdminStudent/AdminstudentEdit';
 import Home3 from './UserHome/Home3';
 import Enrolledcourse from './Components/Enrolledcourse/Enrolledcourse';
-import Editenrolled from './Components/Enrolledcourse/Edit';
-// import Viewacademy from './Components/Viewacademy/Viewacademy';
+import EditStudent from './Components/Enrolledcourse/Edit';
 import Viewacademy1 from './Components/Viewacademy/Card';
 import Rating from './Components/Viewacademy/Rating';
 import Cardss from './Components/Viewacademy/Cardss';
-// import Cardss from './Components/Viewacademy/Cardss';
-// import Form from './Components/Viewacademy/Forms';
-// import Viewacademy from './Components/User/ViewAcademy';
+import Forms from './Components/Viewacademy/Forms';
+import EditStudent1 from './Components/AdminStudent/AdminstudentEdit';
+import ProgressBar1 from './Components/CoursePages/CourseComponent1/BasicBoxing';
+import ProgressBar2 from './Components/CoursePages/CourseComponent2/IntermediateBoxing';
+import ProgressBar3 from './Components/CoursePages/CourseComponent3/StrengthBoxing';
+import ProgressBar4 from './Components/CoursePages/CourseComponent4/SparringBoxing';
+import ProgressBarrr from './Components/CoursePages/AlternateCoursePage';
+
 
 function App() {
   return (
@@ -38,10 +41,10 @@ function App() {
           element={<PrivateRoute element={<AdminAcademyAdd />} authRole="Admin" allowedRoles={['Admin']} />}
         />
         <Route
-          path="/admin/editacademy/:id"
+          path="/admin/editacademy/:id1"
           element={<PrivateRoute element={<AdmineditAcademy />} authRole="Admin" allowedRoles={['Admin']} />}
         />
-        <Route
+         <Route
           path="/admin/course"
           element={<PrivateRoute element={<AdminCourse />} authRole="Admin" allowedRoles={['Admin']} />}
         />
@@ -53,25 +56,25 @@ function App() {
           path="/admin/editcourse/:id"
           element={<PrivateRoute element={<EditCourse />} authRole="Admin" allowedRoles={['Admin']} />}
         />
-       <Route
+        <Route
           path="/admin/students"
           element={<PrivateRoute element={<Adminstudent />} authRole="Admin" allowedRoles={['Admin']} />}
         />
         <Route
-          path="/admin/editstudent"
-          element={<PrivateRoute element={<StudentEdit />} authRole="Admin" allowedRoles={['Admin']} />}
+          path="/admin/updatestudent/:id"
+          element={<PrivateRoute element={<EditStudent1 />} authRole="Admin" allowedRoles={['Admin']} />}
         />
         <Route
           path="/admin/addstudent"
           element={<PrivateRoute element={<AddStudent />} authRole="Admin" allowedRoles={['Admin']} />}
         />
-        <Route path="/user/viewacademy"
+       <Route path="/user/viewacademy"
           element={<PrivateRoute element={<Viewacademy1 />} authRole="User" allowedRoles={['User']} />}
         />
-        <Route path="/rating/:id"
+         <Route path="/user/rating/:instituteId"
           element={<PrivateRoute element={<Rating />} authRole="User" allowedRoles={['User']} />}
         />
-        <Route path="/user/courses"
+        <Route path="/user/courses/:instituteId"
           element={<PrivateRoute element={<Cardss/>} authRole="User" allowedRoles={['User']} />}
         />
         <Route path="/user/enrolledcourse"
@@ -80,13 +83,41 @@ function App() {
         <Route path="/user/userhome"
           element={<PrivateRoute element={<Home3 />} authRole="User" allowedRoles={['User']} />}
         />
-        <Route path="/user/enrolledcourseedit"
-          element={<PrivateRoute element={<Editenrolled />} authRole="User" allowedRoles={['User']} />}
+        <Route path="/user/enrolledcourseedit/:id"
+          element={<PrivateRoute element={<EditStudent/>} authRole="User" allowedRoles={['User']} />}
         /> 
-
+        <Route path="/user/enrollform/:instituteId/:courseId"
+          element={<PrivateRoute element={<Forms/>} authRole="User" allowedRoles={['User']} />}
+        />
+        <Route path="/user/learn/:course/:Id/:courseId"
+          element={<PrivateRoute element={<RenderComponent/>} authRole="User" allowedRoles={['User']} />}
+        />   
       </Routes>
     </Router>
+
+    
   );
 }
-
+const RenderComponent = ({})=>{
+  const { course } = useParams();
+  let componentToRender;
+  if(course === 'Strength training'){
+      componentToRender = <ProgressBar1/>;
+  }
+  else if(course === 'Cardio Boxing'){
+    componentToRender = <ProgressBar2/>;
+  }
+  else if(course === 'Amateur Boxing'){
+    componentToRender = <ProgressBar3/>;
+  }else if(course === 'Professional Boxing'){
+    componentToRender = <ProgressBar4/>;
+  }else{
+    componentToRender = <ProgressBarrr/>;
+  }
+  return(
+    <div>
+      {componentToRender}
+    </div>
+  )
+}
 export default App;

@@ -2,7 +2,6 @@ import React, { useState,useEffect,navigate} from 'react';
 import { Card,  Button, Row, Col, Container} from 'react-bootstrap';
 //import data from './TemplateData.json';
 import AdminHome from '../../Navbars/AdminNav';
-import './AdminAcademyHome.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import './AdminAcademyHome.css';
@@ -16,10 +15,10 @@ import Swal from 'sweetalert2';
 import { faStar as solidStar, faStarHalfAlt as halfStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularEmptyStar } from '@fortawesome/free-regular-svg-icons';
 
-function Rate({ rating }) {
-  const fullStars = Math.floor(rating);
-  const decimalPart = rating - fullStars;
-  const emptyStars = 5 - Math.ceil(rating);
+function Rate({ averageRating }) {
+  const fullStars = Math.floor(averageRating);
+  const decimalPart = averageRating - fullStars;
+  const emptyStars = 5 - Math.ceil(averageRating);
 
   const stars = [];
 
@@ -56,7 +55,7 @@ function Rate({ rating }) {
 
   const [data,setData] = useState([]);
   useEffect(()=>{
-    axios.get('http://localhost:5071/api/Admin/GetAllInstitutes').then((res)=>{
+    axios.get('http://localhost:5232/api/Admin/Getinstrat').then((res)=>{
       setData(res.data);
     }).catch((err)=>{
       alert(err);
@@ -65,7 +64,7 @@ function Rate({ rating }) {
 
   const handleDelete=(id)=>{
     //Delete Theme Api
-    axios.delete('http://localhost:5071/api/Admin/DeleteInstitute/'+id)
+    axios.delete('http://localhost:5232/api/Admin/DeleteInstitute/'+id)
       .then(response => {
         alert('SuccessS');
         if(response.data==="Academy Deleted")
@@ -102,12 +101,12 @@ const hiddenCheckboxStyle = {
   left: '-9999px',
 };
 const cardStyle = {
-  width: '18rem',
+  width: '19rem',
   position: 'static',
   border: '1px solid black',
   borderRadius: '10px',
   padding: '10px',
-  height: '400px',
+  height: '450px',
   cursor: 'pointer',
 };
 const selectedCardStyle = {
@@ -123,7 +122,7 @@ const handleDeleteSelected = async () => {
     
   const result = await Swal.fire({
     title: 'Confirm Deletion',
-    text: 'Are you sure you want to delete the selected Service Centers?',
+    text: 'Are you sure you want to delete the selected Boxing Academy?',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonText: 'Delete',
@@ -136,16 +135,16 @@ const handleDeleteSelected = async () => {
     setIsLoading(true);
   try {
     const deleteRequests = selectedCards.map(id=> {
-      return axios.delete('http://localhost:5071/api/Admin/DeleteInstitute/'+id);
+      return axios.delete('http://localhost:5232/api/Admin/DeleteInstitute/'+id);
     });
 
     await axios.all(deleteRequests);
     setSelectedCards([]);
     setIsLoading(false);
-    toast.warning("Selected service centers deleted");
+    toast.warning("Selected Boxing Academy deleted");
   } catch (error) {
     setIsLoading(false);
-    toast.error("Failed to delete selected service centers");
+    toast.error("Failed to delete selected boxing academy");
 }
 }
 };
@@ -170,12 +169,14 @@ const handleDeleteSelected = async () => {
         <br />
         <br />
         <Container className='mt-3'>
+          <div className='button-select'>
         {selectedCards.length >0 && (
-          <div className='mb-3 d-flex justify-content-start align-items-center' >
+          <div className='mb-3 d-flex justify-content-end align-items-center' >
             <Button variant='primary' className='ms-3' onClick={handleSelectAll}>{selectAll ? 'Deselect All' : 'Select All'}</Button>
             <Button variant='danger' className='ms-3' onClick={handleDeleteSelected} style={{marginLeft: '10px'}}>Delete</Button>
           </div>
         )}
+            </div>   
         <Row xs={1} sm={1} md={3} lg={3} xl={3}>
         { 
         data 
@@ -210,10 +211,11 @@ const handleDeleteSelected = async () => {
                         <em> <h5>place: {item.instituteAddress}</h5> </em>
                         </strong>
                       </Card.Text>
+                      <br></br>
                     </div>
                   </div>
                   <div>
-                  <Rate rating={parseFloat(item.instituteDescription)} />
+                  <Rate averageRating={parseFloat(item.averageRating)} />
                   <br></br>
                   </div>
                     <div>
@@ -222,14 +224,22 @@ const handleDeleteSelected = async () => {
                       <FontAwesomeIcon icon={faTrashAlt} id="deleteAcademy"
                       className="edit-icon  fa-lg"
                       onClick={(e) => {e.stopPropagation(); handleDelete(item.instituteId)}}/>
+                      {selectedCards.includes(item.instituteId) && (
+                        // <CheckIcon className="Accheckmark-icon" />
+                       <strong> <span className="Academycheckmark-icon">✓</span></strong>
+
+                      )}
                       </div>      
-                    </div>              
+                    </div>    
+                              
                 </Card.Body>
+                
               </Card> 
 
             </Col>
           ))}
         </Row>
+        
         </Container>
       
        <a href='/admin/addacademy'> <Button id = "AddAcademy" className='adminadd'>

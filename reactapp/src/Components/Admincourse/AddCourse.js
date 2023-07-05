@@ -1,12 +1,13 @@
 import React, {useState,useEffect } from 'react';
 import './AddCourse.css';
 import axios from 'axios';
-//import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
+import AdminHome from '../../Navbars/AdminNav';
+
 
 const AddCourse = () => {
   const [courseName, setCourseName] = useState('');
-  const [courseEnrolled, setCourseEnrolled] = useState('');
+  // const [courseEnrolled, setCourseEnrolled] = useState('');
   const [courseDuration, setCourseDuration] = useState('');
   const [courseTiming, setCourseTiming] = useState('');
   const [courseDescription, setCourseDescription] = useState('');
@@ -26,14 +27,14 @@ const AddCourse = () => {
     }
 
 
-    const enrolledStudentRegex = /^[0-9]+$/;
-    if (!courseEnrolled.trim()) {
-      newErrors.courseEnrolled = 'This Field is required';
-    }else if (!enrolledStudentRegex.test(courseEnrolled)) {
-      newErrors.courseEnrolled = 'Please Enter Correct no.of Students Enrolled in a Course';
-    }
+    // const enrolledStudentRegex = /^[0-9]+$/;
+    // if (!courseEnrolled.trim()) {
+    //   newErrors.courseEnrolled = 'This Field is required';
+    // }else if (!enrolledStudentRegex.test(courseEnrolled)) {
+    //   newErrors.courseEnrolled = 'Please Enter Correct no.of Students Enrolled in a Course';
+    // }
   
-    const durationRegex = /^[0-9a-zA-Z ]+$/;
+    const durationRegex = /^[0-9 ]+$/;
     if (!courseDuration.trim()) {
       newErrors.courseDuration = 'Course Duration is required';
     }else if (!durationRegex.test(courseDuration)) {
@@ -52,39 +53,25 @@ const AddCourse = () => {
     const trimmedDescription=courseDescription.trim();
     if (trimmedDescription.length === 0) {
       newErrors.courseDescription = 'Description is required';
-    } else if (trimmedDescription.length < 20) {
-      newErrors.courseDescription = 'Description can be atleast 20 characters';
-    } else if (trimmedDescription.length > 150) {
-      newErrors.courseDescription= 'Description cannot exceed 150 characters';
+    } else if (trimmedDescription.length > 50) {
+      newErrors.courseDescription= 'Description cannot exceed 50 characters';
     }
 
-    /*if (!courseDescription.trim()) {
-      newErrors.courseDescription = 'Description is required';
-    } else if (courseDescription.trim().length < 20) {
-      newErrors.courseDescription = 'Description can be atleast 20 characters';
-    } else if (courseDescription.trim().length > 150) {
-      newErrors.courseDescription= 'Description cannot exceed 150 characters';
-    }*/
+    if (!selectedInstituteId) {
+      newErrors.instituteSelect = 'Please select an institute';
+    }
+  
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   if (validateForm()) {
-  //     // Perform your submission logic here
-  //     // e.g., send the data to an API or perform further processing
-  //     console.log('Form submitted successfully!');
-  //   } else {
-  //     console.log('Form contains errors. Please fix them.');
-  //   }
-  // };
+  
   useEffect(() => {
     const fetchInstitutes = async () => {
       try {
-        const response = await axios.get("http://localhost:5071/api/Admin/GetAllInstitutes");
+        const response = await axios.get("http://localhost:5232/api/Admin/viewInstitutes");
+        console.log(response.data);
         setInstitutes(response.data);
       } catch (error) {
         console.error("Error fetching institutes:", error);
@@ -93,53 +80,39 @@ const AddCourse = () => {
 
     fetchInstitutes();
   }, []);
-  
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  
-  //   if (validateForm()) {
-  //     try {
-  //       const response = await axios.post("/api/Admin/AddCourse", {
-  //         courseName,
-  //         courseEnrolled,
-  //         courseDuration,
-  //         courseTiming,
-  //         courseDescription,
-  //         instituteId: selectedInstituteId,
-  //       });
-  //       //console.log(response);
-  //       console.log('Form submitted successfully!');
-  //       console.log('API response:', response.data);
-  //     } catch (error) {
-  //       console.log('Error submitting the form:', error);
-  //     }
-  //   } else {
-  //     console.log('Form contains errors. Please fix them.');
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       try {
         const response = await axios.post(
-          "http://localhost:5071/api/Admin/AddCourse",
+          "http://localhost:5232/api/Admin/AddCourse",
           {
             courseId: 0, // Update with appropriate value
             courseName: courseName,
             courseDescription: courseDescription,
             courseDuration: courseDuration,
             courseTiming: courseTiming,
-            numberofStudents: courseEnrolled, // Assuming courseEnrolled represents the number of enrolled students
+            // numberofStudents: courseEnrolled, // Assuming courseEnrolled represents the number of enrolled students
             instituteId: selectedInstituteId,
           }
         );
-
-        console.log("Form submitted successfully!");
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Course Added',
+          text: 'The course has been added successfully.',
+        });
+        // console.log("Form submitted successfully!");
         console.log("API response:", response.data);
       } catch (error) {
-        console.log("Error submitting the form:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to add the course.',
+        });
+        // console.log("Error submitting the form:", error);
       }
     } else {
       console.log("Form contains errors. Please fix them.");
@@ -152,7 +125,7 @@ const AddCourse = () => {
 
  
   return (
-    <div>
+    <><AdminHome /><div>
       <form className="addreg1" onSubmit={handleSubmit} noValidate>
         <h6 className="addreg2">Add Course</h6>
         <div className="addform-container">
@@ -161,7 +134,7 @@ const AddCourse = () => {
             <strong>
               <label
                 for="courseName"
-                style={{ marginTop: "30px",marginRight: "220px", color: "black" }}
+                style={{ marginTop: "30px", marginRight: "220px", color: "black" }}
               >
                 Course Name :{" "}
               </label>
@@ -172,8 +145,7 @@ const AddCourse = () => {
               class="name-input"
               placeholder="Enter the course Name"
               size="40"
-              onChange={(e) => setCourseName(e.target.value)}
-            />
+              onChange={(e) => setCourseName(e.target.value)} />
 
             <div className="error">
               {errors.courseName && <span>{errors.courseName}</span>}
@@ -190,13 +162,12 @@ const AddCourse = () => {
               </label>
             </strong>
             <input
-              type="text"
+              type="number"
               id="courseDuration"
               class="duration-input"
               placeholder="Enter the course duration"
               size="40"
-              onChange={(e) => setCourseDuration(e.target.value)}
-            />
+              onChange={(e) => setCourseDuration(e.target.value)} />
 
             <div className="error">
               {errors.courseDuration && <span>{errors.courseDuration}</span>}
@@ -218,8 +189,7 @@ const AddCourse = () => {
               class="timing-input"
               placeholder="Enter the course Timing"
               size="40"
-              onChange={(e) => setCourseTiming(e.target.value)}
-            />
+              onChange={(e) => setCourseTiming(e.target.value)} />
 
             <div className="error">
               {errors.courseTiming && <span>{errors.courseTiming}</span>}
@@ -227,28 +197,28 @@ const AddCourse = () => {
           </div>
           {/* </div> */}
           {/* <div className='form-column'> */}
-          <div className="Acdemo">
-            <strong>
-              <label
-                for="courseEnrolled"
-                style={{ marginRight: "210px", color: "black" }}
-              >
-                Course Enrolled :{" "}
-              </label>
-            </strong>
-            <input
-              type="number"
-              id="courseEnrolled"
-              class="enrolled-input"
-              placeholder="Enter no.of students enrolled for the course"
-              size="40"
-              onChange={(e) => setCourseEnrolled(e.target.value)}
-            />
+          {/* <div className="Acdemo">
+      <strong>
+        <label
+          for="courseEnrolled"
+          style={{ marginRight: "210px", color: "black" }}
+        >
+          Course Enrolled :{" "}
+        </label>
+      </strong>
+      <input
+        type="number"
+        id="courseEnrolled"
+        class="enrolled-input"
+        placeholder="Enter no.of students enrolled for the course"
+        size="40"
+        onChange={(e) => setCourseEnrolled(e.target.value)}
+      />
 
-            <div className="error">
-              {errors.courseEnrolled && <span>{errors.courseEnrolled}</span>}
-            </div>
-          </div>
+      <div className="error">
+        {errors.courseEnrolled && <span>{errors.courseEnrolled}</span>}
+      </div>
+    </div> */}
 
           <div className="Acdemo">
             <strong>
@@ -264,8 +234,7 @@ const AddCourse = () => {
               id="courseDescription"
               class="description-input"
               placeholder="Enter the course Description"
-              onChange={(e) => setCourseDescription(e.target.value)}
-            />
+              onChange={(e) => setCourseDescription(e.target.value)} />
 
             <div className="error">
               {errors.courseDescription && (
@@ -274,23 +243,29 @@ const AddCourse = () => {
             </div>
           </div>
           {/* </div> */}
+
           <div className="AcDemo">
-           <strong> <label htmlFor="instituteSelect" style={{marginRight:"210px",color:"black"}}>Select Institute :</label></strong>
+            <strong> <label htmlFor="instituteSelect" style={{ marginRight: "210px", color: "black" }}>Select Institute :</label></strong>
+
             <select
               id="instituteSelect"
               value={selectedInstituteId}
-              onChange={(e) => setSelectedInstituteId(e.target.value)} style={{ width: '350px',height: '30px', borderRadius: '8px' ,marginRight: '100px',textAlignLast: 'center'}}
+              className="select-institute"
+              onChange={(e) => setSelectedInstituteId(e.target.value)}
+              style={{ width: '350px', height: '30px', borderRadius: '8px', marginLeft: '80px', marginRight: '100px', textAlignLast: 'center' }}
             >
-               <option value="" disabled selected>
+              <option value="" disabled selected>
                 Select one institute
-               </option>
+              </option>
               {institutes.map((institute) => (
                 <option key={institute.instituteId} value={institute.instituteId}>
                   {institute.instituteName}
                 </option>
               ))}
             </select>
+            {errors.instituteSelect && <div className="error">{errors.instituteSelect}</div>}
           </div>
+
         </div>
 
         <button className="Acaddbtn1" id="addCourse">
@@ -298,7 +273,7 @@ const AddCourse = () => {
           Add Course
         </button>
       </form>
-    </div>
+    </div></>
   );
 };
 export default AddCourse;

@@ -1,364 +1,306 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { isEmpty } from 'validator';
+import { useParams } from 'react-router-dom';
+import './Forms.css';
 import UserHome from '../../Navbars/UserNav';
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBCard,
-  MDBCardBody,
-  MDBCardImage,
-  MDBRow,
-  MDBCol,
-  MDBInput,
-  MDBRadio,
+
+
+const Forms = () => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [gender, setGender] = useState('');
+    const [fathersName, setFathersName] = useState('');
+    const [mothersName, setMothersName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [alternatePhoneNumber, setAlternatePhoneNumber] = useState('');
+    const [email, setEmail] = useState('');
+    const [age, setAge] = useState('');
+    const [houseNo, setHouseNo] = useState('');
+    const [streetName, setStreetName] = useState('');
+    const [area, setArea] = useState('');
+    const [pincode, setPincode] = useState('');
+    const [state, setState] = useState('');
+    const [nationality, setNationality] = useState('');
+    const {  instituteId, courseId } = useParams();
+
+
+    // useEffect(() => {
+    //   getUserIdAndFetchAdmission();
+    // }, []);
   
-}
-from 'mdb-react-ui-kit';
+    // const getUserIdAndFetchAdmission = () => {
+    //   const email = localStorage.getItem('email');
+    //   if (!email) {
+    //     return;
+    //   }
+  
+    //   axios.get(`http://localhost:5232/api/user/${encodeURIComponent(email)}`)
+    //     .then((response) => {
+    //       const userId = response.data.userId;
+    //       console.log(response.data.userId);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // };
+  
+  const [errors, setErrors] = useState({});
 
-function Form() {
-  const [formData, setFormData] = useState({
-    // Form field values
-  });
+  const validateForm = () => {
+    const newErrors = {}; 
 
-  const [errors, setErrors] = useState({
-    // Form field errors
-  });
-
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    // Perform validations
-    const validationErrors = {
-      // Validation rules
-    };
-
-    // Set the validation errors in the state
-    setErrors(validationErrors);
-
-    // If there are no validation errors, submit the form
-    if (Object.keys(validationErrors).length === 0) {
-      // Make a POST request to the backend
-      axios.post('your-backend-api-url', formData)
-        .then(response => {
-          // Handle the success response
-          console.log('Form submitted successfully:', response.data);
-        })
-        .catch(error => {
-          // Handle the error response
-          console.error('Form submission failed:', error);
-        });
+    const firstNameRegex = /^[a-zA-Z ]+$/;
+    if (!firstName.trim()) {
+      newErrors.firstName = 'first Name is required';
+    }else if (!firstNameRegex.test(firstName)) {
+      newErrors.firstName = 'Please Enter Valid  Name';
     }
-  }
+    const lastNameRegex = /^[a-zA-Z ]+$/;
+    if (!lastName.trim()) {
+      newErrors.lastName = 'last Name is required';
+    }else if (!lastNameRegex.test(lastName)) {
+      newErrors.lastName = 'Please Enter Valid  Name';
+    }
+    const genderRegex = /^(male|female)$/i; 
+    if (!gender.trim()) {
+      newErrors.gender = 'Gender is required';
+    } else if (!genderRegex.test(gender)) {
+      newErrors.gender = 'Please enter a valid gender';
+    }
+    const fathersNameRegex = /^[a-zA-Z ]+$/;
+    if (!fathersName.trim()) {
+      newErrors.fathersName ="Father's name is required";
+    } else if (!fathersNameRegex.test(fathersName)) {
+      newErrors.fathersName = 'Please enter a valid  name';
+    }
+    const mothersNameRegex = /^[a-zA-Z ]+$/;
+    if (!mothersName.trim()) {
+      newErrors.mothersName = "Mother's name is required";
+    } else if (!mothersNameRegex.test(mothersName)) {
+      newErrors.mothersName = 'Please enter a valid  name';
+    }
+    const phoneNumberRegex = /^\d{10}$/; 
+    if (!phoneNumber.trim()) {
+     newErrors.phoneNumber = 'Phone Number is required';
+    } else if (!phoneNumberRegex.test(phoneNumber)) {
+     newErrors.phoneNumber = 'Please enter a valid phonenumber';
+    }
+    const alternatePhoneNumberRegex = /^[0-9]+$/;
+    if (!alternatePhoneNumber.trim()) {
+      newErrors.alternatePhoneNumber= 'Alternate Phone Number is required';
+    }else if (!alternatePhoneNumberRegex.test(alternatePhoneNumber)) {
+      newErrors.alternatePhoneNumber= 'Please Enter  Alternate Phone Number';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    const ageRegex = /^[0-9]+$/;
+    if (!age.trim()) {
+      newErrors.age = 'Age is required';
+    }else if (!ageRegex.test(age)) {
+      newErrors.age= 'Please Enter Age';
+    }
+    const houseNoRegex = /^[a-zA-Z0-9\s]+$/;
+    if (!houseNo.trim()) {
+     newErrors.houseNo = 'House number is required';
+    } else if (!houseNoRegex.test(houseNo)) {
+     newErrors.houseNo = 'Please enter a valid house number';
+    }
+    const streetNameRegex = /^[a-zA-Z0-9\s]+$/;
+    if (!streetName.trim()) {
+     newErrors.streetName = 'Street name is required';
+    } else if (!streetNameRegex.test(streetName)) {
+     newErrors.streetName = 'Please enter a valid street name';
+    }
+    const areaRegex = /^[a-zA-Z0-9\s]+$/;
+    if (!area.trim()) {
+     newErrors.area = 'Area is required';
+    } else if (!areaRegex.test(area)) {
+     newErrors.area = 'Please enter a valid area';
+    }
+    const pincodeRegex = /^\d{6}$/; // Matches exactly 6 digits
+    if (!pincode.trim()) {
+     newErrors.pincode = 'Pincode is required';
+    } else if (!pincodeRegex.test(pincode)) {
+     newErrors.pincode = 'Please enter a valid pincode';
+    }
+    const stateRegex = /^[a-zA-Z\s]+$/;
+    if (!state.trim()) {
+     newErrors.state = 'State is required';
+    } else if (!stateRegex.test(state)) {
+     newErrors.state = 'Please enter a valid state';
+    }
+    const nationalityRegex = /^[a-zA-Z\s]+$/;
+    if (!nationality.trim()) {
+     newErrors.nationality = 'Nationality is required';
+    } else if (!nationalityRegex.test(nationality)) {
+     newErrors.nationality = 'Please enter a valid nationality';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        const formData = {
+          firstName,
+          lastName,
+          gender,
+          fathersName,
+          mothersName,
+          phoneNumber,
+          alternatePhoneNumber,
+          email,
+          age,
+          houseNo,
+          streetName,
+          area,
+          pincode,
+          state,
+          nationality,
+          courseId
+        };
+
+        // Make the POST API call using Axios
+        const response = await axios.post(`http://localhost:5071/api/Courses/GetCoursesByInstituteId/${instituteId}/${courseId}`, formData);
+
+        console.log('Form submitted successfully!', response.data);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
+    } else {
+      console.log('Form contains errors. Please fix them.');
+    }
+  };
+    
   return (
-    <>
-      <UserHome />
-      <form onSubmit={handleSubmit}>
-      <MDBContainer fluid className='bg-white'>
+    <><UserHome /><div>
+      <form className='editecform' onSubmit={handleSubmit}>
+        <h4 className='enrollform'>Enroll Form</h4>
+        <div className='studentedit-container'>
+          {/* <div className='addform-column'> */}
+          <div className="enrollform">
+            <strong><label htmlFor="firstName" style={{ marginRight: "240px", color: "black" }}>First Name : </label></strong>
+            <input type="text" id="firstName" className='name-input' placeholder="Enter First Name" size="40"
+              onChange={(e) => setFirstName(e.target.value)} />
 
-<MDBRow className='d-flex justify-content-center align-items-center h-100'>
-  <MDBCol>
+            <div className='errorform'>{errors.firstName && <span>{errors.firstName}</span>}</div>
+          </div>
+          <div className='enrollform'>
+            <strong><label htmlFor="email" style={{ marginRight: "230px", color: "black" }}>Email : </label></strong>
+            <input type='text' id="email1" className="email-input" placeholder="Enter Email" size="40"
+              onChange={(e) => setEmail(e.target.value)} />
 
-    <MDBCard className='my-4'>
+            <div className='errorform'>{errors.email && <span>{errors.email}</span>}</div>
+          </div>
 
-      <MDBRow className='g-0'>
+          <div className="enrollform ">
+            <strong><label htmlFor="lastName" style={{ marginRight: "240px", color: "black" }}>Last Name : </label></strong>
+            <input type="text" id="lastName" className='name-input' placeholder="Enter Last Name" size="40"
+              onChange={(e) => setLastName(e.target.value)} />
 
-        <MDBCol md='6' className="d-none d-md-block">
-          <MDBCardImage src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp' alt="Sample photo" className="rounded-start" fluid />
-        </MDBCol>
+            <div className='errorform'>{errors.lastName && <span>{errors.lastName}</span>}</div>
+          </div>
+          <div className="enrollform">
+            <strong><label htmlFor="houseNo" style={{ marginRight: "200px", color: "black" }}>House No: </label></strong>
+            <input type="text" id="houseNo" className='houseNo-input' placeholder="Enter House No" size="40"
+              onChange={(e) => setHouseNo(e.target.value)} />
+            <div className='errorform'>{errors.houseNo && <span>{errors.houseNo}</span>}</div>
+          </div>
+          <div className="enrollform">
+            <strong><label htmlFor="gender" style={{ marginRight: "240px", color: "black" }}>Gender: </label></strong>
+            <input type="text" id="gender" className='gender-input' placeholder="Enter Gender" size="40"
+              onChange={(e) => setGender(e.target.value)} />
 
-        <MDBCol md='6' style={{backgroundColor:'white'}}>
+            <div className='errorform'>{errors.gender && <span>{errors.gender}</span>}</div>
+          </div>
+          <div className="enrollform">
+            <strong><label htmlFor="streetName" style={{ marginRight: "200px", color: "black" }}>Street Name: </label></strong>
+            <input type="text" id="streetName" className='streetName-input' placeholder="Enter Street Name" size="40"
+              onChange={(e) => setStreetName(e.target.value)} />
 
-          <MDBCardBody className='text-black d-flex flex-column justify-content-center'>
-            <h3 className="mb-5 text-uppercase fw-bold">Enroll Form</h3>
+            <div className='errorform'>{errors.streetName && <span>{errors.streetName}</span>}</div>
+          </div>
 
-            <MDBRow>
+          <div className="enrollform">
+            <strong><label htmlFor="fathersName" style={{ marginRight: "240px", color: "black" }}>Father Name : </label></strong>
+            <input type="text" id="fathersName" className='name-input' placeholder="Enter Father's Name" size="40"
+              onChange={(e) => setFathersName(e.target.value)} />
 
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form1'
-                  type='text'
-                  placeholder='First Name'
-                  pattern='[a-zA-Z]*'
-                  value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  error={errors.firstName} />
-                {errors.firstName && (
-                  <div className='text-danger'>{errors.firstName}</div>
-                )}
+            <div className='errorform'>{errors.fathersName && <span>{errors.fathersName}</span>}</div>
+          </div>
+          <div className="enrollform">
+            <strong><label htmlFor="area" style={{ marginRight: "200px", color: "black" }}>Area: </label></strong>
+            <input type="text" id="area" className='area-input' placeholder="Enter Area" size="40"
+              onChange={(e) => setArea(e.target.value)} />
 
-              </MDBCol>
+            <div className='errorform'>{errors.area && <span>{errors.area}</span>}</div>
+          </div>
 
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
+          <div className="enrollform">
+            <strong><label htmlFor="mothersName" style={{ marginRight: "240px", color: "black" }}>Mother Name : </label></strong>
+            <input type="text" id="mothersName" className='name-input' placeholder="Enter Mother's Name" size="40"
+              onChange={(e) => setMothersName(e.target.value)} />
 
-                  size='lg' id='form2'
-                  type='text'
-                  placeholder='Last Name'
-                  pattern='[a-zA-Z]*'
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  error={errors.lastName} />
-                {errors.lastName && (
-                  <div className='text-danger'>{errors.lastName}</div>
-                )}
-              </MDBCol>
-            </MDBRow>
-            <br />
-            <MDBRow>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form3'
-                  type='text'
-                  placeholder="Father's Name"
-                  pattern='[a-zA-Z]*'
-                  value={formData.fathersName}
-                  onChange={(e) => setFormData({ ...formData, fathersName: e.target.value })}
-                  error={errors.fathersName} />
-                {errors.fathersName && (
-                  <div className='text-danger'>{errors.fathersName}</div>
-                )}
+            <div className='errorform'>{errors.mothersName && <span>{errors.mothersName}</span>}</div>
+          </div>
+          <div className="enrollform">
+            <strong><label htmlFor="pincode" style={{ marginRight: "200px", color: "black" }}>Pincode: </label></strong>
+            <input type="text" id="pincode" className='pincode-input' placeholder="Enter Pincode" size="40"
+              onChange={(e) => setPincode(e.target.value)} />
 
-              </MDBCol>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form4'
-                  type='text'
-                  placeholder="Mother's Name"
-                  pattern='[a-zA-Z]*'
-                  value={formData.mothersName}
-                  onChange={(e) => setFormData({ ...formData, mothersName: e.target.value })}
-                  error={errors.mothersName} />
-                {errors.mothersName && (
-                  <div className='text-danger'>{errors.mothersName}</div>
-                )}
+            <div className='errorform'>{errors.pincode && <span>{errors.pincode}</span>}</div>
+          </div>
 
-              </MDBCol>
-            </MDBRow>
+          <div className='enrollform'>
+            <strong><label htmlFor="age" style={{ marginRight: "230px", color: "black" }}>Age : </label></strong>
+            <input type='number' id="age" className="age-input" placeholder="Enter Age" size="40"
+              onChange={(e) => setAge(e.target.value)} />
 
-            <br />
-            <MDBRow>
-              <MDBCol md='6'>
-                <div className='d-md-flex ustify-content-start align-items-center mb-4'>
-                  <h6 class="fw-bold mb-0 me-4">Gender: </h6>
-                  <MDBRadio
-                    name='inlineRadio'
-                    id='inlineRadio1'
-                    value='female'
-                    label='Female'
-                    inline
-                    checked={formData.gender === 'Female'}
-                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })} />
+            <div className='errorform'>{errors.age && <span>{errors.age}</span>}</div>
+          </div>
+          <div className="enrollform">
+            <strong><label htmlFor="state" style={{ marginRight: "200px", color: "black" }}>State: </label></strong>
+            <input type="text" id="state" className='state-input' placeholder="Enter State" size="40"
+              onChange={(e) => setState(e.target.value)} />
 
-                  <MDBRadio
-                    name='inlineRadio'
-                    id='inlineRadio2'
-                    value='male'
-                    label='Male'
-                    inline
-                    checked={formData.gender === 'male'}
-                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })} />
-                </div>
-                {errors.gender && <div className="text-danger">{errors.gender}</div>}
+            <div className='errorform'>{errors.state && <span>{errors.state}</span>}</div>
+          </div>
 
+          <div className='enrollform'>
+            <strong><label htmlFor="phoneNumber" style={{ marginRight: "230px", color: "black" }}>Phone Number: </label></strong>
+            <input type='number' id="phoneNumber" className="phonenumber-input" placeholder="Enter PhoneNumber" size="40"
+              onChange={(e) => setPhoneNumber(e.target.value)} />
 
+            <div className='errorform'>{errors.phoneNumber && <span>{errors.phoneNumber}</span>}</div>
+          </div>
+          <div className="enrollform">
+            <strong><label htmlFor="nationality" style={{ marginRight: "200px", color: "black" }}>Nationality: </label></strong>
+            <input type="text" id="nationality" className='nationality-input' placeholder="Enter Nationality" size="40"
+              onChange={(e) => setNationality(e.target.value)} />
 
-              </MDBCol>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form5'
-                  type='text'
-                  placeholder="Age"
-                  pattern="[1-9][0-9]{1}"
-                  value={formData.age}
-                  onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                  error={errors.age} />
-                {errors.age && (
-                  <div className='text-danger'>{errors.age}</div>
-                )}
+            <div className='errorform'>{errors.nationality && <span>{errors.nationality}</span>}</div>
+          </div>
+          <div className='enrollform'>
+            <strong><label htmlFor="alternatePhoneNumber" style={{ marginRight: "150px", color: "black" }}>Alternate Phone Number : </label></strong>
+            <input type='number' id="alternatePhoneNumber" className="phnumber-input" placeholder="Enter Alternate Phone Number" size="40"
+              onChange={(e) => setAlternatePhoneNumber(e.target.value)} />
 
-              </MDBCol>
-            </MDBRow>
-            <br />
-            <MDBRow>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form6'
-                  type='text'
-                  placeholder="Phone Number"
-                  pattern="[6-9][0-9]{9}"
-                  value={formData.phoneNumber}
-                  onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                  error={errors.phoneNumber} />
-                {errors.phoneNumber && (
-                  <div className='text-danger'>{errors.phoneNumber}</div>
-                )}
-
-              </MDBCol>
-              <MDBCol md='6'>
-                <MDBInput wrapperClass='mb-4'
-                  size='lg'
-                  id='form7'
-                  type='text'
-                  placeholder=" Alternate Phone Number"
-                  pattern="[6-9][0-9]{9}"
-                  value={formData.alternatePhoneNumber}
-                  onChange={(e) => setFormData({ ...formData, alternatePhoneNumber: e.target.value })}
-                  error={errors.alternatePhoneNumber} />
-                {errors.alternatePhoneNumber && (
-                  <div className='text-danger'>{errors.alternatePhoneNumber}</div>
-                )}
-              </MDBCol>
-            </MDBRow>
-            <br />
-            <MDBInput
-              wrapperClass='mb-4'
-              size='lg'
-              id='form8'
-              type='text'
-              placeholder="Email Id"
-              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              error={errors.email} />
-            {errors.email && (
-              <div className='text-danger'>{errors.email}</div>
-            )}
-
-            <br />
-            <h3 className="mb-5 text-uppercase fw-bold">Address Information </h3>
-
-
-            <MDBRow>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form9'
-                  type='text'
-                  placeholder='House No'
-                  pattern="^[0-9][0-9\s-]*$"
-                  value={formData.houseNo}
-                  onChange={(e) => setFormData({ ...formData, houseNo: e.target.value })}
-                  error={errors.houseNo} />
-                {errors.houseNo && (
-                  <div className='text-danger'>{errors.houseNo}</div>
-                )}
-              </MDBCol>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form10'
-                  type='text'
-                  placeholder='Street Name'
-                  pattern="[A-za-z]*"
-                  value={formData.streetName}
-                  onChange={(e) => setFormData({ ...formData, streetName: e.target.value })}
-                  error={errors.streetName} />
-                {errors.streetName && (
-                  <div className='text-danger'>{errors.streetName}</div>
-                )}
-              </MDBCol>
-            </MDBRow>
-            <br />
-            <MDBRow>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg' id='form11'
-                  type='text'
-                  placeholder='Area Name'
-                  pattern="[A-za-z]*"
-                  value={formData.areaName}
-                  onChange={(e) => setFormData({ ...formData, areaName: e.target.value })}
-                  error={errors.areaName} />
-                {errors.areaName && (
-                  <div className='text-danger'>{errors.areaName}</div>
-                )}
-              </MDBCol>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form12'
-                  type='text'
-                  placeholder='State'
-                  pattern="[A-za-z]*"
-                  value={formData.state}
-                  onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                  error={errors.state} />
-                {errors.state && (
-                  <div className='text-danger'>{errors.state}</div>
-                )}
-              </MDBCol>
-            </MDBRow>
-            <br />
-
-            <MDBRow>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form13'
-                  type='text'
-                  placeholder='Pincode'
-                  pattern="[5][0-9]{5}"
-                  value={formData.pincode}
-                  onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
-                  error={errors.pincode} />
-                {errors.pincode && (
-                  <div className='text-danger'>{errors.pincode}</div>
-                )}
-              </MDBCol>
-              <MDBCol md='6'>
-                <MDBInput
-                  wrapperClass='mb-4'
-                  size='lg'
-                  id='form14'
-                  type='text'
-                  placeholder='Nationality'
-                  pattern="[A-za-z]*"
-                  value={formData.nationality}
-                  onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
-                  error={errors.nationality} />
-                {errors.nationality && (
-                  <div className='text-danger'>{errors.nationality}</div>
-                )}
-              </MDBCol>
-            </MDBRow>
-
-            <div className="d-flex justify-content-end pt-3">
-
-              <MDBBtn className='ms-2' type='submit' onSubmit={handleSubmit} size='lg'>Enroll now</MDBBtn>
-            </div>
-
-          </MDBCardBody>
-
-        </MDBCol>
-      </MDBRow>
-
-    </MDBCard>
-
-  </MDBCol>
-</MDBRow>
-
-</MDBContainer>
+            <div className='errorform'>{errors.alternatePhoneNumber && <span>{errors.alternatePhoneNumber}</span>}</div>
+          </div>
+        </div>
+        <button className="enrollformbutton" id="addStudent"> Enroll Now</button>
       </form>
-    </>
+    </div></>
   );
-}
+};
 
-export default Form;
+export default Forms;
