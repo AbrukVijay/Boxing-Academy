@@ -107,7 +107,7 @@ const cardStyle = {
   borderRadius: '10px',
   padding: '10px',
   height: '450px',
-  cursor: 'pointer',
+  cursor: 'pointer'
 };
 const selectedCardStyle = {
   ...cardStyle,
@@ -193,7 +193,7 @@ const handleDeleteSelected = async () => {
         onClick={() => handleCardSelect(item.instituteId)} >
             
            
-         <a href={`/courses/${item.instituteId}`}   className='no-underline' > <Card.Img
+         <a href={`/admin/courses/${item.instituteId}`}   className='no-underline' > <Card.Img
                   variant="top"
                   src={item.imageUrl}
                   onError={e => {

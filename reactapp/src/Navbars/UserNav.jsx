@@ -69,9 +69,6 @@ function UserHome() {
         collapseOnSelect
         expand="lg"
         style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
           backgroundImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(255, 0, 0, 0.1))'
         }}

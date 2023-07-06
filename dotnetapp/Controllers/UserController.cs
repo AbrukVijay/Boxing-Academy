@@ -41,6 +41,7 @@ namespace dotnetapp.Controllers
                                    select new
                                    {
                                        AdmissionId = a.AdmissionId,
+                                       UserId = a.UserId,
                                        FirstName = s.FirstName,
                                        LastName = s.LastName,
                                        Mobile = s.Mobile,
@@ -291,7 +292,7 @@ namespace dotnetapp.Controllers
     var result = from i in bc.InstituteModels
                  join r in bc.RatingModels on i.InstituteId equals r.InstituteId into ratingGroup
                  from rg in ratingGroup.DefaultIfEmpty()
-                 group rg by new { i.InstituteId, i.InstituteName,i.InstituteAddress, i.ImageUrl } into g
+                 group rg by new { i.InstituteId, i.InstituteName, i.InstituteAddress, i.ImageUrl } into g
                  select new
                  {
                      g.Key.InstituteId,
@@ -308,5 +309,46 @@ namespace dotnetapp.Controllers
 
         }
 
+        [HttpGet("user/viewAdmission1/{admissionId}")]
+public IActionResult ViewAdmission1(int admissionId)
+{
+    var admissionCourse = (from c in bc.CourseModels
+                           from a in bc.AdmissionModels
+                           from s in bc.StudentModels
+                           where a.AdmissionId == admissionId && s.StudentId == a.StudentId && c.CourseId == a.CourseId
+                           select new
+                           {
+                               AdmissionId = a.AdmissionId,
+                               StudentId = a.StudentId,
+                               FirstName = s.FirstName,
+                               LastName = s.LastName,
+                               Mobile = s.Mobile,
+                               Age = s.Age,
+                               Gender = s.Gender,
+                               HouseNo = s.HouseNo,
+                               StreetName = s.StreetName,
+                               AreaName = s.AreaName,
+                               State = s.State,
+                               Pincode = s.Pincode,
+                               Nationality = s.Nationality,
+                               CourseId = s.CourseId,
+                               FatherName = s.FatherName,
+                               MotherName = s.MotherName,
+                               Email = s.Email,
+                               AlternateMobile = s.AlternateMobile,
+                               CourseName = c.CourseName,
+                               CourseDescription = c.CourseDescription,
+                               CourseDuration = c.CourseDuration,
+                               CourseTiming = c.CourseTiming,
+                               Instituteid = c.InstituteId,
+                               DateOfJoining = a.DateOfJoining,
+                               EndDate = a.EndDate
+                           }).ToList();
+
+    return Ok(admissionCourse);
+}
+
     }
+
+
 }

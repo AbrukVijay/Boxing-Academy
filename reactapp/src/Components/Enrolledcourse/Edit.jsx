@@ -9,7 +9,7 @@ const EditStudent = () => {
   const { id } = useParams();
   //const [course, setCourse] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [edit, setEdit] = useState('');
+  const [edit, setEdit] = useState({});
   
   const [errors, setErrors] = useState({});
   //const [institutes, setInstitutes] = useState([]);
@@ -22,8 +22,9 @@ const EditStudent = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5232/api/User/user/viewAdmission?userId=${id}`);
+        const response = await axios.get(`http://localhost:5232/api/User/user/viewAdmission1/${id}`);
         setEdit(response.data);
+        console.log(response.data)
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching details:', error);
@@ -42,21 +43,23 @@ const EditStudent = () => {
     setUpdateSuccess(false);
 
     const updatedDetails = {
+      studentId:edit.studentId,
       firstName:edit.firstName,
        lastName:edit.lastName,
-       Mobile:edit.Mobile,
-       Age:edit.Age,
-      Gender:edit.Gender,
-      HouseNo:edit.HouseNo, 
+       mobile:edit.mobile,
+       age:edit.age,
+      gender:edit.gender,
+      houseNo:edit.houseNo, 
       streetName:edit.streetName,
       areaName:edit.areaName,
-      State:edit.State,
-      Pincode:edit.Pincode,
-      Nationality:edit.Nationality,
+      state:edit.state,
+      pincode:edit.pincode,
+      nationality:edit.nationality,
         fatherName:edit.fatherName,
         motherName:edit.motherName,
-        Email:edit.Email,
-        alternateMobile:edit.alternateMobile
+        email:edit.email,
+        alternateMobile:edit.alternateMobile,
+        
        
         
     
@@ -105,28 +108,28 @@ const EditStudent = () => {
       errors.motherName = 'Mother Name is required';
     }
 
-    if (!edit.Gender || edit.Gender.trim() === '') {
-      errors.Gender = 'Gender is required';
+    if (!edit.gender || edit.gender.trim() === '') {
+      errors.gender = 'Gender is required';
     }
 
-    if (!edit.Age || edit.Age.trim() === '') {
-      errors.Age = 'Age is required';
+    if (!edit.age || edit.age.trim() === '') {
+      errors.age = 'Age is required';
     }
 
-    if (!edit.Email || edit.Email.trim() === '') {
-      errors.Email = 'Email is required';
+    if (!edit.email || edit.email.trim() === '') {
+      errors.email = 'Email is required';
     }
 
-    if (!edit.Mobile || edit.Mobile.trim() === '') {
-      errors.Mobile = 'Mobile Number is required';
+    if (!edit.mobile || edit.mobile.trim() === '') {
+      errors.mobile = 'Mobile Number is required';
     }
 
     if (!edit.alternateMobile || edit.alternateMobile.trim() === '') {
       errors.alternateMobile = 'Alternate Mobile Number is required';
     }
 
-    if (!edit.HouseNo || edit.HouseNo.trim() === '') {
-      errors.HouseNo = 'House Number is required';
+    if (!edit.houseNo || edit.houseNo.trim() === '') {
+      errors.houseNo = 'House Number is required';
     }
 
     if (!edit.streetName || edit.streetName.trim() === '') {
@@ -137,16 +140,16 @@ const EditStudent = () => {
       errors.areaName = 'Area Name is required';
     }
 
-    if (!edit.State || edit.State.trim() === '') {
-      errors.State = 'State is required';
+    if (!edit.state || edit.state.trim() === '') {
+      errors.state = 'State is required';
     }
 
-    if (!edit.Pincode || edit.Pincode.trim() === '') {
+    if (!edit.pincode || edit.pincode.trim() === '') {
       errors.Pincode = 'Pincode is required';
     }
 
-    if (!edit.Nationality || edit.Nationality.trim() === '') {
-      errors.Nationality = 'Nationality is required';
+    if (!edit.nationality || edit.nationality.trim() === '') {
+      errors.nationality = 'Nationality is required';
     }
 
 
@@ -261,8 +264,8 @@ const EditStudent = () => {
               <input
                 type='text'
                 id="Email"
-                value={edit.Email}
-                onChange={(e) => setEdit({ ...edit, Email: e.target.value })} />
+                value={edit.email}
+                onChange={(e) => setEdit({ ...edit, email: e.target.value })} />
               {errors.Email && <div>{errors.Email}</div>}
             </div>
 
@@ -282,9 +285,9 @@ const EditStudent = () => {
               <input
                 type="text"
                 id="HouseNo"
-                value={edit.HouseNo}
-                onChange={(e) => setEdit({ ...edit, HouseNo: e.target.value })} />
-              {errors.HouseNo && <div>{errors.HouseNo}</div>}
+                value={edit.houseNo}
+                onChange={(e) => setEdit({ ...edit, houseNo: e.target.value })} />
+              {errors.houseNo && <div>{errors.houseNo}</div>}
             </div>
 
 
@@ -335,9 +338,9 @@ const EditStudent = () => {
               <input
                 type="text"
                 id="Gender"
-                value={edit.Gender}
-                onChange={(e) => setEdit({ ...edit, Gender: e.target.value })} />
-              {errors.Gender && <div>{errors.Gender}</div>}
+                value={edit.gender}
+                onChange={(e) => setEdit({ ...edit, gender: e.target.value })} />
+              {errors.gender && <div>{errors.gender}</div>}
             </div>
 
 
@@ -346,9 +349,9 @@ const EditStudent = () => {
               <input
                 type="text"
                 id="Pincode"
-                value={edit.Pincode}
-                onChange={(e) => setEdit({ ...edit, Pincode: e.target.value })} />
-              {errors.Pincode && <div>{errors.Pincode}</div>}
+                value={edit.pincode}
+                onChange={(e) => setEdit({ ...edit, pincode: e.target.value })} />
+              {errors.pincode && <div>{errors.pincode}</div>}
             </div>
 
 
@@ -357,9 +360,9 @@ const EditStudent = () => {
               <input
                 type='number'
                 id="Age"
-                value={edit.Age}
-                onChange={(e) => setEdit({ ...edit, Age: e.target.value })} />
-              {errors.Age && <div>{errors.Age}</div>}
+                value={edit.age}
+                onChange={(e) => setEdit({ ...edit, age: e.target.value })} />
+              {errors.age && <div>{errors.age}</div>}
             </div>
 
             <div className="enrollededit">
@@ -367,9 +370,9 @@ const EditStudent = () => {
               <input
                 type="text"
                 id="State"
-                value={edit.State}
-                onChange={(e) => setEdit({ ...edit, State: e.target.value })} />
-              {errors.State && <div>{errors.State}</div>}
+                value={edit.state}
+                onChange={(e) => setEdit({ ...edit, state: e.target.value })} />
+              {errors.state && <div>{errors.state}</div>}
             </div>
 
             <div className='enrollededit'>
@@ -377,9 +380,9 @@ const EditStudent = () => {
               <input
                 type='number'
                 id="Mobile"
-                value={edit.Mobile}
-                onChange={(e) => setEdit({ ...edit, Mobile: e.target.value })} />
-              {errors.Mobile && <div>{errors.Mobile}</div>}
+                value={edit.mobile}
+                onChange={(e) => setEdit({ ...edit, mobile: e.target.value })} />
+              {errors.mobile && <div>{errors.mobile}</div>}
             </div>
 
 
@@ -389,9 +392,9 @@ const EditStudent = () => {
               <input
                 type="text"
                 id="Nationality"
-                value={edit.Nationality}
-                onChange={(e) => setEdit({ ...edit, Nationality: e.target.value })} />
-              {errors.Nationality && <div>{errors.Nationality}</div>}
+                value={edit.nationality}
+                onChange={(e) => setEdit({ ...edit, nationality: e.target.value })} />
+              {errors.nationality && <div>{errors.nationality}</div>}
             </div>
 
 

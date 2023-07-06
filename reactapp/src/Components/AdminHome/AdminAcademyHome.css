@@ -2,6 +2,10 @@
   background-color: #28d15d;
   background-image: linear-gradient(to bottom, #137c8c, #5d7568);
 }
+.card{
+  background:rgb(0, 0, 0);
+  background-image: linear-gradient(to bottom,rgba(0, 0, 0, 0.7), rgba(255, 0, 0, 0.4));
+}
 
 
 .card .card-img-top {
@@ -21,11 +25,13 @@ padding-top: 30px;
 }
 .card-title {
   text-align: center;
+  color: antiquewhite;
 
 }
 
 .card-text strong {
   font-weight: bold;
+  color: antiquewhite;
 }
 
 
@@ -53,6 +59,7 @@ padding-top: 30px;
 
 #deleteAcademy{
   padding: 2px;
+  color: #f8f3f3;
   
 }
 .adminsearch{

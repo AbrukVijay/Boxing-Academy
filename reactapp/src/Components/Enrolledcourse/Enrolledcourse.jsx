@@ -146,7 +146,7 @@ function EnrolledCourse() {
                           <strong>End Date:</strong> {val.endDate}
                           <br />
                           <br></br>
-                          <a href={`/user/learn/${val.courseName}/${val.courseId}`}><Button variant="primary" className="button-spacing" >My learning</Button></a>
+                          <a href={`/user/learn/${val.courseName}/${val.userId}/${val.courseId}`}><Button variant="primary" className="button-spacing" >My learning</Button></a>
                           <EditOutlinedIcon
                             className="edit-icon icon-spacing"
                             onClick={() => handleEditCourse(val.admissionId)}

@@ -118,7 +118,7 @@ const ProgressBar4 = () => {
     <div style={{position:'fixed',height:'50px',width:'100%'}}>
             <UserHome/>
         </div><br/>
-    <div  style={{position:'fixed',height:'40px',marginTop:'45.5px',width:'100%'}}>
+    <div  style={{position:'fixed',height:'40px',width:'100%'}}>
     {/* <div style={{backgroundColor:'black',position:'fixed',width:'100%'}}> */}
     <div style={{display:'grid',gridTemplateColumns:'1.8fr  .1fr',backgroundColor:'#27b92b',borderRadius:'5px'}}>
       <div
