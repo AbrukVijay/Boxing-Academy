@@ -20,7 +20,8 @@ textarea{
   
 }
 .AdminAcreg1{
-  background-image:linear-gradient(to bottom, #137c8c, #5d7568);
+  background-image: linear-gradient(to bottom, #b0e0e6, #b0e0e6);
+  background-color: 50 #b0e0e6;
   height: 878px;
 }
 .error{
@@ -65,15 +66,17 @@ h1{
 }
 #academyName,#imageUrl,#AcademyLocation,#ContactNumber,#emailId{
   height: 35px;
-  border-radius: 15px;
+  border-radius: 10px;
+  background-color: white;
+  border: 2px solid white;
 }
 .add-admin-form-container{
-  margin-left: 10px;
+  margin-left: 90px;
     width: 500px;
-    background-image: linear-gradient(to bottom,#067a78,#a3ada8);
+    background-image: linear-gradient(to bottom,#18a9a6,#a3ada8);
     /* background-image: linear-gradient(to bottom,#067a78,#a3ada8); */
     border-radius: 20px;
     height: 870px;
-    margin-top: 20px;
+    padding: 20px;
     
 }

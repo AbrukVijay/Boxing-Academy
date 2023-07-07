@@ -1,11 +1,60 @@
 .admin-page {
-  background-color: #28d15d;
-  background-image: linear-gradient(to bottom, #137c8c, #5d7568);
+  background-image: linear-gradient(to bottom, #b0e0e6, #b0e0e6);
+  background-color: 50 #b0e0e6;
+  height: 1200px;
 }
-.card{
+.admin-page .card{
   background:rgb(0, 0, 0);
   background-image: linear-gradient(to bottom,rgba(0, 0, 0, 0.7), rgba(255, 0, 0, 0.4));
 }
+#AcsearchInput1 {
+  color: black;
+  background-color: white;
+  border: 2px solid white;
+  height: 35px;
+  margin: 8px;
+  padding: 10px 30px;
+  width: 350px;
+  
+}
+
+.ActemplateContainer1 > .AcsearchInput_Container1 input {
+  color: white;
+  width: 70%;
+  padding: 20px;
+  margin: 6% 0;
+  outline: none;
+  border-radius: 5px;
+  
+}
+.AcsearchInput_Container1 {
+  color: white; 
+ margin-top: 0px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin-bottom: 20px;
+ 
+}
+
+.ActemplateContainer1 > .AcsearchInput_Container1 button {
+  color: white;
+  width: 7%;
+  height: 35px;
+  margin: 8px;
+  border: none;
+  background-color: blue ; 
+  border-radius: 5px;
+  padding: 10px 20px;
+  outline: none; 
+  text-align: center;
+ 
+   }   
+
+.AcsearchInput_Container1 button:hover{
+    color: white;
+    font-weight: bold;
+  }   
 
 
 .card .card-img-top {
@@ -62,21 +111,20 @@ padding-top: 30px;
   color: #f8f3f3;
   
 }
-.adminsearch{
+
+#searchButton11 button:hover{
   color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-left: 30px;
-  height: 28px;
-  width: 100px;
-  text-align: center;
-  margin-top: 0px; 
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
- 
-}
+  font-weight: bold;
+}  
+#root > div.admin-page > div.d-flex.justify-content-center.col-sm-16 > div{
+  color: black;
+  background-color: white;
+  border: 2px solid white;
+  height: 35px;
+  margin: 8px;
+  padding: 10px 30px;
+  width: 350px;
+} 
 .no-underline {
   text-decoration: none;
 }
@@ -85,7 +133,7 @@ display: flex;
 justify-content: flex-end;
 margin-right: 10px;
 position: absolute;
-top: 80px;
+top: 20%;
 right: 10px;
 }
 

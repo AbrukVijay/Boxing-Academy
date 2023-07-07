@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faStarHalfAlt as halfStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularEmptyStar } from '@fortawesome/free-regular-svg-icons';
 import UserHome from '../../Navbars/UserNav';
+import { Modal } from 'react-bootstrap'; // Import Modal component
+
 
 
 import './Rating.css';
@@ -43,10 +45,24 @@ const Rating = () => {
   const [submittedReview, setSubmittedReview] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [userId, setUserId] = useState(null); 
+  const [hasUserRated, setHasUserRated] = useState(false); // Track whether the user has already rated
+  const [showAlert, setShowAlert] = useState(false); // Track whether to show the alert
+
+
 
   useEffect(() => {
     getuserId();
+    fetchReviews();
+    const storedHasUserRated = localStorage.getItem(`hasUserRated-${instituteId}-${userId}`);
+    if (storedHasUserRated === 'true') {
+      setHasUserRated(true);
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(`hasUserRated-${instituteId}-${userId}`, hasUserRated.toString());
+  }, [hasUserRated]);
+ 
 
   const getuserId = () => {
     const email = localStorage.getItem('email');
@@ -86,6 +102,12 @@ const Rating = () => {
     setHoverRating(hoveredRating);
   };
   const handleSubmit = async () => {
+    if (hasUserRated) {
+      setShowAlert(true);
+      setRating(0);
+      setComment('');
+      return; // Exit if the user has already rated
+    }
     const review = {
       userId: userId,
       rating: rating,
@@ -98,6 +120,7 @@ const Rating = () => {
       setSubmittedReview(review);
       setRating(0);
       setComment('');
+      setHasUserRated(true);
       // fetchReviews(); // Refresh the reviews after submitting a new review
     } catch (error) {
       console.log('Error submitting review:', error);
@@ -150,7 +173,22 @@ const Rating = () => {
             <br/>
           </div>
         ))}
-      </div> </div></>
+      </div> </div>
+      <Modal show={showAlert} onHide={() => setShowAlert(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Rating Submission</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          You have already submitted a rating for this institute.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAlert(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal></>
+
+      
    
     
   );

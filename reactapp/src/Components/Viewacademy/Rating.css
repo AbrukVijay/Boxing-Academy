@@ -1,3 +1,5 @@
+/* Rating.css */
+
 .rating-page-container {
   display: flex;
   flex-direction: column;
@@ -94,7 +96,7 @@
 .review p {
   margin-bottom: 5px;
 }
-.star {
+span.star {
   color: gray;
   cursor: pointer;
 }

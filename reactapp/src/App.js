@@ -6,6 +6,7 @@ import Signup from './Components/auth/Signup';
 import AdminAcademyhome from './Components/AdminHome/AdminAcademyHome';
 import AdminAcademyAdd from './Components/AdminHome/AdminacademyAdd';
 import AdmineditAcademy from './Components/AdminHome/AdmineditAcademy';
+import AdminCoursedemo from './Components/AdminHome/Admincoursedemo';
 import AdminCourse from './Components/Admincourse/adminCourse';
 import AddCourse from './Components/Admincourse/AddCourse';
 import EditCourse from './Components/Admincourse/EditCourse';
@@ -20,10 +21,11 @@ import Cardss from './Components/Viewacademy/Cardss';
 import Forms from './Components/Viewacademy/Forms';
 import EditStudent1 from './Components/AdminStudent/AdminstudentEdit';
 import ProgressBar1 from './Components/CoursePages/CourseComponent1/BasicBoxing';
-import ProgressBar2 from './Components/CoursePages/CourseComponent2/IntermediateBoxing';
-import ProgressBar3 from './Components/CoursePages/CourseComponent3/StrengthBoxing';
-import ProgressBar4 from './Components/CoursePages/CourseComponent4/SparringBoxing';
-import ProgressBarrr from './Components/CoursePages/AlternateCoursePage';
+import ProgressBar2 from './Components/CoursePages/CourseComponent2/IntermediateBoxingPage';
+import ProgressBar3 from './Components/CoursePages/CourseComponent3/StrengthBoxingPage';
+import ProgressBar4 from './Components/CoursePages/CourseComponent4/SparringBoxingPage';
+import ProgressBarrr from './AlternateCoursePage';
+// import ProgressBar5 from './Components/CoursePages/CourseComponent5/FitnessBoxing';
 
 
 function App() {
@@ -43,6 +45,10 @@ function App() {
         <Route
           path="/admin/editacademy/:id1"
           element={<PrivateRoute element={<AdmineditAcademy />} authRole="Admin" allowedRoles={['Admin']} />}
+        />
+        <Route
+          path="/admin/courses/:instituteId"
+          element={<PrivateRoute element={<AdminCoursedemo />} authRole="Admin" allowedRoles={['Admin']} />}
         />
          <Route
           path="/admin/course"
@@ -74,7 +80,7 @@ function App() {
          <Route path="/user/rating/:instituteId"
           element={<PrivateRoute element={<Rating />} authRole="User" allowedRoles={['User']} />}
         />
-        <Route path="/user/courses/:instituteId"
+        <Route path="/user/courses"
           element={<PrivateRoute element={<Cardss/>} authRole="User" allowedRoles={['User']} />}
         />
         <Route path="/user/enrolledcourse"
@@ -86,7 +92,7 @@ function App() {
         <Route path="/user/enrolledcourseedit/:id"
           element={<PrivateRoute element={<EditStudent/>} authRole="User" allowedRoles={['User']} />}
         /> 
-        <Route path="/user/enrollform/:instituteId/:courseId"
+        <Route path="/user/enrollform"
           element={<PrivateRoute element={<Forms/>} authRole="User" allowedRoles={['User']} />}
         />
         <Route path="/user/learn/:course/:Id/:courseId"
@@ -104,14 +110,15 @@ const RenderComponent = ({})=>{
   if(course === 'Strength training'){
       componentToRender = <ProgressBar1/>;
   }
-  else if(course === 'Cardio Boxing'){
+  else if(course === 'Strength and Conditioning for Boxers'){
     componentToRender = <ProgressBar2/>;
   }
-  else if(course === 'Amateur Boxing'){
+  else if(course === 'BasicBoxing'){
     componentToRender = <ProgressBar3/>;
-  }else if(course === 'Professional Boxing'){
+  }else if(course === 'Boxing for Beginners'){
     componentToRender = <ProgressBar4/>;
-  }else{
+   }
+  else{
     componentToRender = <ProgressBarrr/>;
   }
   return(

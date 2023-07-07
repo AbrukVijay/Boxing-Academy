@@ -150,6 +150,7 @@ fetchCourses();
     <>
     <AdminHome/>
      <ToastContainer />
+     <br></br>
       <div className="Acapp-container">
         <div className="ActemplateContainer">
           <div className="AcsearchInput_Container">
@@ -165,6 +166,7 @@ fetchCourses();
           <button id="searchCourse" type="submit">
             Search
           </button>
+          <br></br>
         </div>
           <div className="Actemplate_Container" >
           <div className="button-container">

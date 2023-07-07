@@ -24,7 +24,13 @@ const EditStudent = () => {
       try {
         const response = await axios.get(`http://localhost:5232/api/User/user/viewAdmission1/${id}`);
         setEdit(response.data);
-        console.log(response.data)
+        
+        const api = response.data;
+            console.log(api);
+            if (api.length > 0) {
+                const api_data = api[0];
+                setEdit(api_data);
+              }
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching details:', error);
@@ -34,6 +40,7 @@ const EditStudent = () => {
 
     fetchDetails();
   }, [id]);
+
 
   
     

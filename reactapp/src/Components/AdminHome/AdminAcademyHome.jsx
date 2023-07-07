@@ -66,9 +66,14 @@ function Rate({ averageRating }) {
     //Delete Theme Api
     axios.delete('http://localhost:5232/api/Admin/DeleteInstitute/'+id)
       .then(response => {
-        alert('SuccessS');
         if(response.data==="Academy Deleted")
-        window.location.reload();
+        Swal.fire({
+          icon: 'success',
+          title: 'Academy Deleted',
+          text: 'The Academy has been Deleted successfully.',
+        });
+        
+ 
       })
       .catch(error => console.log(error));
   };
@@ -153,21 +158,27 @@ const handleDeleteSelected = async () => {
   return (
     <>
       <AdminHome />
-      {/* <BoxingAcademy></BoxingAcademy> */}
       <div className="admin-page">
-        <br />
-        <Col sm={16} className="d-flex justify-content-center">
-          <div className='admins' >
-          <input size={'40'} id="searchInput" type="text" placeholder="Type here to search Academy" onChange={(event) => {
-            setSearchKeyword(event.target.value);
-          }} />
-            <Button id="searchButton" className="adminsearch"  >
-              Search
-            </Button>
-            </div>
-        </Col>
-        <br />
-        <br />
+        <br></br>
+        <div className="Acapp-container1">
+        <div className="ActemplateContainer1">
+          <div className="AcsearchInput_Container1">
+          <input
+            id="AcsearchInput1"
+            type="text"
+            className="adminCourse-input"
+            placeholder="Type here to search Academy"
+            onChange={(event) => {
+              setSearchKeyword(event.target.value);
+            }}
+          />
+          <button id="searchAcademy" type="submit">
+            Search
+          </button>
+          </div>
+          </div>
+          </div>
+          <br></br>
         <Container className='mt-3'>
           <div className='button-select'>
         {selectedCards.length >0 && (

@@ -78,7 +78,7 @@ function UserHome() {
             Boxing Nexus
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav" style={{ color: 'red', filter: 'brightness(110%)' }}>
+          <Navbar.Collapse id="responsive-navbar-nav" style={{ color: 'white', filter: 'brightness(110%)' }}>
             <Nav className="me-auto" style={{ marginLeft: '375px' }}>
               <Button id="userAcademy" variant="transparent">
                 <Nav.Link href="/user/viewacademy" style={{ color: 'white' }}>Academy</Nav.Link>

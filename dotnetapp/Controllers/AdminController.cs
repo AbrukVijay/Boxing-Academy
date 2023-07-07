@@ -7,7 +7,7 @@
 // {
 //     public class AdminController
 //     {
-        
+
 //     }
 // }
 
@@ -82,28 +82,40 @@ namespace dotnetapp.Controllers
         //delete student 
         //[HttpDelete("Deletestudent/{studentId}")]
 
-        [HttpDelete("Deletestudent/{studentId}")]
+        [HttpDelete("DeleteStudent/{studentId}")]
         public async Task<IActionResult> DeleteStudent(int studentId)
         {
-            var student = await dc.StudentModels.FindAsync(studentId);
-
-            if (student == null)
+            try
             {
-                return NotFound(); // Student not found
+                var student = await dc.StudentModels.FindAsync(studentId);
+
+                if (student == null)
+                {
+                    return NotFound();
+                }
+
+
+                var admissions = await dc.AdmissionModels.Where(a => a.StudentId == studentId).ToListAsync();
+                dc.AdmissionModels.RemoveRange(admissions);
+
+
+                dc.StudentModels.Remove(student);
+
+                await dc.SaveChangesAsync();
+
+                return Ok("Student and associated records deleted");
             }
-
-            var dependentAdmissions = await dc.AdmissionModels
-                .Where(a => a.StudentId == studentId)
-                .ToListAsync();
-
-            if (dependentAdmissions.Count > 0)
+            catch (Exception ex)
             {
-                return Conflict("Cannot delete student because they have associated admissions."); // Conflict error
-            }
 
-            dc.StudentModels.Remove(student);
-            await dc.SaveChangesAsync();
-            return Ok("Student Deleted");
+                var errorMessage = "An error occurred while deleting the student and associated records.";
+                if (ex.InnerException != null)
+                {
+                    errorMessage += " Inner Exception: " + ex.InnerException.Message;
+                }
+
+                return StatusCode(500, errorMessage);
+            }
         }
 
         // public async Task<IActionResult> DeleteStudent(int studentId)
@@ -156,13 +168,13 @@ namespace dotnetapp.Controllers
                 std.AlternateMobile = student.AlternateMobile;
                 std.Email = student.Email;
                 std.CourseId = student.CourseId;
-                std.HouseNo =student.HouseNo;
+                std.HouseNo = student.HouseNo;
                 std.StreetName = student.StreetName;
                 std.Pincode = student.Pincode;
                 std.AreaName = student.AreaName;
                 std.State = student.State;
 
-                
+
 
                 dc.StudentModels.Update(std);
                 await dc.SaveChangesAsync();
@@ -255,23 +267,48 @@ namespace dotnetapp.Controllers
         [HttpDelete("DeleteCourse/{courseId}")]
         public async Task<IActionResult> DeleteCourse(int courseId)
         {
-            var course = await dc.CourseModels.FindAsync(courseId);
             try
             {
-                //var course = await dc.CourseModels.FindAsync(courseId);
+                var course = await dc.CourseModels.FindAsync(courseId);
+
                 if (course == null)
                 {
-                    return BadRequest("Course Not Found");
+                    return NotFound(); // Course not found
                 }
-            dc.CourseModels.Remove(course);
-            await dc.SaveChangesAsync();
-            return Ok("Course Deleted");
+                var progresses = await dc.ProgressModels.Where(p => p.CourseId == courseId).ToListAsync();
+                dc.ProgressModels.RemoveRange(progresses);
 
-        }
-        catch 
-        {
-            return StatusCode(500, "An error accoured while deleting the course.");
-        }
+
+                var admissions = await dc.AdmissionModels.Where(a => a.CourseId == courseId).ToListAsync();
+                dc.AdmissionModels.RemoveRange(admissions);
+
+
+
+                var students = await dc.StudentModels.Where(s => s.CourseId == courseId).ToListAsync();
+                dc.StudentModels.RemoveRange(students);
+
+
+                dc.CourseModels.Remove(course);
+
+                await dc.SaveChangesAsync();
+
+                return Ok("Course and associated records deleted");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Handle specific database update exceptions
+                var errorMessage = "An error occurred while deleting the course and associated records. ";
+                if (ex.InnerException != null)
+                {
+                    errorMessage += "Inner Exception: " + ex.InnerException.Message;
+                }
+                return StatusCode(500, errorMessage);
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                return StatusCode(500, "An error occurred while deleting the course and associated records. Error: " + ex.Message);
+            }
         }
 
 
@@ -391,17 +428,42 @@ namespace dotnetapp.Controllers
         [HttpDelete("DeleteInstitute/{instituteId}")]
         public async Task<IActionResult> DeleteInstitute(int instituteId)
         {
-            var institute = await dc.InstituteModels.Include(i => i.CourseModels).FirstOrDefaultAsync(i => i.InstituteId == instituteId);
-
-            if (institute == null)
+            try
             {
-                return NotFound(); // Institute not found
+                var institute = await dc.InstituteModels.FindAsync(instituteId);
+
+                if (institute == null)
+                {
+                    return NotFound(); // Institute not found
+                }
+
+                var admissions = await dc.AdmissionModels.Where(a => a.InstituteId == instituteId).ToListAsync();
+                dc.AdmissionModels.RemoveRange(admissions);
+
+                var ratings = await dc.RatingModels.Where(r => r.InstituteId == instituteId).ToListAsync();
+                dc.RatingModels.RemoveRange(ratings);
+
+                var courses = await dc.CourseModels.Where(c => c.InstituteId == instituteId).ToListAsync();
+                dc.CourseModels.RemoveRange(courses);
+
+
+                dc.InstituteModels.Remove(institute);
+
+                await dc.SaveChangesAsync();
+
+                return Ok("Institute and associated records deleted");
             }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                var errorMessage = "An error occurred while deleting the institute and associated records.";
+                if (ex.InnerException != null)
+                {
+                    errorMessage += " Inner Exception: " + ex.InnerException.Message;
+                }
 
-            dc.InstituteModels.Remove(institute);
-            await dc.SaveChangesAsync();
-
-            return Ok("Institute Deleted");
+                return StatusCode(500, errorMessage);
+            }
         }
 
 
@@ -484,7 +546,7 @@ namespace dotnetapp.Controllers
                               where Inst.InstituteId == Cour.InstituteId && Cour.InstituteId == InstId
                               select new
                               {
-                                CourseId=Cour.CourseId,
+                                  CourseId = Cour.CourseId,
                                   CourseName = Cour.CourseName,
                                   CourseDescription = Cour.CourseDescription,
                                   CourseDuration = Cour.CourseDuration,
@@ -570,10 +632,10 @@ namespace dotnetapp.Controllers
 
             var instrat = await Task.Run(() =>
             {
-                
-              return  (from i in dc.InstituteModels
+
+                return (from i in dc.InstituteModels
                         join r in dc.RatingModels on i.InstituteId equals r.InstituteId
-                        group r by new { i.InstituteName, i.InstituteAddress ,i.ImageUrl,i.InstituteId} into g
+                        group r by new { i.InstituteName, i.InstituteAddress, i.ImageUrl, i.InstituteId } into g
                         select new
                         {
                             InstituteId = g.Key.InstituteId,
@@ -593,21 +655,21 @@ namespace dotnetapp.Controllers
         {
             var students = await Task.Run(() =>
             {
-             return (from st in dc.StudentModels
-            from cs in dc.CourseModels
-            where st.CourseId == cs.CourseId
-            select new
-            {
-                StudentId = st.StudentId,
-                FirstName = st.FirstName,
-                LastName = st.LastName,
-                CourseName = cs.CourseName,
-                Mobile = st.Mobile
+                return (from st in dc.StudentModels
+                        from cs in dc.CourseModels
+                        where st.CourseId == cs.CourseId
+                        select new
+                        {
+                            StudentId = st.StudentId,
+                            FirstName = st.FirstName,
+                            LastName = st.LastName,
+                            CourseName = cs.CourseName,
+                            Mobile = st.Mobile
 
-            }).ToList();
+                        }).ToList();
 
             });
-             
+
 
             return Ok(students);
 
@@ -650,7 +712,7 @@ namespace dotnetapp.Controllers
             return Ok(instcou);
         }
 
-        
+
 
         [HttpGet("Getinstrat")]
         public async Task<IActionResult> Getinstrat()
@@ -661,7 +723,7 @@ namespace dotnetapp.Controllers
     var result = from i in dc.InstituteModels
                  join r in dc.RatingModels on i.InstituteId equals r.InstituteId into ratingGroup
                  from rg in ratingGroup.DefaultIfEmpty()
-                 group rg by new { i.InstituteId, i.InstituteName,i.InstituteAddress, i.ImageUrl } into g
+                 group rg by new { i.InstituteId, i.InstituteName, i.InstituteAddress, i.ImageUrl } into g
                  select new
                  {
                      g.Key.InstituteId,
@@ -698,22 +760,22 @@ namespace dotnetapp.Controllers
         [HttpPost("AddProgressDetails")]
         public async Task<IActionResult> AddProgressDetails([FromBody] ProgressModel p)
         {
-            
+
             var progress = new ProgressModel
             {
                 Progresspercentage = p.Progresspercentage,
-                
+
                 Timetamp = p.Timetamp,
                 CourseId = p.CourseId,
                 UserId = p.UserId,
                 Status = p.Status
             };
 
-            
+
             dc.ProgressModels.Add(progress);
 
             await dc.SaveChangesAsync();
-            
+
 
             // Return a success response
             return Ok(progress);
@@ -747,7 +809,7 @@ namespace dotnetapp.Controllers
 
         [HttpPost("RateInstitute")]
 
-        public async Task<IActionResult> RateInstitute( RatingModel R)
+        public async Task<IActionResult> RateInstitute(RatingModel R)
         {
             if (!ModelState.IsValid)
             {
@@ -785,7 +847,7 @@ namespace dotnetapp.Controllers
 
 
     }
-    
 
-    
+
+
 }

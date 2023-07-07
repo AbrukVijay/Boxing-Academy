@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import './Forms.css';
 import UserHome from '../../Navbars/UserNav';
+import Swal from 'sweetalert2';
 
 
 const Forms = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [gender, setGender] = useState('');
-    const [fathersName, setFathersName] = useState('');
-    const [mothersName, setMothersName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [alternatePhoneNumber, setAlternatePhoneNumber] = useState('');
+    const [fatherName, setFathersName] = useState('');
+    const [motherName, setMothersName] = useState('');
+    const [mobile, setPhoneNumber] = useState('');
+    const [alternateMobile, setAlternatePhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [age, setAge] = useState('');
     const [houseNo, setHouseNo] = useState('');
     const [streetName, setStreetName] = useState('');
-    const [area, setArea] = useState('');
+    const [areaName, setArea] = useState('');
     const [pincode, setPincode] = useState('');
     const [state, setState] = useState('');
     const [nationality, setNationality] = useState('');
     const {  instituteId, courseId } = useParams();
+    const [submissionStatus, setSubmissionStatus] = useState(null);
+
+
+    const location = useLocation();
+    
 
 
     // useEffect(() => {
-    //   getUserIdAndFetchAdmission();
+     
     // }, []);
   
     // const getUserIdAndFetchAdmission = () => {
@@ -45,6 +51,10 @@ const Forms = () => {
     // };
   
   const [errors, setErrors] = useState({});
+
+  
+
+
 
   const validateForm = () => {
     const newErrors = {}; 
@@ -68,27 +78,27 @@ const Forms = () => {
       newErrors.gender = 'Please enter a valid gender';
     }
     const fathersNameRegex = /^[a-zA-Z ]+$/;
-    if (!fathersName.trim()) {
+    if (!fatherName.trim()) {
       newErrors.fathersName ="Father's name is required";
-    } else if (!fathersNameRegex.test(fathersName)) {
+    } else if (!fathersNameRegex.test(fatherName)) {
       newErrors.fathersName = 'Please enter a valid  name';
     }
     const mothersNameRegex = /^[a-zA-Z ]+$/;
-    if (!mothersName.trim()) {
+    if (!motherName.trim()) {
       newErrors.mothersName = "Mother's name is required";
-    } else if (!mothersNameRegex.test(mothersName)) {
+    } else if (!mothersNameRegex.test(motherName)) {
       newErrors.mothersName = 'Please enter a valid  name';
     }
     const phoneNumberRegex = /^\d{10}$/; 
-    if (!phoneNumber.trim()) {
+    if (!mobile.trim()) {
      newErrors.phoneNumber = 'Phone Number is required';
-    } else if (!phoneNumberRegex.test(phoneNumber)) {
+    } else if (!phoneNumberRegex.test(mobile)) {
      newErrors.phoneNumber = 'Please enter a valid phonenumber';
     }
     const alternatePhoneNumberRegex = /^[0-9]+$/;
-    if (!alternatePhoneNumber.trim()) {
+    if (!alternateMobile.trim()) {
       newErrors.alternatePhoneNumber= 'Alternate Phone Number is required';
-    }else if (!alternatePhoneNumberRegex.test(alternatePhoneNumber)) {
+    }else if (!alternatePhoneNumberRegex.test(alternateMobile)) {
       newErrors.alternatePhoneNumber= 'Please Enter  Alternate Phone Number';
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -116,9 +126,9 @@ const Forms = () => {
      newErrors.streetName = 'Please enter a valid street name';
     }
     const areaRegex = /^[a-zA-Z0-9\s]+$/;
-    if (!area.trim()) {
+    if (!areaName.trim()) {
      newErrors.area = 'Area is required';
-    } else if (!areaRegex.test(area)) {
+    } else if (!areaRegex.test(areaName)) {
      newErrors.area = 'Please enter a valid area';
     }
     const pincodeRegex = /^\d{6}$/; // Matches exactly 6 digits
@@ -147,39 +157,71 @@ const Forms = () => {
 
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
     if (validateForm()) {
       try {
+        const {vdata} = location.state;
+        const courseId=vdata.courseId;
+        
         const formData = {
           firstName,
           lastName,
           gender,
-          fathersName,
-          mothersName,
-          phoneNumber,
-          alternatePhoneNumber,
+          fatherName,
+          motherName,
+          mobile,
+          alternateMobile,
           email,
           age,
           houseNo,
           streetName,
-          area,
+          areaName,
           pincode,
           state,
           nationality,
           courseId
+          
         };
+        
+        
+  
+        const storedEmail = localStorage.getItem('email');
+        if (!storedEmail) {
+          console.log('Email not found in local storage');
+          return;
+        }
 
-        // Make the POST API call using Axios
-        const response = await axios.post(`http://localhost:5071/api/Courses/GetCoursesByInstituteId/${instituteId}/${courseId}`, formData);
-
-        console.log('Form submitted successfully!', response.data);
+        axios.get(`http://localhost:5232/api/user/${encodeURIComponent(storedEmail)}`)
+          .then((response) => {
+            const userId = response.data.userId;
+            const instituteId=vdata.instituteId;
+            const courseid=vdata.courseId;
+            axios.post(`http://localhost:5232/api/User/user/addAdmission/${courseid}/${instituteId}/${userId}`, formData)
+              .then((response) => {
+                console.log('Form submitted successfully!', response.data);
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Admission Added',
+                  text: 'The Form has been submitted successfully.',
+                });
+              })
+              .catch((error) => {
+                console.error('Error submitting form:', error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } catch (error) {
-        console.error('Error submitting form:', error);
+        console.error('Error retrieving user ID:', error);
       }
     } else {
       console.log('Form contains errors. Please fix them.');
     }
   };
+  
+  
     
   return (
     <><UserHome /><div>
@@ -299,6 +341,12 @@ const Forms = () => {
         </div>
         <button className="enrollformbutton" id="addStudent"> Enroll Now</button>
       </form>
+      {submissionStatus === 'success' && (
+        <div className="popup success">Enrolled to the course successfully!</div>
+      )}
+      {submissionStatus === 'error' && (
+        <div className="popup error">Error submitting the form. Please try again.</div>
+      )}
     </div></>
   );
 };

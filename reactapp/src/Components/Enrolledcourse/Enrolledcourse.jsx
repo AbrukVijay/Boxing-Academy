@@ -13,20 +13,10 @@ import UserHome from "../../Navbars/UserNav";
 function EnrolledCourse() {
   const navigate = useNavigate();
   const [admission, setAdmission] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(`https://api.example.com/courses?searchTerm=${searchTerm}`); // Replace with your API endpoint URL
-      if (response.data.length > 0) {
-        setSearchTerm(response.data[0]);
-      } else {
-        setSearchTerm(null);
-      }
-      setSearchTerm("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ 
+  
 
   useEffect(() => {
     getUserIdAndFetchAdmission();
@@ -52,7 +42,7 @@ function EnrolledCourse() {
 
   const getAdmissionData = (userId) => {
     axios.get(`http://localhost:5232/api/User/user/viewAdmission/${encodeURIComponent(userId)}`)
-      .then((result) => { 
+      .then((result) => {
         // Log the data received from the API
         setAdmission(result.data);
         console.log(result.data)
@@ -66,9 +56,6 @@ function EnrolledCourse() {
   const handleEditCourse = (admissionId) => {
     navigate(`/user/enrolledcourseedit/${admissionId}`);
   };
-  // const handlelearn = () => {
-  //   navigate(`/user/learn/${admission.courseName}/${admission.userId}/${admission.courseId}`);
-  // };
 
   const handleDeleteCourse = (admissionId) => {
     axios.delete(`http://localhost:5232/api/User/user/deleteAdmission/${encodeURIComponent(admissionId)}`)
@@ -104,7 +91,14 @@ function EnrolledCourse() {
     });
   }
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const filteredAdmission = admission.filter((val) => {
+    if (searchTerm === "") {
+      return val;
+    } else if (val.courseName.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return val;
+    }
+    return null;
+  });
 
   return (
     <>
@@ -123,7 +117,7 @@ function EnrolledCourse() {
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
               />
-              <Button id="searchButton" className="btn btn-success" onClick={handleSearch}>
+              <Button id="searchButton" className="btn btn-success">
                 Search
               </Button>
             </Form>
@@ -131,7 +125,7 @@ function EnrolledCourse() {
           <br />
         </div>
         <div className="template_Containerec">
-          {admission.map((val) => {
+          {filteredAdmission.map((val) => {
             return (
               <div className="eccontainer" key={val.admissionId}>
                 <Card className="cardec">

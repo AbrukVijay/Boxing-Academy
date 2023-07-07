@@ -3,8 +3,8 @@
   
 }
 body {
-  margin: 0;
-  background-image: linear-gradient(to bottom,#137c8c,#5d7568);
+  background-image: linear-gradient(to bottom, #b0e0e6, #b0e0e6);
+  background-color: 50 #b0e0e6;
   /* background-color: white; */
 }
 
@@ -12,7 +12,7 @@ body {
 .Accourse-info div {
 display: flex;
 align-items: center;
-margin-left: 10px;
+margin-left: 30px;
 margin: 10px;
 }
 .Acinfo{
@@ -81,6 +81,7 @@ column-gap: 30px;
   margin: 0 auto;
   grid-template-columns: repeat(1, minmax(0, 1fr));  
   grid-gap: 1%;
+  margin-left: 290px;
   width: 65%;
  
  
@@ -143,6 +144,6 @@ column-gap: 30px;
   justify-content: flex-end;
   margin-right: 10px;
   position: absolute;
-  top: 80px;
+  top: 20%;
   right: 10px;
 }

@@ -77,27 +77,6 @@ const ProgressBar2 = () => {
 
     const sendDataToBackend = async progress => {
     try {
-    let status='';
-    if(progress === 0){
-      status = 'Not Started';
-    }
-    else if(progress===100){
-      status = 'completed';
-    }
-    else{
-      status = 'In Progress';
-    }
-    const timestamp = new Date();
-    const Timestamp = timestamp.toISOString();
-
-    
-      const data={
-        userId: parseInt(id),
-        progressPercentage: progress,
-        courseId: courseid,
-        timetamp: Timestamp,
-        status: status
-      };
       // Make an HTTP POST or PUT request to send progress data to the backend
       if (localStorage.getItem(`isFirstRender${courseid}`) === 'true') {
         localStorage.setItem(`isFirstRender${courseid}`, 'false');
@@ -111,12 +90,12 @@ const ProgressBar2 = () => {
   };
 
   return (
-    <div>
-        <div style={{position:'fixed',height:'50px',width:'100%'}}>
-            <UserHome/>
-        </div><br/>
-    <div  style={{position:'fixed',height:'40px',marginTop:'45.5px',width:'100%'}}>
+    <><UserHome /><div>
+        <div style={{position:'fixed',height:'10px',width:'100%'}}>
 
+        </div>
+   
+    <div style={{height:'40px',width:'100%'}}>
     <div style={{display:'grid',gridTemplateColumns:'1.8fr  .1fr',backgroundColor:'#27b92b',borderRadius:'5px'}}>
       <div
         style={{
@@ -124,19 +103,18 @@ const ProgressBar2 = () => {
            border:`1px solid ${progress ===100 ? '#27b92b':'black'} `,
            borderColor:'black',
            borderRadius:'10PX',
-          height: '20px',
-          backgroundColor:'rgb(5, 5, 142)',
+           height: '20px',
+           backgroundColor:'rgb(5, 5, 142)',
           //backgroundColor: '#27b92b',
-          margin:'1%'
-
+           margin:'1%'
         }}
       ><center></center></div><div style={{justifySelf:'center' ,padding:'15%',marginLeft:'10px'}}><strong>{progress}%</strong></div></div>
     </div>
-    <div>
-    <div  style={{position:'fixed',height:'40px',backgroundColor:'#27b92b',marginTop:'90px',width:'100%'}}>
+
+    <div  style={{height:'40px',backgroundColor:'#27b92b',marginTop:'0px',width:'100%'}}>
       <center><h4 style={{color:'yellow'}}>Status : {status}</h4></center></div>
-    </div>
-    <div style={{flex:'1',overflowY:'auto',paddingTop:'115px'}}>
+   
+    <div style={{flex:'1',overflowY:'auto'}}>
             <div className='Sk2' >
             <div className='titleMain' style={{marginLeft:'2%'}}><img width={130} height={80} src={Image} alt='Logo'/></div>
             <div className='Sty2' >Intermediate & Advanced Boxing</div>
@@ -162,8 +140,6 @@ const ProgressBar2 = () => {
                 <div style={{padding:'20px'}}><FontAwesomeIcon icon={faCircleCheck} style={{color:'#179b4a'}}/>&nbsp;Conditioning</div>
                 <div style={{padding:'20px'}}><FontAwesomeIcon icon={faCircleCheck} style={{color:'#179b4a'}}/>&nbsp;Footwork</div>
                 <div style={{padding:'20px'}}><FontAwesomeIcon icon={faCircleCheck} style={{color:'#179b4a'}}/>&nbsp;Mental Preparation</div>
-                {/* <div style={{padding:'20px'}}><FontAwesomeIcon icon={faCircleCheck} style={{color:'#179b4a'}}/>&nbsp;Combinations</div>
-                <div style={{padding:'20px'}}><FontAwesomeIcon icon={faCircleCheck} style={{color:'#179b4a'}}/>&nbsp;Conditioning</div> */}
                 <div style={{padding:'20px'}}><FontAwesomeIcon icon={faCircleCheck} style={{color:'#179b4a'}}/>&nbsp;Strategy & Ring Awareness</div>
                 </div>
                 </div>
@@ -236,6 +212,7 @@ const ProgressBar2 = () => {
             </div>
         </div>
     </div>
+    </>
   );
 };
 

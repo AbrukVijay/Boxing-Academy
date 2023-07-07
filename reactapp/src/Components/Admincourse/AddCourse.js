@@ -19,7 +19,7 @@ const AddCourse = () => {
   const validateForm = () => {
     const newErrors = {}; 
 
-    const courseNameRegex = /^[a-zA-Z ]+$/;
+    const courseNameRegex = /^[a-zA-Z/s& ]+$/;
     if (!courseName.trim()) {
       newErrors.courseName = 'Course Name is required';
     }else if (!courseNameRegex.test(courseName)) {
@@ -53,8 +53,8 @@ const AddCourse = () => {
     const trimmedDescription=courseDescription.trim();
     if (trimmedDescription.length === 0) {
       newErrors.courseDescription = 'Description is required';
-    } else if (trimmedDescription.length > 50) {
-      newErrors.courseDescription= 'Description cannot exceed 50 characters';
+    }else if (trimmedDescription.length > 200) {
+      newErrors.courseDescription= 'Description cannot exceed 200 characters';
     }
 
     if (!selectedInstituteId) {
@@ -156,9 +156,9 @@ const AddCourse = () => {
             <strong>
               <label
                 for="courseDuration"
-                style={{ marginRight: "200px", color: "black" }}
+                style={{ marginRight: "120px", color: "black" }}
               >
-                Course Duration :{" "}
+                Course Duration in Months :{" "}
               </label>
             </strong>
             <input

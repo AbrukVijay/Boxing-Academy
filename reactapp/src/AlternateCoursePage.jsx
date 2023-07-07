@@ -1,9 +1,9 @@
-import UserHome from '../../Navbars/UserNav';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import logo from './CourseComponent1/boxinglogo.png';
-// import sss from './boxinglogo.png';
+import logo from '../src/Components/CoursePages/CourseComponent1/boxinglogo.png';
+import UserHome from './Navbars/UserNav';
+import Image from  '../src/Images/preview.jpg';
 
 const ProgressBarrr = () => {
   const [progress, setProgress] = useState(0);
@@ -66,27 +66,7 @@ const ProgressBarrr = () => {
 
     const sendDataToBackend = async progress => {
     try {
-    let status='';
-    if(progress === 0){
-      status = 'Not Started';
-    }
-    else if(progress===100){
-      status = 'completed';
-    }
-    else{
-      status = 'In Progress';
-    }
-    const timestamp = new Date();
-    const Timestamp = timestamp.toISOString();
-
     
-      const data={
-        userId: parseInt(id),
-        progressPercentage: progress,
-        courseId: courseid,
-        timetamp: Timestamp,
-        status: status
-      };
       // Make an HTTP POST or PUT request to send progress data to the backend
       if (localStorage.getItem(`isFirstRender${courseid}`) === 'true') {
         localStorage.setItem(`isFirstRender${courseid}`, 'false');
@@ -100,44 +80,39 @@ const ProgressBarrr = () => {
   };
 
 
-
-
   return (
-  <div>
-    <div style={{position:'fixed',height:'50px',width:'100%'}}>
-            <UserHome/>
-        </div><br/>
-    <div  style={{position:'fixed',height:'40px',width:'100%'}}>
-    {/* <div style={{backgroundColor:'black',position:'fixed',width:'100%'}}> */}
-    <div style={{display:'grid',gridTemplateColumns:'1.8fr  .1fr',backgroundColor:'#27b92b',borderRadius:'5px'}}>
-      <div
-        style={{
-           width: `${progress}%`,
-           border:`1px solid ${progress ===100 ? '#27b92b':'black'} `,
-           borderColor:'black',
-    
-        borderRadius:'10PX',
-          height: '20px',
-          backgroundColor:'rgb(5, 5, 142)',
-          //backgroundColor: '#27b92b',
-          margin:'1%'
+  <><UserHome /><div>
+         
+          <div style={{height: '40px',  width: '100%' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.8fr  .1fr', backgroundColor: '#27b92b', borderRadius: '5px' }}>
+                  <div
+                      style={{
+                          width: `${progress}%`,
+                          border: `1px solid ${progress === 100 ? '#27b92b' : 'black'} `,
+                          borderColor: 'black',
 
-        }}
-      ><center></center></div><div style={{justifySelf:'center' ,padding:'15%',marginLeft:'10px'}}><strong>{progress}%</strong></div></div>
-    </div>
-    <div>
-    <div  style={{position:'fixed',height:'40px',backgroundColor:'#27b92b',marginTop:'90px',width:'100%'}}>
-      <center><h4 style={{color:'yellow'}}>Status : {status}</h4></center></div>
-    </div>
-      <div>
-      <div style={{flex:'1',overflowY:'auto',paddingTop:'115px'}}>
-            <div className='Sk2' >
-            <div className='titleMain' style={{marginLeft:'2%'}}><img width={130} height={80} src={logo} alt='Logo'/></div>
-            <div className='Sty2' >{course}</div>
-            </div>
+                          borderRadius: '10PX',
+                          height: '20px',
+                          backgroundColor: 'rgb(5, 5, 142)',
+                          //backgroundColor: '#27b92b',
+                          margin: '1%'
+                      }}
+                  ><center></center></div><div style={{ justifySelf: 'center', padding: '15%', marginLeft: '10px' }}><strong>{progress}%</strong></div></div>
           </div>
-        </div>
-      </div>
+          <div>
+              <div style={{  height: '40px', backgroundColor: '#27b92b', width: '100%' }}>
+                  <center><h4 style={{ color: 'yellow' }}>Status : {status}</h4></center></div>
+          </div>
+          <div>
+              <div style={{ flex: '1', overflowY: 'auto'}}>
+                  <div className='Sk2'>
+                      <div className='titleMain' style={{ marginLeft: '2%' }}><img width={130} height={80} src={logo} alt='Logo' /></div>
+                      <div className='Sty2'>{course}</div>
+                  </div>
+                  <div><img src={Image} alt='boxing page image' style={{width:'100%',height:'100vh'}}/></div>
+              </div>
+          </div>
+      </div></>
       )
       }
       export default ProgressBarrr;

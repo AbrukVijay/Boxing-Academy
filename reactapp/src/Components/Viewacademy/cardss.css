@@ -1,26 +1,24 @@
 body{
-  background-image: linear-gradient(to bottom, #137c8c, #5d7568);
+  background-image: linear-gradient(to bottom, #b0e0e6, #b0e0e6);
+  background-color: 50 #b0e0e6;
 }
-.cardss-container {
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; */
-    
-    flex-direction: column;
-    align-items: center;
-      margin-bottom: 10px;
-      text-align: center;
-     
-       
+.container1 {
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width:1500px;
+  margin-left: 0px;
+}
 
+  #root > div:nth-child(2) > div.container{
+    justify-content: center;
   }
   
   .card {
     width: 40%;
     background:rgb(0, 0, 0);
-    background-image: linear-gradient(to bottom,rgba(0, 0, 0, 0.7), rgba(255, 0, 0, 0.4));
     
     color: #fbfbfb;
     
@@ -47,4 +45,3 @@ body{
   .suggestions li:hover {
     background-color: #eaeaea;
   }
- 

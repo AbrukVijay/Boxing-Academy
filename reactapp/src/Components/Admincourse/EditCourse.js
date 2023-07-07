@@ -22,7 +22,6 @@ const EditCourse = () => {
       try {
         const response = await axios.get(`http://localhost:5232/api/Admin/ViewCourse/${id}`);
         setCourse(response.data);
-        console.log(response.data);
         setSelectedInstituteId(response.data.instituteId);
         setIsLoading(false);
       } catch (error) {
@@ -93,7 +92,7 @@ const EditCourse = () => {
     if (!course.courseName.trim()) {
       errors.courseName = 'Course Name is required';
     }
-    else if(!/^[a-zA-Z\s]+$/.test(course.courseName)){
+    else if(!/^[a-zA-Z/s& ]+$/.test(course.courseName)){
       errors.courseName = 'Please enter Valid Course Name ';
     }
 
@@ -117,6 +116,8 @@ const EditCourse = () => {
 
     if (!course.courseDescription.trim()) {
       errors.courseDescription = 'Course Description is required';
+    }else if (course.courseDescription.trim().length > 200) {
+      errors.courseDescription= 'Description cannot exceed 200 characters';
     }
    
 

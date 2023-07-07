@@ -3,14 +3,15 @@
   margin-top: 20px;
      margin-left: 310px;
     width: 950px;
-    border-radius:10px; 
+    border-radius:10px;
+    padding: 20px; 
    
    /* border-right-width: 100px;
    border-left-width: 100px; */
      display: grid;
      grid-template-columns: 1fr 1fr;
      grid-gap: 0px;
-     background-color: rgb(133, 161, 165);
+     background-image: linear-gradient(to bottom,#18a9a6,#a3ada8);
 
  } 
   .left-column {
@@ -131,7 +132,8 @@
    text-align: center;
   /* background-color: #F8F8F8; 
    background-image: linear-gradient(to bottom,#beeed4,#81e5af);  */
-   background-image: linear-gradient(to bottom,#137c8c,#5d7568);
+   background-image: linear-gradient(to bottom, #b0e0e6, #b0e0e6);
+   background-color: 50 #b0e0e6;
    color: white;
    margin: 1px;
    font-size: 15px;

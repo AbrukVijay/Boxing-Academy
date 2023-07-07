@@ -1,7 +1,13 @@
-body {
-  background-image: linear-gradient(to bottom, #137c8c, #5d7568);
+#root > div.templateContainerec{
+  background-color: #F8F8F8;
+  background-image: linear-gradient(to bottom, #d0d7d8, #e3fbee);
+  height: 941px;
 }
-
+body{
+  background-color: #e3fbee;
+  background-image: linear-gradient(to bottom, #e3fbee, #e3fbee);
+  height: 941px;
+}
 .template_Containerec {
   /* justify-content: center; */
   flex-direction: column;
@@ -9,7 +15,7 @@ body {
   align-items: center;
   margin-bottom: 10px;
   text-align: center;
-  height: 878px;
+  height: 941px;
 }
 
 .eccontainer {

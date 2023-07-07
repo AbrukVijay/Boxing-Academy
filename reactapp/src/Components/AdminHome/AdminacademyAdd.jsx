@@ -53,8 +53,8 @@ const AdminAcademyAdd = () => {
       newErrors.academyDescription = 'Description is required';
     } else if (academyDescription.trim().length < 15) {
       newErrors.academyDescription = 'Description must contain atleast 15 characters';
-    } else if (academyDescription.trim().length > 100) {
-      newErrors.academyDescription= 'Description cannot exceed 100 characters';
+    } else if (academyDescription.trim().length > 200) {
+      newErrors.academyDescription= 'Description cannot exceed 200 characters';
     }
     
 

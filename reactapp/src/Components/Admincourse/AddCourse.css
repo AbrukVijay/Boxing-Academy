@@ -1,7 +1,7 @@
 .addform-container {
   margin-left: 520px;
   width: 500px;
-  background-image: linear-gradient(to bottom,#067a78,#a3ada8);
+  background-image: linear-gradient(to bottom,#18a9a6,#a3ada8);
   /* background-image: linear-gradient(to bottom,#067a78,#a3ada8); */
   border-radius: 20px;
   height: 980px;
@@ -87,7 +87,8 @@
   text-align: center;
  /* background-color: #F8F8F8; 
   background-image: linear-gradient(to bottom,#beeed4,#81e5af);  */
-  background-image: linear-gradient(to bottom,#448892,#5d7568);
+  background-image: linear-gradient(to bottom, #b0e0e6, #b0e0e6);
+  background-color: 50 #b0e0e6;
   color: white;
   margin: 1px;
   font-size: 15px;

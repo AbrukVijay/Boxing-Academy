@@ -1,10 +1,13 @@
 .User-page {
-  background-color: #F8F8F8;
-  background-image: linear-gradient(to bottom, #137c8c, #5d7568);
+  background-image: linear-gradient(to bottom, #b0e0e6, #b0e0e6);
+  background-color: 50 #b0e0e6;
 }
 
 .User-page .card-body {
   color: #ffffff;
+}
+#root > div.User-page > div.d-flex.justify-content-center.col-sm-12{
+  padding: 30px;
 }
 
 .User-page .card-title {

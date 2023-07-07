@@ -77,7 +77,7 @@ function AdminHome() {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" style={{ color: 'red', filter: 'brightness(110%)' }}>
-            <Nav className="me-auto" style={{ marginLeft: '375px' }}>
+            <Nav className="me-auto" style={{ marginLeft: '347px' }}>
               <Button id="adminAcademy" variant="transparent">
                 <Nav.Link href="/admin/adminacademy" style={{ color: 'white' }}>Academy</Nav.Link>
               </Button>

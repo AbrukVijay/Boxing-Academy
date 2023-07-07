@@ -13,7 +13,7 @@ namespace dotnetapp.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    public class UserController : ControllerBase
+    public class UserController:ControllerBase
     {
         private readonly MyProjectDbContext bc;
 
@@ -21,127 +21,132 @@ namespace dotnetapp.Controllers
         {
             this.bc = bc;
         }
-        [HttpGet("user/viewAdmission")]
-        public async Task<IActionResult> GetAllStudents()
+         [HttpGet("user/viewAdmission")]
+          public async Task<IActionResult> GetAllStudents()
         {
-
+            
 
             var admissions = await bc.AdmissionModels.ToListAsync();
 
-            return Ok(admissions);
+            return Ok( admissions);
         }
+       
+[HttpGet("user/viewAdmission/{userId}")]
+public IActionResult ViewAdmission(int userId)
+{
+    var admissionCourse = (from c in bc.CourseModels
+                           from a in bc.AdmissionModels
+                           from s in bc.StudentModels
+                           where a.UserId == userId && s.StudentId == a.StudentId && c.CourseId == a.CourseId
+                           select new
+                           {
+                               AdmissionId=a.AdmissionId,
+                               FirstName = s.FirstName,
+                               LastName = s.LastName,
+                               Mobile = s.Mobile,
+                               Age = s.Age,
+                               Gender = s.Gender,
+                               HouseNo = s.HouseNo,
+                               StreetName=s.StreetName,
+                               AreaName=s.AreaName,
+                               State=s.State,
+                               Pincode=s.Pincode,
+                               Nationality=s.Nationality,
+                               CourseId = s.CourseId,
+                               FatherName = s.FatherName,
+                               MotherName = s.MotherName,
+                               Email = s.Email,
+                               AlternateMobile = s.AlternateMobile,
+                               CourseName = c.CourseName,
+                               CourseDescription = c.CourseDescription,
+                               CourseDuration = c.CourseDuration,
+                               CourseTiming = c.CourseTiming,
+                               Instituteid = c.InstituteId,
+                               DateOfJoining = a.DateOfJoining,
+                               EndDate = a.EndDate
+                           }).ToList();
 
-        [HttpGet("user/viewAdmission/{userId}")]
-        public IActionResult ViewAdmission(int userId)
-        {
-            var admissionCourse = (from c in bc.CourseModels
-                                   from a in bc.AdmissionModels
-                                   from s in bc.StudentModels
-                                   where a.UserId == userId && s.StudentId == a.StudentId && c.CourseId == a.CourseId
-                                   select new
-                                   {
-                                       AdmissionId = a.AdmissionId,
-                                       UserId = a.UserId,
-                                       FirstName = s.FirstName,
-                                       LastName = s.LastName,
-                                       Mobile = s.Mobile,
-                                       Age = s.Age,
-                                       Gender = s.Gender,
-                                       HouseNo = s.HouseNo,
-                                       StreetName = s.StreetName,
-                                       AreaName = s.AreaName,
-                                       State = s.State,
-                                       Pincode = s.Pincode,
-                                       Nationality = s.Nationality,
-                                       CourseId = s.CourseId,
-                                       FatherName = s.FatherName,
-                                       MotherName = s.MotherName,
-                                       Email = s.Email,
-                                       AlternateMobile = s.AlternateMobile,
-                                       CourseName = c.CourseName,
-                                       CourseDescription = c.CourseDescription,
-                                       CourseDuration = c.CourseDuration,
-                                       CourseTiming = c.CourseTiming,
-                                       Instituteid = c.InstituteId,
-                                       DateOfJoining = a.DateOfJoining,
-                                       EndDate = a.EndDate
-                                   }).ToList();
+    return Ok(admissionCourse);
+}                             
 
-            return Ok(admissionCourse);
-        }
+[HttpPost("user/addAdmission/{courseid}/{instituteid}/{userid}")]
+public async Task<IActionResult> AddAdmission(StudentModel student, int courseid, int instituteid, int userid)
+{
+    await bc.StudentModels.AddAsync(student);
+    await bc.SaveChangesAsync();
+    
+    var course = bc.CourseModels.Find(courseid);
 
-        [HttpPost("user/addAdmission/{courseId}/{instituteId}/{userId}")]
-        public async Task<IActionResult> AddAdmission([FromBody] StudentModel student, int courseId, int instituteId, int userId)
-        {
-            var course = await bc.CourseModels.FindAsync(courseId);
-            var admission = new AdmissionModel
-            {
-                CourseId = courseId,
-                StudentId = student.StudentId,
-                InstituteId = instituteId,
-                UserId = userId,
-                DateOfJoining = DateTime.Today,
-                EndDate = bc.CalculateEndDate(course.CourseDuration, DateTime.Today)
-            };
-            await bc.AdmissionModels.AddAsync(admission);
-            await bc.SaveChangesAsync();
+    var admission = new AdmissionModel
+    {
+        StudentId = student.StudentId,
+        CourseId = courseid,
+        InstituteId = instituteid,
+        UserId = userid,
+        DateOfJoining = DateTime.Today, // Set the current date as the default value
+        EndDate = bc.CalculateEndDate(course.CourseDuration, DateTime.Today)
+    };
 
-            var options = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve
-            };
+    bc.AdmissionModels.Add(admission);
+    bc.SaveChanges();
 
-            // Serialize the updated admission model
-            var serializedAdmission = JsonSerializer.Serialize(admission, options);
+    var options = new JsonSerializerOptions
+    {
+        ReferenceHandler = ReferenceHandler.Preserve
+    };
 
-            return Ok(serializedAdmission);
-        }
+    // Serialize the updated admission model
+    var serializedAdmission = JsonSerializer.Serialize(admission, options);
 
-        [HttpPut("user/editAdmission/{admissionId}")]
-        public async Task<IActionResult> UpdateAdmission(int admissionId, StudentModel s)
-        {
-            var admission = bc.AdmissionModels.FirstOrDefault(a => a.AdmissionId == admissionId);
-            if (admission == null)
-            {
-                return BadRequest("Update Not Allowed");
-            }
+    return Ok(serializedAdmission);
+}
 
-            var st = bc.StudentModels.Find(admission.StudentId);
-            if (st == null)
-            {
-                return BadRequest("Update Not Allowed");
-            }
 
-            st.FirstName = s.FirstName;
-            st.LastName = s.LastName;
-            st.Mobile = s.Mobile;
-            st.Age = s.Age;
-            st.Gender = s.Gender;
-            st.HouseNo = s.HouseNo;
-            st.StreetName = s.StreetName;
-            st.AreaName = s.AreaName;
-            st.State = s.State;
-            st.Pincode = s.Pincode;
-            st.Nationality = s.Nationality;
-            st.CourseId = s.CourseId;
-            st.FatherName = s.FatherName;
-            st.MotherName = s.MotherName;
-            st.Email = s.Email;
-            st.AlternateMobile = s.AlternateMobile;
+[HttpPut("user/editAdmission/{admissionId}")]
+public async Task<IActionResult> UpdateAdmission(int admissionId, StudentModel s)
+{
+    var admission = bc.AdmissionModels.FirstOrDefault(a => a.AdmissionId == admissionId);
+    if (admission == null)
+    {
+        return BadRequest("Update Not Allowed");
+    }
 
-            await bc.SaveChangesAsync();
+    var st = bc.StudentModels.Find(admission.StudentId);
+    if (st == null)
+    {
+        return BadRequest("Update Not Allowed");
+    }
 
-            var options = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve
-            };
+    st.FirstName = s.FirstName;
+    st.LastName = s.LastName;
+    st.Mobile = s.Mobile;
+    st.Age = s.Age;
+    st.Gender = s.Gender;
+    st.HouseNo = s.HouseNo;
+    st.StreetName = s.StreetName;
+    st.AreaName = s.AreaName;
+    st.State = s.State;
+    st.Pincode = s.Pincode;
+    st.Nationality = s.Nationality;
+    st.CourseId = s.CourseId;
+    st.FatherName = s.FatherName;
+    st.MotherName = s.MotherName;
+    st.Email = s.Email;
+    st.AlternateMobile = s.AlternateMobile;
 
-            // Serialize the updated admission model
-            var serializedAdmission = JsonSerializer.Serialize(st, options);
+    await bc.SaveChangesAsync();
 
-            return Ok(serializedAdmission);
-        }
-        [HttpDelete("user/deleteAdmission/{admissionId}")]
+    var options = new JsonSerializerOptions
+    {
+        ReferenceHandler = ReferenceHandler.Preserve
+    };
+
+    // Serialize the updated admission model
+    var serializedAdmission = JsonSerializer.Serialize(st, options);
+
+    return Ok(serializedAdmission);
+}
+        [HttpDelete("user/deleteAdmission/{admissionId}")] 
         public async Task<IActionResult> deleteAdmission(int admissionId)
         {
             var admission = bc.AdmissionModels.FirstOrDefault(a => a.AdmissionId == admissionId);
@@ -150,80 +155,72 @@ namespace dotnetapp.Controllers
             await bc.SaveChangesAsync();
             return Ok(admissionId);
         }
-        [HttpPost("AddStudent")]
-        public async Task<IActionResult> AddStudent(StudentModel student)
+        
+         [HttpGet("user/viewstatus")]
+         public async Task<IActionResult>  ViewStatus(Decimal progresspercentage,int userid,int courseid)
         {
-            await bc.StudentModels.AddAsync(student);
-            await bc.SaveChangesAsync();
-            return Ok(student);
-        }
-        [HttpGet("user/viewstatus")]
-        public async Task<IActionResult> ViewStatus(Decimal progresspercentage, int userid, int courseid)
-        {
-            var admission = bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid);
-            if (admission != null)
+               var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
+            if(admission!=null)
             {
-
-                var progress = new ProgressModel
-                {
-
-                    UserId = userid,
-                    CourseId = admission.CourseId,
-                    Progresspercentage = progresspercentage,
-                    Status = bc.CalculateStatus(progresspercentage, admission.EndDate),
-                    Timetamp = DateTime.Now
-                };
-                await bc.ProgressModels.AddAsync(progress);
-                await Task.Run(() => bc.SaveChanges());
-                return Ok(progress);
-            }
-            return NotFound();
+              
+                var progress=new ProgressModel{
+    
+                UserId=userid,
+                CourseId=admission.CourseId,
+                Progresspercentage=progresspercentage, 
+                Status=bc.CalculateStatus(progresspercentage,admission.EndDate),
+                Timetamp=DateTime.Now
+            };
+            await bc.ProgressModels.AddAsync(progress);
+            await Task.Run(() => bc.SaveChanges()); 
+            return Ok(progress);
+         }
+         return NotFound();
         }
 
 
 
-        [HttpPost("user/viewstatus")]
-        public async Task<IActionResult> ViewSatus(Decimal progresspercentage, int userid, int courseid)
-        {
+         [HttpPost("user/viewstatus")]
+         public  async Task<IActionResult> ViewSatus(Decimal progresspercentage,int userid,int courseid)
+    {
 
-            var admission = bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid);
-
-            if (admission != null)
-            {
-                var progress = new ProgressModel
-                {
-
-                    UserId = userid,
-                    CourseId = admission.CourseId,
-                    Progresspercentage = progresspercentage,
-                    Status = bc.CalculateStatus(progresspercentage, admission.EndDate),
-                    Timetamp = DateTime.Now
-                };
-                await bc.ProgressModels.AddAsync(progress);
-                await Task.Run(() => bc.SaveChanges());
-                return Ok(progress);
-            }
-            return NotFound();
+         var admission=bc.AdmissionModels.FirstOrDefault(a => a.UserId == userid && a.CourseId == courseid); 
+            
+           if(admission!=null)
+           {   
+            var progress=new ProgressModel{
+    
+            UserId=userid,
+            CourseId=admission.CourseId,
+            Progresspercentage=progresspercentage, 
+            Status=bc.CalculateStatus(progresspercentage,admission.EndDate),
+            Timetamp=DateTime.Now
+        };
+        await bc.ProgressModels.AddAsync(progress);
+        await Task.Run(() => bc.SaveChanges()); 
+        return Ok(progress);
         }
+        return NotFound();
+    }
 
         [HttpPut("user/updatestatus/{progressId}")]
-        public async Task<IActionResult> UpdateStatus(decimal progressPercentage, int progressId)
-        {
+public async Task<IActionResult> UpdateStatus(decimal progressPercentage, int progressId)
+{
+    
+    var progress = bc.ProgressModels.FirstOrDefault(p => p.ProgressId == progressId);
 
-            var progress = bc.ProgressModels.FirstOrDefault(p => p.ProgressId == progressId);
+    
 
+    var admission = bc.AdmissionModels.FirstOrDefault(a => a.UserId == progress.UserId && a.CourseId == progress.CourseId);
 
+    progress.Progresspercentage = progressPercentage;
+    progress.Status = bc.CalculateStatus(progressPercentage, admission.EndDate);
+    progress.Timetamp = DateTime.Now;
 
-            var admission = bc.AdmissionModels.FirstOrDefault(a => a.UserId == progress.UserId && a.CourseId == progress.CourseId);
+    await bc.SaveChangesAsync();
 
-            progress.Progresspercentage = progressPercentage;
-            progress.Status = bc.CalculateStatus(progressPercentage, admission.EndDate);
-            progress.Timetamp = DateTime.Now;
-
-            await bc.SaveChangesAsync();
-
-            return Ok(progress);
-        }
+    return Ok(progress);
+}
 
 
         [HttpGet("institute with rating")]
@@ -231,10 +228,10 @@ namespace dotnetapp.Controllers
         {
             var instrat = await Task.Run(() =>
             {
-
-                return (from i in bc.InstituteModels
+                
+              return  (from i in bc.InstituteModels
                         join r in bc.RatingModels on i.InstituteId equals r.InstituteId
-                        group r by new { i.InstituteName, i.InstituteAddress, i.ImageUrl, i.InstituteId } into g
+                        group r by new { i.InstituteName, i.InstituteAddress ,i.ImageUrl,i.InstituteId} into g
                         select new
                         {
                             InstituteId = g.Key.InstituteId,
@@ -247,9 +244,9 @@ namespace dotnetapp.Controllers
             return Ok(instrat);
 
         }
-        [HttpPost("RateInstitute")]
+                [HttpPost("RateInstitute")]
 
-        public async Task<IActionResult> RateInstitute(RatingModel R)
+        public async Task<IActionResult> RateInstitute( RatingModel R)
         {
             if (!ModelState.IsValid)
             {
@@ -292,7 +289,7 @@ namespace dotnetapp.Controllers
     var result = from i in bc.InstituteModels
                  join r in bc.RatingModels on i.InstituteId equals r.InstituteId into ratingGroup
                  from rg in ratingGroup.DefaultIfEmpty()
-                 group rg by new { i.InstituteId, i.InstituteName, i.InstituteAddress, i.ImageUrl } into g
+                 group rg by new { i.InstituteId, i.InstituteName, i.ImageUrl, i.InstituteAddress } into g
                  select new
                  {
                      g.Key.InstituteId,
@@ -302,13 +299,12 @@ namespace dotnetapp.Controllers
                      AverageRating = g.Average(r => r != null ? r.Rating : 0)
                  };
 
-    return result.ToList();
-});
+                return result.ToList();
+            });
 
             return Ok(instcou);
 
         }
-
         [HttpGet("user/viewAdmission1/{admissionId}")]
 public IActionResult ViewAdmission1(int admissionId)
 {
@@ -319,7 +315,6 @@ public IActionResult ViewAdmission1(int admissionId)
                            select new
                            {
                                AdmissionId = a.AdmissionId,
-                               StudentId = a.StudentId,
                                FirstName = s.FirstName,
                                LastName = s.LastName,
                                Mobile = s.Mobile,
@@ -349,6 +344,4 @@ public IActionResult ViewAdmission1(int admissionId)
 }
 
     }
-
-
 }

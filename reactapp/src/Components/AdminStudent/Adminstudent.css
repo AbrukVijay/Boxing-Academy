@@ -1,26 +1,35 @@
 .st_content{
-  height: 878px;
-  background-image: linear-gradient(to bottom, #137c8c, #5d7568);
+  background-image: linear-gradient(to bottom, #b0e0e6, #b0e0e6);
+  background-color: 50 #b0e0e6;
+  height: 941px;
 }
 .stu-form {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
   margin-bottom: 1rem;
   width: 100%;
+  padding: 20px;
+}
+#root > div.st_content > div.button-container{
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 10px;
+  position: absolute;
+  top: 15%;
+  right: 10px;
 }
 .stu-input[type="text"]{
-  padding: 0.7rem;
+  padding: 10px 30px;
   border-radius: 0.25rem;
+  height: 35px;
   background-color: #e2d2d2;
+  border: 2px solid white;
   text-emphasis-color: rgb(0,0,0,0.8);
   border: none;
   box-shadow: 0 1px 3px rgba(99, 96, 96, 0.288);
-  border: 1px solid rgba(71, 69, 69, 0.2);
-  width: 100%;
-  max-width: 250px;
+  width: 350px;
   margin-right: 0.5rem;
 }
 .stu-button[type="submit"] {
@@ -37,8 +46,8 @@
 .search-input input[type="text"] {
   width: 250px;
   height: 40px;
-  border: 1px solid #ccc;
-  background-color: #ccc;
+  border: 1px solid #e8e2e2;
+  background-color: #e8e2e2;
   align-items: center;
   text-align: center;
   margin-left: 150px;

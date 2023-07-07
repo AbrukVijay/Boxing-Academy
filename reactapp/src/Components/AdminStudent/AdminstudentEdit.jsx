@@ -11,8 +11,7 @@ const EditStudent1 = () => {
   const [student, setStudent] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState({});
-    
-    const [instcou, setInstcou] = useState([]);
+  const [instcou, setInstcou] = useState([]);
   const [selectedInstcou, setSelectedInstcou] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateError, setUpdateError]= useState(null);
@@ -24,6 +23,7 @@ const EditStudent1 = () => {
       try {
         const response = await axios.get('http://localhost:5232/api/Admin/ViewStudent/'+id);
        setStudent(response.data);
+       setSelectedInstcou(response.data.courseId)
        setIsLoading(false);
       } catch (error){
         console.error('Error fetching course:', error);
@@ -40,6 +40,7 @@ const EditStudent1 = () => {
           "http://localhost:5232/api/Admin/Getinstitutescourses"
         );
         setInstcou(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching institutes:", error);
       }
@@ -68,7 +69,7 @@ const EditStudent1 = () => {
        pincode:student.pincode,
        state:student.state,
        nationality:student.nationality,
-       courseId:student.selectedInstcou
+       courseId:selectedInstcou
 
     };
     try{
@@ -286,7 +287,7 @@ setIsUpdating(false);
 
           <div className="Stueditdemo ">
             <label style={{ marginRight: "240px", color: "black" }}><strong>Email :</strong> </label>
-            <input type="text" id="email" className='email' size="40"
+            <input type="text" id="email1" className='email' size="40"
               value={student.email}
               onChange={(e) => setStudent({ ...student, email: e.target.value })} />
 
@@ -306,9 +307,9 @@ setIsUpdating(false);
               <option value="" disabled selected>
                 Select one institute
               </option>
-              {instcou.map((institute) => (
-                <option key={institute.courseId} value={institute.courseId}>
-                  {institute.instituteName}-{institute.courseName}
+              {instcou.map((item) => (
+                <option key={item.courseId} value={item.courseId}>
+                  {item.instituteName}-{item.courseName}
                 </option>
               ))}
             </select>

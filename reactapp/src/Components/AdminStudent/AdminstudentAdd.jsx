@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './add.css';
 import axios from 'axios';
 import AdminHome from '../../Navbars/AdminNav';
+import Swal from 'sweetalert2';
 //import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -168,8 +169,17 @@ const AddStudent = () => {
       );
       console.log("Form submitted successfully!");
       console.log("API response:", response.data);
+      Swal.fire({
+        icon:'success',
+        title:'Student details added',
+        text:'The student has been added successfully.',
+      });
     } catch (error) {
       console.log("Error submitting the form:", error);
+      Swal.fire({
+        icon:'error',
+        title:'Error',
+        text:'Failed to add the student.'})
     }
   } else {
     console.log("Form contains errors. Please fix them.");
@@ -292,7 +302,7 @@ const AddStudent = () => {
 
           <div className='Studdemo'>
             <strong><label htmlFor="email" style={{ marginRight: "260px", color: "black" }}>Email : {""}</label></strong>
-            <input type='text' id="email" className="email-input" placeholder="Enter Email" size="40"
+            <input type='text' id="email1" className="email-input" placeholder="Enter Email" size="40"
               onChange={(e) => setEmail(e.target.value)} />
 
             <div className='error'>{errors.email && <span>{errors.email}</span>}</div>
@@ -304,8 +314,9 @@ const AddStudent = () => {
               id="instituteSelect"
               value={selectedInstcou}
               onChange={(e) => setSelectedInstcou(e.target.value)}
-            >
-
+            ><option value="" disabled selected>
+            Select one Course
+          </option>
               {instcou.map((institute) => (
                 <option key={institute.courseId} value={institute.courseId}>
                   {institute.instituteName}-{institute.courseName}

@@ -289,10 +289,10 @@ const Adminstudent = () => {
   });
 };
 
-  // const handleDeleteIconClick = (event, studentId) => {
-  //   event.stopPropagation();
-  //   handleSingleDelete(studentId);
-  // };
+  const handleDeleteIconClick = (event, studentId) => {
+    event.stopPropagation();
+    handleSingleDelete(studentId);
+  };
 
 
   const [selectedStudents,setSelectedStudents] = useState([]);
@@ -370,10 +370,10 @@ fetchStudents();
 };
 return (
   <><AdminHome /><div className='st_content'>
-    <form className='stu-form' action='/' method='get'>
-      <label htmlFor='header-search'>
+    <div className='stu-form' >
+      {/* <label htmlFor='header-search'>
         <span className='visually-hidden'></span>
-      </label>
+      </label> */}
       <input
         className='stu-input'
         value={searchTerm}
@@ -387,7 +387,7 @@ return (
       <button type='submit' className='stu-button'>
         Search
       </button>
-    </form>
+    </div>
     <div className="student_Container">
       <table className='st-table'>
         <thead>
@@ -426,10 +426,11 @@ return (
                   <td>{item.mobile}</td>
                   <td colSpan={2}>
                     <BsPencilSquare onClick={(event) => {
+                      event.stopPropagation();
                       navigate(`/admin/updatestudent/${item.studentId}`);
                     } } />
                     <br/>
-                    <BsFillTrashFill onClick={(event) => handleSingleDelete(item.studentId)} />
+                    <BsFillTrashFill onClick={(event) => handleDeleteIconClick(event,item.studentId)} />
                   </td>
                 </tr>
               );
