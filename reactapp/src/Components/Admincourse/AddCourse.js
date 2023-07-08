@@ -1,4 +1,5 @@
 import React, {useState,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AddCourse.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -7,6 +8,7 @@ import AdminHome from '../../Navbars/AdminNav';
 
 const AddCourse = () => {
   const [courseName, setCourseName] = useState('');
+  const navigate = useNavigate();
   // const [courseEnrolled, setCourseEnrolled] = useState('');
   const [courseDuration, setCourseDuration] = useState('');
   const [courseTiming, setCourseTiming] = useState('');
@@ -105,7 +107,7 @@ const AddCourse = () => {
           text: 'The course has been added successfully.',
         });
         // console.log("Form submitted successfully!");
-        console.log("API response:", response.data);
+        navigate('/admin/course')
       } catch (error) {
         Swal.fire({
           icon: 'error',

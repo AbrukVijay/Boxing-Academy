@@ -59,7 +59,7 @@ function App() {
           element={<PrivateRoute element={<AddCourse />} authRole="Admin" allowedRoles={['Admin']} />}
         />
         <Route
-          path="/admin/editcourse/:id"
+          path="/admin/editcourse"
           element={<PrivateRoute element={<EditCourse />} authRole="Admin" allowedRoles={['Admin']} />}
         />
         <Route
@@ -67,7 +67,7 @@ function App() {
           element={<PrivateRoute element={<Adminstudent />} authRole="Admin" allowedRoles={['Admin']} />}
         />
         <Route
-          path="/admin/updatestudent/:id"
+          path="/admin/updatestudent"
           element={<PrivateRoute element={<EditStudent1 />} authRole="Admin" allowedRoles={['Admin']} />}
         />
         <Route
@@ -77,7 +77,7 @@ function App() {
        <Route path="/user/viewacademy"
           element={<PrivateRoute element={<Viewacademy1 />} authRole="User" allowedRoles={['User']} />}
         />
-         <Route path="/user/rating/:instituteId"
+         <Route path="/user/rating"
           element={<PrivateRoute element={<Rating />} authRole="User" allowedRoles={['User']} />}
         />
         <Route path="/user/courses"
@@ -89,7 +89,7 @@ function App() {
         <Route path="/user/userhome"
           element={<PrivateRoute element={<Home3 />} authRole="User" allowedRoles={['User']} />}
         />
-        <Route path="/user/enrolledcourseedit/:id"
+        <Route path="/user/enrolledcourseedit"
           element={<PrivateRoute element={<EditStudent/>} authRole="User" allowedRoles={['User']} />}
         /> 
         <Route path="/user/enrollform"

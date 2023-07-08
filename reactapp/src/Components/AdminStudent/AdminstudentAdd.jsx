@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import './add.css';
 import axios from 'axios';
 import AdminHome from '../../Navbars/AdminNav';
@@ -9,6 +10,7 @@ import Swal from 'sweetalert2';
 const AddStudent = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const navigate = useNavigate();
     const [gender, setGender] = useState('');
     const [fatherName, setFatherName] = useState('');
     const [motherName, setMotherName] = useState('');
@@ -174,6 +176,7 @@ const AddStudent = () => {
         title:'Student details added',
         text:'The student has been added successfully.',
       });
+      navigate('/admin/students')
     } catch (error) {
       console.log("Error submitting the form:", error);
       Swal.fire({

@@ -81,7 +81,7 @@ const Viewacademy1 = () => {
 
   const handleRateClick = (event, instituteId) => {
     event.stopPropagation();
-    navigate(`/rating/${instituteId}`);
+    navigate(`/user/rating`,{state:{instituteId}});
   };
   const renderSuggestions = () => {
     if (searchTerm.length === 0 || !data.length) {

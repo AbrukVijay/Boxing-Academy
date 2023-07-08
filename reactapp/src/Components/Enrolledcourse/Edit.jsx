@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import './Edit.css';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate,useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import UserHome from '../../Navbars/UserNav';
 const EditStudent = () => {
@@ -9,7 +9,11 @@ const EditStudent = () => {
   const { id } = useParams();
   //const [course, setCourse] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [edit, setEdit] = useState({});
+  const location = useLocation();
+  const [edit, setEdit] = useState({
+    admissionId: location.state.admissionId,
+  });
+  const navigate = useNavigate();
   
   const [errors, setErrors] = useState({});
   //const [institutes, setInstitutes] = useState([]);
@@ -22,7 +26,7 @@ const EditStudent = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5232/api/User/user/viewAdmission1/${id}`);
+        const response = await axios.get(`http://localhost:5232/api/User/user/viewAdmission1/${edit.admissionId}`);
         setEdit(response.data);
         
         const api = response.data;
@@ -74,7 +78,7 @@ const EditStudent = () => {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5232/api/User/user/editAdmission/${id}`, updatedDetails);
+      const response = await axios.put(`http://localhost:5232/api/User/user/editAdmission/${edit.admissionId}`, updatedDetails);
       console.log('Course updated:', response.data);
       setUpdateSuccess(true);
       Swal.fire({
@@ -82,6 +86,7 @@ const EditStudent = () => {
         title: 'Details Updated',
         text: 'The details has been updated successfully.',
       });
+      navigate('/user/enrolledcourse')
     } catch (error) {
       console.error('Error updating details:', error);
       setUpdateError('Failed to update the details.');
@@ -233,11 +238,12 @@ const EditStudent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      handleUpdate();
-    } else {
-      console.log('Form contains errors. Please fix them.');
-    }
+     // if (validateForm()) {
+       handleUpdate();
+    // }
+    //  else {
+    //   console.log('Form contains errors. Please fix them.');
+    // }
   };
 
   if (isLoading) {

@@ -54,8 +54,11 @@ function EnrolledCourse() {
   }
 
   const handleEditCourse = (admissionId) => {
-    navigate(`/user/enrolledcourseedit/${admissionId}`);
+    navigate(`/user/enrolledcourseedit`,{state:{admissionId}});
   };
+  // const handleclick = (courseName,userId,courseId) => {
+  //   navigate(`/user/enrolledcourseedit`,{state:{courseName,userId,courseId}});
+  // };
 
   const handleDeleteCourse = (admissionId) => {
     axios.delete(`http://localhost:5232/api/User/user/deleteAdmission/${encodeURIComponent(admissionId)}`)

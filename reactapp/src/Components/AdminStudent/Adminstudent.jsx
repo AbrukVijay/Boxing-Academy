@@ -316,6 +316,10 @@ const handleSelectAll = () => {
   }
 };
 
+const handleEditstudent = (studentId) => {
+  navigate('/admin/updatestudent', { state: { studentId } });
+};
+
 const studentStyle = {
   width: '1rem',
   position: 'static',
@@ -427,7 +431,7 @@ return (
                   <td colSpan={2}>
                     <BsPencilSquare onClick={(event) => {
                       event.stopPropagation();
-                      navigate(`/admin/updatestudent/${item.studentId}`);
+                      handleEditstudent(item.studentId)
                     } } />
                     <br/>
                     <BsFillTrashFill onClick={(event) => handleDeleteIconClick(event,item.studentId)} />

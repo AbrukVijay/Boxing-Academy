@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import './edit.css';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams,useLocation,useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import AdminHome from '../../Navbars/AdminNav';
 
 
 const EditStudent1 = () => {
   const {id} = useParams();
-  const [student, setStudent] = useState({});
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [student, setStudent] = useState({
+    studentId: location.state.studentId,
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState({});
   const [instcou, setInstcou] = useState([]);
@@ -21,7 +25,7 @@ const EditStudent1 = () => {
     // Fetch student data from API and populate the form
     const fetchStudent = async () => {
       try {
-        const response = await axios.get('http://localhost:5232/api/Admin/ViewStudent/'+id);
+        const response = await axios.get('http://localhost:5232/api/Admin/ViewStudent/'+student.studentId);
        setStudent(response.data);
        setSelectedInstcou(response.data.courseId)
        setIsLoading(false);
@@ -53,7 +57,7 @@ const EditStudent1 = () => {
     setUpdateError(null);
     setUpdateSuccess(false);
     const updatedStudent = {
-      studentId:id,
+      studentId:student.studentId,
        firstName:student.firstName,
        lastName:student.lastName,
        gender:student.gender,
@@ -73,7 +77,7 @@ const EditStudent1 = () => {
 
     };
     try{
-      const response = await axios.put(`http://localhost:5232/api/Admin/EditStudent/${id}`,updatedStudent);
+      const response = await axios.put(`http://localhost:5232/api/Admin/EditStudent/${student.studentId}`,updatedStudent);
       console.log('Student updated:',response.data);
       setUpdateSuccess(true);
       Swal.fire({
@@ -81,6 +85,7 @@ const EditStudent1 = () => {
         title:'Student details Updated',
         text:'The student has been updated successfully.',
       });
+      navigate('/admin/students')
     }catch (error) {
       console.error('Error updating the student details:', error);
       setUpdateError('Failed to update the student.');

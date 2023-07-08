@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
-import { useParams } from 'react-router-dom';
+import { useParams,useLocation } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faStarHalfAlt as halfStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
@@ -37,7 +37,9 @@ function Rate({ averageRating }) {
 }
 
 const Rating = () => {
-  const { instituteId } = useParams();
+  // const { instituteId } = useParams();
+  const location = useLocation();
+  const instituteId = location.state?.instituteId;
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');

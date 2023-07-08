@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams,useLocation,useNavigate } from 'react-router-dom';
 import './EditCourse.css';
 import Swal from 'sweetalert2';
 import AdminHome from '../../Navbars/AdminNav';
 
 const EditCourse = () => {
   const { id } = useParams();
-  const [course, setCourse] = useState({});
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [course, setCourse] = useState({
+    courseId: location.state.courseId, // Add courseId to the initial state
+  });
   const [isLoading, setIsLoading] = useState(true);
   // const [courseEnrolled, setCourseEnrolled] = useState('');
   const [errors, setErrors] = useState({});
@@ -20,7 +24,7 @@ const EditCourse = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await axios.get(`http://localhost:5232/api/Admin/ViewCourse/${id}`);
+        const response = await axios.get(`http://localhost:5232/api/Admin/ViewCourse/${course.courseId}`);
         setCourse(response.data);
         setSelectedInstituteId(response.data.instituteId);
         setIsLoading(false);
@@ -64,7 +68,7 @@ const EditCourse = () => {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5232/api/Admin/EditCourse/${id}`, updatedCourse);
+      const response = await axios.put(`http://localhost:5232/api/Admin/EditCourse/${course.courseId}`, updatedCourse);
       console.log('Course updated:', response.data);
       setUpdateSuccess(true);
       Swal.fire({
@@ -72,6 +76,7 @@ const EditCourse = () => {
         title: 'Course Updated',
         text: 'The course has been updated successfully.',
       });
+      navigate('/admin/course')
     } catch (error) {
       console.error('Error updating course:', error);
       setUpdateError('Failed to update the course.');

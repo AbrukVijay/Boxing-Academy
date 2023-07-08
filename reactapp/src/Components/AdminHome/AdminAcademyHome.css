@@ -69,9 +69,7 @@
  div.d-flex.justify-content-between.mb-3{
   height: 10px;
 }
- div:nth-child(3) > div{
-padding-top: 30px;
-}
+
 .card-title {
   text-align: center;
   color: antiquewhite;
