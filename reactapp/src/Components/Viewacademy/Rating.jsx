@@ -104,11 +104,12 @@ const Rating = () => {
     setHoverRating(hoveredRating);
   };
   const handleSubmit = async () => {
-    if (hasUserRated) {
+    const existingReview = reviews.find(review => review.userId === userId);
+    if (existingReview) {
       setShowAlert(true);
       setRating(0);
       setComment('');
-      return; // Exit if the user has already rated
+      return;
     }
     const review = {
       userId: userId,
