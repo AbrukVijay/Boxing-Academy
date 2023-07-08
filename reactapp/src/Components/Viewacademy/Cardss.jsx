@@ -82,7 +82,7 @@ function Cardss() {
   return (
     <>
       <UserHome />
-      <div>
+      <div className="usercourse">
         <div className="templateContainer">
           <div className="searchInput_Container">
             <br />
