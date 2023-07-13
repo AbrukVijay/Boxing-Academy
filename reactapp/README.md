@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+# 58b7d67e-e18d-48fb-8c7e-5aee48e302f9
+https://sonarcloud.io/summary/overall?id=examly-test_58b7d67e-e18d-48fb-8c7e-5aee48e302f9
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Name : DotNet_React_AE_Boxing_Academy_Admission_Team 6
 
-## Available Scripts
+# DESIGN DOCUMENT
+https://docs.google.com/document/d/15xdl9qkzr5NUlxoHzpjl-smfzJY_eWkk/edit?usp=sharing&ouid=102646418630416371585&rtpof=true&sd=true
 
-In the project directory, you can run:
+## Project Completion Status Report
 
-### `npm start`
+#### Virtusa Batch 01 Team 06
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### Team Members
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Mudigonda Venkata Gopi Jayaram -
+2. Sai Digvijay Abruk -
+3. Nagavaralakshmi Veeraparaju -
+4. Siva Krishna Maskapalli -
+5. Anusha Balla -
+6. Vineela Nagamani Pinisetty -
+7. Satwika Korukonda -
+8. Lakshmiharika  Pindi -
+9. Prasada Rao Laveti -
+10. Valavala Maha Lakshmi -
+11. Maniveeraphani Gurram -
 
-### `npm test`
+## Instructions and Commands to run the project
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Login Credentials for Admin
+user id: admin@gmail.com
+password: Admin@123
 
-### `npm run build`
+### React Project
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### cd reactapp
+To select the react project folder
+#### npm install
+To install the packages
+#### npm start
+To start the frontend in 8081 port
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### DotNet Project
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### cd dotnetapp
+To select the dotnet project folder
+#### dotnet tool restore
+To install the dependencies
+#### dotnet run
+To run the application in 8080 port
+#### dotnet clean
+If found any errors then run the clean command and start install and run the project again.
+#### dotnet dotnet-ef add package package_name --version 6.0
+Any package if required you can install by the above command. The package that you are installing should support .Net 6.0 version.
 
-### `npm run eject`
+In case dependencies are not installed, install EntityFrameworkCore in the project.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### dotnet new tool-manifest
+#### dotnet tool install --local dotnet-ef --version 6.0
+To install the Dotnet EntityFramework version 6.0
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### dotnet dotnet-ef
+To check the EF is installed or not.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### dotnet dotnet-ef migrations add "InitialSetup"
+command to setup initial creation of tables mentioned in DBContext.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### dotnet dotnet-ef database update
+command to update the database
 
-## Learn More
+### connectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=*****;trusted_connection=false;Persist Security Info=False;Encrypt=False";
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Make sure the connection string in appsettings.json matches the above coonection string. Database name should be the name that you create.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Database connection
 
-### Analyzing the Bundle Size
+#### To Work with SQLServer:
+sqlcmd -U sa 
+password: examlyMssql@123
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  
+1> create database DBName
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2> go
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1> use DBName
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+2> go
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+### Challenges
+
+Make sure the Dotnet application should run in the 8080 port
+
+Angular / React application should run in 8081 port
+
+
+
+Only then the run test case button should be clicked 
+
+
+
+If there are any challenges in running the test case in the angular/ react part
+
+
+
+Delete the node modules and reinstall them by using the command "npm install / npm i"
+
+
+
+ If there are any challenges in running the test case in the dotnet part
+
+
+
+use these commands:
+
+
+
+dotnet clean
+
+dotnet restore
+
+dotnet run 
